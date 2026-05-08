@@ -15,6 +15,11 @@ body {
   background-color: #0d1224;
 }
 
+#skills,
+#projects {
+  overflow-anchor: none;
+}
+
 #sticky-card-1 {
   --index: 1;
 }
@@ -37,17 +42,48 @@ body {
 }
 
 .skill-slide-panel {
-  animation: skill-panel-enter 520ms ease both;
+  contain: layout paint;
 }
 
-@keyframes skill-panel-enter {
+.skill-marquee {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.skill-marquee-track {
+  align-items: center;
+  animation: skill-marquee-left var(--skill-marquee-duration, 28s) linear infinite;
+  display: flex;
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+}
+
+.skill-marquee:hover .skill-marquee-track {
+  animation-play-state: paused;
+}
+
+.skill-marquee[data-direction="right"] .skill-marquee-track {
+  animation-name: skill-marquee-right;
+}
+
+@keyframes skill-marquee-left {
   from {
-    opacity: 0;
-    transform: translateY(12px);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes skill-marquee-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
