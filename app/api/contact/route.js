@@ -1,111 +1,128 @@
-import axios from 'axios';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-// Create and configure Nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, 
-  auth: {
-    user: process.env.EMAIL_ADDRESS,
-    pass: process.env.GMAIL_PASSKEY, 
-  },
-});
+export const runtime = 'nodejs';
 
-// Helper function to send a message via Telegram
-async function sendTelegramMessage(token, chat_id, message) {
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  try {
-    const res = await axios.post(url, {
-      text: message,
-      chat_id,
-    });
-    return res.data.ok;
-  } catch (error) {
-    console.error('Error sending Telegram message:', error.response?.data || error.message);
-    return false;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getRequiredEnv() {
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const contactToEmail = process.env.CONTACT_TO_EMAIL || smtpUser;
+
+  if (!smtpUser || !smtpPass || !contactToEmail) {
+    return {
+      error: 'SMTP_USER, SMTP_PASS, and CONTACT_TO_EMAIL must be configured.',
+    };
   }
-};
 
-// HTML email template
-const generateEmailTemplate = (name, email, userMessage) => `
-  <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; background-color: #f4f4f4;">
-    <div style="max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #007BFF;">New Message Received</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Message:</strong></p>
-      <blockquote style="border-left: 4px solid #007BFF; padding-left: 10px; margin-left: 0;">
-        ${userMessage}
-      </blockquote>
-      <p style="font-size: 12px; color: #888;">Click reply to respond to the sender.</p>
+  return { smtpUser, smtpPass, contactToEmail };
+}
+
+function createTransporter(smtpUser, smtpPass) {
+  const port = Number(process.env.SMTP_PORT || 465);
+  const tlsRejectUnauthorized = process.env.SMTP_TLS_REJECT_UNAUTHORIZED;
+
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port,
+    secure: process.env.SMTP_SECURE
+      ? process.env.SMTP_SECURE === 'true'
+      : port === 465,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+    tls: {
+      rejectUnauthorized: tlsRejectUnauthorized
+        ? tlsRejectUnauthorized === 'true'
+        : true,
+    },
+  });
+}
+
+function createEmailTemplate({ name, email, message }) {
+  return `
+    <div style="font-family: Arial, sans-serif; color: #222; background: #f6f7fb; padding: 24px;">
+      <div style="max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 8px; padding: 24px; border: 1px solid #e5e7eb;">
+        <h2 style="margin: 0 0 16px; color: #111827;">New Portfolio Contact Message</h2>
+        <p><strong>Your Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Your Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Your Message:</strong></p>
+        <div style="white-space: pre-wrap; border-left: 4px solid #16f2b3; padding-left: 12px; color: #374151;">${escapeHtml(message)}</div>
+      </div>
     </div>
-  </div>
-`;
-
-// Helper function to send an email via Nodemailer
-async function sendEmail(payload, message) {
-  const { name, email, message: userMessage } = payload;
-  
-  const mailOptions = {
-    from: "Portfolio", 
-    to: process.env.EMAIL_ADDRESS, 
-    subject: `New Message From ${name}`, 
-    text: message, 
-    html: generateEmailTemplate(name, email, userMessage), 
-    replyTo: email, 
-  };
-  
-  try {
-    await transporter.sendMail(mailOptions);
-    return true;
-  } catch (error) {
-    console.error('Error while sending email:', error.message);
-    return false;
-  }
-};
+  `;
+}
 
 export async function POST(request) {
   try {
-    const payload = await request.json();
-    const { name, email, message: userMessage } = payload;
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    const chat_id = process.env.TELEGRAM_CHAT_ID;
+    const env = getRequiredEnv();
 
-    // Validate environment variables
-    if (!token || !chat_id) {
-      return NextResponse.json({
-        success: false,
-        message: 'Telegram token or chat ID is missing.',
-      }, { status: 400 });
+    if (env.error) {
+      return NextResponse.json(
+        { success: false, message: env.error },
+        { status: 500 }
+      );
     }
 
-    const message = `New message from ${name}\n\nEmail: ${email}\n\nMessage:\n\n${userMessage}\n\n`;
+    const body = await request.json();
+    const name = String(body.name || '').trim();
+    const email = String(body.email || '').trim();
+    const message = String(body.message || '').trim();
 
-    // Send Telegram message
-    const telegramSuccess = await sendTelegramMessage(token, chat_id, message);
-
-    // Send email
-    const emailSuccess = await sendEmail(payload, message);
-
-    if (telegramSuccess && emailSuccess) {
-      return NextResponse.json({
-        success: true,
-        message: 'Message and email sent successfully!',
-      }, { status: 200 });
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { success: false, message: 'Name, email, and message are required.' },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to send message or email.',
-    }, { status: 500 });
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { success: false, message: 'Please provide a valid email address.' },
+        { status: 400 }
+      );
+    }
+
+    const transporter = createTransporter(env.smtpUser, env.smtpPass);
+    const contactFromName = process.env.CONTACT_FROM_NAME || 'Portfolio Contact';
+    const text = [
+      `Your Name: ${name}`,
+      `Your Email: ${email}`,
+      '',
+      'Your Message:',
+      message,
+    ].join('\n');
+
+    await transporter.sendMail({
+      from: `"${contactFromName}" <${env.smtpUser}>`,
+      to: env.contactToEmail,
+      replyTo: email,
+      subject: `New portfolio contact from ${name}`,
+      text,
+      html: createEmailTemplate({ name, email, message }),
+    });
+
+    return NextResponse.json(
+      { success: true, message: 'Message sent successfully!' },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('API Error:', error.message);
-    return NextResponse.json({
-      success: false,
-      message: 'Server error occurred.',
-    }, { status: 500 });
+    console.error('Contact API error:', error);
+
+    return NextResponse.json(
+      { success: false, message: 'Failed to send message.' },
+      { status: 500 }
+    );
   }
-};
+}
