@@ -7,13 +7,16 @@ export const skillCategories = [
     skills: [
       'Java',
       'Spring Boot',
+      'Kafka',
+      'RabbitMQ',
+      'PostgreSQL',
+      'Redis',
       'Python',
       'C#',
       '.NET Core',
       'FastAPI',
       'Django',
       'MySQL',
-      'PostgreSQL',
       'MongoDB',
       'SQLAlchemy'
     ]
@@ -21,12 +24,15 @@ export const skillCategories = [
   {
     title: 'DevOps',
     eyebrow: 'Delivery and infrastructure',
-    description: 'Containers, Linux environments, cloud deployment, and CI-ready workflows.',
+    description: 'Containers, Linux environments, AWS services, cloud deployment, and CI-ready workflows.',
     accent: 'amber',
     skills: [
       'Docker',
-      'Kubernetes',
+      'AWS EC2',
+      'RDS',
+      'AWS IAM',
       'AWS',
+      'Kubernetes',
       'Azure',
       'Linux',
       'Nginx',

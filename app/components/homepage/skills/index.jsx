@@ -33,9 +33,13 @@ function Skills() {
   const activeCategory = skillCategories[activeSlide];
   const activeAccent = accentStyles[activeCategory.accent];
 
-  const marqueeSkills = useMemo(() => {
-    return [...activeCategory.skills, ...activeCategory.skills];
+  const visibleSkills = useMemo(() => {
+    return activeCategory.skills.filter((skill) => skillsImage(skill));
   }, [activeCategory]);
+
+  const marqueeSkills = useMemo(() => {
+    return [...visibleSkills, ...visibleSkills, ...visibleSkills];
+  }, [visibleSkills]);
 
   return (
     <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#25213b]">
@@ -103,18 +107,18 @@ function Skills() {
           <div className={`mb-1 h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent opacity-80`} />
           <div
             className="skill-marquee"
-            data-direction={activeSlide === 1 ? "right" : "left"}
+            data-direction="left"
             style={{
-              "--skill-marquee-duration": activeCategory.title === "Backend" ? "24s" : "28s"
+              "--skill-marquee-duration": activeCategory.title === "Backend" ? "32s" : "30s"
             }}
           >
             <div className="skill-marquee-track">
               {marqueeSkills.map((skill, id) => (
                 <div
-                  className="w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 m-2 sm:m-4 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
+                  className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 m-2 sm:m-3 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
                   key={`${skill}-${id}`}
                 >
-                  <div className="h-full w-full rounded-lg border border-[#1f223c] bg-[#11152c] shadow-none shadow-gray-50 group-hover:border-white/40 transition-all duration-500">
+                  <div className="skill-card-inner h-full w-full rounded-lg border border-[#1f223c] bg-[#11152c] shadow-none shadow-gray-50 group-hover:border-white/40 transition-all duration-500">
                     <div className="flex -translate-y-[1px] justify-center">
                       <div className="w-3/4">
                         <div className={`h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent`} />

@@ -10,9 +10,34 @@ import "./css/globals.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Portfolio of Talal Qasim - Software Engineer",
   description:
     "This is the portfolio of Talal Qasim, a software engineer focused on backend engineering for fintech, crypto trading platforms, secure services, and scalable system development.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/profilePic.jpeg",
+  },
+  openGraph: {
+    title: "Portfolio of Talal Qasim - Software Engineer",
+    description:
+      "Software engineer focused on backend engineering for fintech, crypto trading platforms, secure services, and scalable system development.",
+    images: [
+      {
+        url: "/profilePic.jpeg",
+        width: 280,
+        height: 280,
+        alt: "Talal Qasim",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Portfolio of Talal Qasim - Software Engineer",
+    description:
+      "Software engineer focused on backend engineering for fintech, crypto trading platforms, secure services, and scalable system development.",
+    images: ["/profilePic.jpeg"],
+  },
 };
 
 export default function RootLayout({ children }) {

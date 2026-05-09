@@ -34,6 +34,7 @@ import ionic from '../app/assets/svg/skills/ionic.svg';
 import java from '../app/assets/svg/skills/java.svg';
 import javascript from '../app/assets/svg/skills/javascript.svg';
 import julia from '../app/assets/svg/skills/julia.svg';
+import kafka from '../app/assets/svg/skills/kafka.svg';
 import kotlin from '../app/assets/svg/skills/kotlin.svg';
 import lightroom from '../app/assets/svg/skills/lightroom.svg';
 import markdown from '../app/assets/svg/skills/markdown.svg';
@@ -56,6 +57,7 @@ import premierepro from '../app/assets/svg/skills/premierepro.svg';
 import prisma from '../app/assets/svg/skills/prisma.svg';
 import python from '../app/assets/svg/skills/python.svg';
 import pytorch from '../app/assets/svg/skills/pytorch.svg';
+import rabbitmq from '../app/assets/svg/skills/rabbitmq.svg';
 import react from '../app/assets/svg/skills/react.svg';
 import ruby from '../app/assets/svg/skills/ruby.svg';
 import selenium from '../app/assets/svg/skills/selenium.svg';
@@ -109,6 +111,10 @@ export const skillsImage = (skill) => {
       return angular;
     case 'javascript':
       return javascript;
+    case 'kafka':
+      return kafka;
+    case 'rabbitmq':
+      return rabbitmq;
     case 'next js':
       return nextJS;
     case 'nuxt js':
@@ -174,6 +180,10 @@ export const skillsImage = (skill) => {
     case 'adobe audition':
       return adobeaudition;
     case 'aws':
+    case 'aws ec2':
+    case 'amazon rds':
+    case 'rds':
+    case 'aws iam':
       return aws;
     case 'deno':
       return deno;

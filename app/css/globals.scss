@@ -60,6 +60,38 @@ body {
   will-change: transform;
 }
 
+.skill-card {
+  animation: skill-card-breathe 5.5s ease-in-out infinite;
+}
+
+.skill-card:nth-child(3n + 2) {
+  animation-delay: 0.7s;
+}
+
+.skill-card:nth-child(3n) {
+  animation-delay: 1.4s;
+}
+
+.skill-card-inner {
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card-inner::after {
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  content: "";
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transform: translateX(-80%);
+  transition: opacity 400ms ease, transform 700ms ease;
+}
+
+.skill-card:hover .skill-card-inner::after {
+  opacity: 1;
+  transform: translateX(80%);
+}
+
 .skill-marquee:hover .skill-marquee-track {
   animation-play-state: paused;
 }
@@ -74,7 +106,7 @@ body {
   }
 
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-33.333%, 0, 0);
   }
 }
 
@@ -85,6 +117,17 @@ body {
 
   to {
     transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes skill-card-breathe {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.08);
   }
 }
 
