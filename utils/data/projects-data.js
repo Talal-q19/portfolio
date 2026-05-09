@@ -2,16 +2,38 @@ export const projectsData = [
     {
         id: 1,
         name: 'EUNX Investment LLC Fintech Platform',
-        description: "Built secure backend services for a production-grade crypto trading and fintech ecosystem, covering authentication, market data, wallets, payments, KYC, admin operations, audit logging, and real-time communication. Implemented Spring Security, JWT, OAuth 2.0, Redis, 2FA, dynamic RBAC, OKX and Binance market data integrations, Liminal wallet workflows, Zand fiat payments, Sumsub KYC, and compliance-focused admin tools.",
+        status: 'Under progress currently',
+        images: ['/company-logos/eunx.svg'],
+        imageKind: 'logo',
+        description: "Built secure backend services for a production-grade crypto trading and fintech ecosystem, covering authentication, market data, wallets, payments, KYC, admin operations, audit logging, and real-time communication.",
+        details: [
+            "Implemented authentication and authorization using Spring Security, JWT, OAuth 2.0, Redis, 2FA, and dynamic RBAC across distributed microservices.",
+            "Developed a custom Market Data microservice integrating with OKX and Binance APIs for real-time tickers, candlestick data, and normalized exchange feeds.",
+            "Contributed to crypto wallet infrastructure, hot and cold wallet workflows, transaction handling, and Liminal custody operations.",
+            "Integrated Zand for fiat payment workflows and Sumsub for KYC verification, onboarding, compliance checks, and regulatory readiness.",
+            "Built Admin Dashboard backend systems for user management, compliance workflows, wallet operations, audit visibility, permission controls, and operational tools."
+        ],
         tools: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'Kafka', 'WebSockets', 'Docker', 'AWS EC2', 'Amazon RDS', 'JWT', 'OAuth 2.0'],
-        role: 'Backend Developer',
+        role: 'Backend Engineer',
         code: '',
         demo: '',
     },
     {
         id: 2,
         name: 'Biometric Attendance System',
-        description: 'Developed a fingerprint-based clock-in and clock-out system integrated with company hardware and a redesigned database. The system fetches, updates, and stores records across multiple tables with around 50,000 rows in about 5 seconds, generates detailed PDF reports with complex SQL queries, and includes an admin dashboard for HR and a super admin panel for full table access and editing.',
+        images: [
+            '/project-images/federal-dashboard.png',
+            '/project-images/muster-roll.png',
+            '/project-images/gar-report.png',
+            '/project-images/gar-report-2.png'
+        ],
+        description: 'Developed a fingerprint-based clock-in and clock-out system integrated with hardware and a redesigned company database, capable of fetching, updating, and storing records from multiple tables within 5 seconds.',
+        details: [
+            "Generated attendance reports for up to 80,000 records in about 4-5 seconds after the previous process took up to two days.",
+            "Implemented complex SQL queries for efficient data retrieval and detailed PDF report generation.",
+            "Designed a Python automation script for data fetching workflows.",
+            "Built an HR admin dashboard for specific table access and a super admin panel for full table access and editing."
+        ],
         tools: ['Node.js', 'Express.js', "MySQL", "HTML", "CSS", "C++", "Python"],
         role: 'Software Engineer',
         code: '',
@@ -20,20 +42,41 @@ export const projectsData = [
     {
         id: 3,
         name: 'Video Streaming and Social Interaction Application',
-        description: 'Developed a hybrid platform that lets users stream movies while engaging in real-time online interactions. Built recommendation features with a Python user-based model for personalized movie suggestions and a JavaScript content-based model for recommendations tailored to movie attributes.',
+        images: [
+            '/project-images/stream-hub.png',
+            '/project-images/stream-hub-feed.jpeg',
+            '/project-images/stream-hub-watch.jpeg'
+        ],
+        description: 'Developed a hybrid platform enabling users to stream movies while engaging in real-time online interactions, enhancing the social viewing experience.',
+        details: [
+            "Implemented a user-based recommendation model in Python for personalized movie suggestions based on user preferences.",
+            "Built a content-based recommendation model in JavaScript for suggestions tailored to movie attributes.",
+            "Supported the interactive streaming experience with Node.js, Express.js, MySQL, Python, HTML, CSS, and JavaScript."
+        ],
         tools: ['Node.js', 'Express.js', 'MySQL', 'Python', 'HTML', 'CSS', 'Javascript'],
         code: '',
-        role: 'Backend Developer',
+        role: 'Software Engineer',
         demo: '',
     },
     {
         id: 4,
         name: 'Data Visualization with AI Features',
-        description: "Built a data visualization system that dynamically creates SQL tables from uploaded Excel files, reads table schemas to generate frontend filter fields, converts user-defined filters into SQL queries, and supports efficient pagination for filtered and unfiltered records.",
+        images: [
+            '/project-images/data-visualization.png',
+            '/project-images/data-filters.png',
+            '/project-images/data-table.png'
+        ],
+        description: "Built a data visualization system that dynamically creates SQL tables from uploaded Excel files and uses backend schema data to generate frontend filter fields.",
+        details: [
+            "Created SQL tables automatically from uploaded Excel file names and headers for structured storage.",
+            "Fetched table schemas from the backend and generated dynamic filter fields from column names.",
+            "Converted user-defined filters into SQL queries for efficient retrieval.",
+            "Maintained smooth pagination for both filtered and unfiltered records."
+        ],
         tools: ['Python', 'React', 'MySQL', 'Pandas', "Scikit-learn", "Flask"],
         code: '',
         demo: '',
-        role: 'Full Stack Developer',
+        role: 'Software Engineer',
     }
 ];
 
