@@ -2,7 +2,7 @@ export const personalData = {
   name: "Talal Qasim",
   profile: '/profilePic.jpeg',
   designation: "Software Engineer / Fin-Tech Backend Engineer",
-  description: "I am a software engineer focused on backend engineering for fintech and crypto trading platforms. I build scalable and secure services across trading, wallets, market data, KYC, payments, admin operations, audit logging, and real-time communication. My experience includes Spring Boot, Spring Security, JWT, OAuth 2.0, Redis, Kafka, WebSockets, PostgreSQL, Docker, AWS EC2, Amazon RDS, and CI/CD workflows.",
+  description: "I am a software engineer focused on backend engineering for fintech and crypto trading platforms, with strong frontend experience for building complete product workflows. I build scalable and secure services across trading, wallets, market data, KYC, payments, admin operations, audit logging, and real-time communication, and I also develop responsive user interfaces with React, Next.js, JavaScript, TypeScript, HTML, CSS, Tailwind CSS, and API-driven frontend integrations. My backend experience includes Spring Boot, Spring Security, JWT, OAuth 2.0, Redis, Kafka, WebSockets, PostgreSQL, Docker, AWS EC2, Amazon RDS, and CI/CD workflows.",
   email: 'talalqasim41@gmail.com',
   phone: '+971566143165',
   address: 'Abu Dhabi, UAE',

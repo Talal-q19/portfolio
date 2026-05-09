@@ -173,6 +173,24 @@ html {
   animation: project-slide-fade 720ms ease-out both;
 }
 
+.code-type-line {
+  min-height: 1.55em;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.code-type-cursor {
+  animation: code-cursor-blink 900ms steps(2, start) infinite;
+  border-right: 2px solid #16f2b3;
+  margin-left: 2px;
+}
+
+@keyframes code-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @keyframes project-window-scan {
   0%,
   42% {

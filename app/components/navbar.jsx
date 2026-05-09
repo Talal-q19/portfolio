@@ -7,8 +7,9 @@ const NAV_ITEMS = [
   { label: "ABOUT", target: "about" },
   { label: "EXPERIENCE", target: "experience" },
   { label: "SKILLS", target: "skills" },
-  { label: "EDUCATION", target: "education" },
   { label: "PROJECTS", target: "projects" },
+  { label: "EDUCATION", target: "education" },
+  { label: "CONTACT", target: "contact" },
 ];
 
 function Navbar() {
@@ -20,7 +21,14 @@ function Navbar() {
       const scrollPosition = window.scrollY;
       setIsScrolled(scrollPosition > 24);
 
-      const currentSection = NAV_ITEMS.find(({ target }) => {
+      const isAtPageBottom = window.innerHeight + scrollPosition >= document.documentElement.scrollHeight - 8;
+
+      if (isAtPageBottom) {
+        setActiveSection(NAV_ITEMS[NAV_ITEMS.length - 1].target);
+        return;
+      }
+
+      const currentSection = [...NAV_ITEMS].reverse().find(({ target }) => {
         const section = document.getElementById(target);
 
         if (!section) {
@@ -28,7 +36,7 @@ function Navbar() {
         }
 
         const rect = section.getBoundingClientRect();
-        return rect.top <= 150 && rect.bottom > 150;
+        return rect.top <= 150;
       });
 
       setActiveSection(currentSection?.target || "");
