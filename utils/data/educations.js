@@ -16,6 +16,20 @@ export const educations = [
   },
   {
     id: 2,
+    title: "Spring Boot with Spring AI",
+    credential: "Certification",
+    image: "/education-images/spring-boot-ai.jpg",
+    duration: "Completed 2026",
+    institution: "Spring Boot Certification",
+    location: "Online",
+    details: [
+      "Completed Spring Boot certification with Spring AI in 2026.",
+      "Covered backend development with Spring Boot and AI-enabled application features.",
+      "Strengthened Java, REST API, service-layer, and modern Spring ecosystem knowledge."
+    ],
+  },
+  {
+    id: 3,
     title: "Full Stack Development",
     credential: "Certificate",
     image: "/education-images/coding-certificate.jfif",
@@ -26,6 +40,18 @@ export const educations = [
       "Completed a MERN Stack Development Bootcamp.",
       "Built full-stack foundations using MongoDB, Express.js, React, and Node.js.",
       "Covered frontend fundamentals including HTML and CSS."
+    ],
+  },
+  {
+    id: 4,
+    title: "High School",
+    credential: "Certificate",
+    image: "/education-images/high-school.png",
+    duration: "Completed",
+    institution: "High School",
+    location: "",
+    details: [
+      "Subjects: Physics, Chemistry, and Mathematics."
     ],
   }
 ]

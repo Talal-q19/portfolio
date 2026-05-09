@@ -86,9 +86,11 @@ function Education() {
                           <p className="text-sm sm:text-base">
                             {education.institution}
                           </p>
-                          <p className="mt-1 text-xs text-gray-400 sm:text-sm">
-                            {education.location}
-                          </p>
+                          {education.location && (
+                            <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                              {education.location}
+                            </p>
+                          )}
                         </div>
                         <button
                           type="button"
