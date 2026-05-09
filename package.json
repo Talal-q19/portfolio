@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "copy-company-images": "node scripts/copy-company-images.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.1",

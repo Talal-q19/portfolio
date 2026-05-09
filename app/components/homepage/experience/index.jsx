@@ -58,13 +58,22 @@ function Experience() {
                         <div className="text-violet-500  transition-all duration-300 hover:scale-125">
                           <BsPersonWorkspace size={36} />
                         </div>
-                        <div>
-                          <p className="text-base sm:text-xl mb-2 font-medium uppercase">
-                            {experience.title}
-                          </p>
-                          <p className="text-sm sm:text-base">
-                            {experience.company}
-                          </p>
+                        <div className="flex items-center">
+                          <Image
+                            src={experience.company === 'EUNX Investment LLC' ? '/company-logos/eunx.jfif' : experience.company === 'Federal Electrical' ? '/company-logos/federal_electric.jfif' : '/company-logos/bacha_smart_solutions.jfif'}
+                            alt={experience.company}
+                            width={48}
+                            height={48}
+                            className="rounded-full object-cover mr-4"
+                          />
+                          <div>
+                            <p className="text-base sm:text-xl mb-2 font-medium uppercase">
+                              {experience.title}
+                            </p>
+                            <p className="text-sm sm:text-base">
+                              {experience.company}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
