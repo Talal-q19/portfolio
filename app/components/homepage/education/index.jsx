@@ -71,7 +71,7 @@ function Education() {
                         </p>
                       </div>
                       <div className="relative z-10 flex items-center gap-x-5 px-3 py-5 sm:gap-x-8">
-                        <div className="text-violet-500  transition-all duration-300 hover:scale-125">
+                        <div className="text-violet-500 transition-all duration-300 hover:scale-125">
                           <BsPersonWorkspace size={36} aria-hidden="true" />
                         </div>
                         <div className="min-w-0 flex-1">

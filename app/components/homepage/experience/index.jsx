@@ -9,6 +9,12 @@ import experience from '../../../assets/lottie/code.json';
 import AnimationLottie from "../../helper/animation-lottie";
 import GlowCard from "../../helper/glow-card";
 
+const companyLogos = {
+  "EUNX Investment LLC": "/company-logos/eunx.jpg",
+  "Federal Electrical": "/company-logos/federal_electric.jpg",
+  "Bacha Smart Solutions": "/company-logos/bacha_smart_solutions.jpg",
+};
+
 function Experience() {
   const [expandedExperiences, setExpandedExperiences] = useState({});
 
@@ -71,7 +77,7 @@ function Experience() {
                         </div>
                         <div className="flex min-w-0 flex-1 items-center">
                           <Image
-                            src={experience.company === 'EUNX Investment LLC' ? '/company-logos/eunx.jfif' : experience.company === 'Federal Electrical' ? '/company-logos/federal_electric.jfif' : '/company-logos/bacha_smart_solutions.jfif'}
+                            src={companyLogos[experience.company]}
                             alt={experience.company}
                             width={48}
                             height={48}
