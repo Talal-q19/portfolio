@@ -1,14 +1,160 @@
+"use client";
+
 // @flow strict
 
 import { personalData } from "@/utils/data/personal-data";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
 
+const codeLines = [
+  [
+    { text: "const ", className: "text-pink-500" },
+    { text: "coder ", className: "text-white" },
+    { text: "= ", className: "text-pink-500" },
+    { text: "{", className: "text-gray-400" },
+  ],
+  [
+    { text: "  name: ", className: "text-white" },
+    { text: "'", className: "text-gray-400" },
+    { text: "Talal Qasim", className: "text-amber-300" },
+    { text: "',", className: "text-gray-400" },
+  ],
+  [
+    { text: "  skills: ", className: "text-white" },
+    { text: "['", className: "text-gray-400" },
+    { text: "Java", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "Spring Boot", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "Python", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "PostgreSQL", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "Kafka", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "Docker", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "AWS", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "Redis", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "WebSockets", className: "text-amber-300" },
+    { text: "'],", className: "text-gray-400" },
+  ],
+  [
+    { text: "  hardWorker: ", className: "text-white" },
+    { text: "true", className: "text-orange-400" },
+    { text: ",", className: "text-gray-400" },
+  ],
+  [
+    { text: "  quickLearner: ", className: "text-white" },
+    { text: "true", className: "text-orange-400" },
+    { text: ",", className: "text-gray-400" },
+  ],
+  [
+    { text: "  problemSolver: ", className: "text-white" },
+    { text: "true", className: "text-orange-400" },
+    { text: ",", className: "text-gray-400" },
+  ],
+  [
+    { text: "  hireable: ", className: "text-green-400" },
+    { text: "function", className: "text-orange-400" },
+    { text: "() {", className: "text-gray-400" },
+  ],
+  [
+    { text: "    return", className: "text-orange-400" },
+    { text: "(", className: "text-gray-400" },
+  ],
+  [
+    { text: "      this.", className: "text-cyan-400" },
+    { text: "hardWorker ", className: "text-white" },
+    { text: "&&", className: "text-amber-300" },
+  ],
+  [
+    { text: "      this.", className: "text-cyan-400" },
+    { text: "problemSolver ", className: "text-white" },
+    { text: "&&", className: "text-amber-300" },
+  ],
+  [
+    { text: "      this.", className: "text-cyan-400" },
+    { text: "skills.length ", className: "text-white" },
+    { text: ">= ", className: "text-amber-300" },
+    { text: "5", className: "text-orange-400" },
+  ],
+  [{ text: "    );", className: "text-gray-400" }],
+  [{ text: "  };", className: "text-gray-400" }],
+  [{ text: "};", className: "text-gray-400" }],
+];
+
 function HeroSection() {
+  const [typedCharacters, setTypedCharacters] = useState(0);
+
+  const totalCharacters = useMemo(() => {
+    return codeLines.reduce((total, line) => (
+      total + line.reduce((lineTotal, token) => lineTotal + token.text.length, 0)
+    ), 0);
+  }, []);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion) {
+      setTypedCharacters(totalCharacters);
+      return undefined;
+    }
+
+    const interval = window.setInterval(() => {
+      setTypedCharacters((current) => {
+        if (current >= totalCharacters) {
+          window.clearInterval(interval);
+          return current;
+        }
+
+        return current + 1;
+      });
+    }, 28);
+
+    return () => window.clearInterval(interval);
+  }, [totalCharacters]);
+
+  const renderTypedLine = (line, lineIndex) => {
+    const charactersBeforeLine = codeLines
+      .slice(0, lineIndex)
+      .reduce((total, currentLine) => (
+        total + currentLine.reduce((lineTotal, token) => lineTotal + token.text.length, 0)
+      ), 0);
+    let remainingCharacters = Math.max(0, typedCharacters - charactersBeforeLine);
+    const lineLength = line.reduce((total, token) => total + token.text.length, 0);
+    const isCursorLine = typedCharacters >= charactersBeforeLine
+      && typedCharacters <= charactersBeforeLine + lineLength
+      && typedCharacters < totalCharacters;
+
+    return (
+      <div key={`code-line-${lineIndex}`} className="code-type-line">
+        {line.map((token, tokenIndex) => {
+          const visibleText = token.text.slice(0, remainingCharacters);
+          remainingCharacters = Math.max(0, remainingCharacters - token.text.length);
+
+          if (!visibleText) {
+            return null;
+          }
+
+          return (
+            <span key={`code-token-${lineIndex}-${tokenIndex}`} className={token.className}>
+              {visibleText}
+            </span>
+          );
+        })}
+        {isCursorLine && <span className="code-type-cursor" aria-hidden="true" />}
+      </div>
+    );
+  };
+
   return (
     <section className="relative flex flex-col items-center justify-between py-4 lg:py-12">
       <Image
@@ -83,84 +229,8 @@ function HeroSection() {
             </div>
           </div>
           <div className="overflow-hidden border-t-[2px] border-indigo-900 px-4 lg:px-8 py-4 lg:py-8">
-            <code className="font-mono text-xs md:text-sm lg:text-base">
-              <div className="blink">
-                <span className="mr-2 text-pink-500">const</span>
-                <span className="mr-2 text-white">coder</span>
-                <span className="mr-2 text-pink-500">=</span>
-                <span className="text-gray-400">{'{'}</span>
-              </div>
-              <div>
-                <span className="ml-4 lg:ml-8 mr-2 text-white">name:</span>
-                <span className="text-gray-400">{`'`}</span>
-                <span className="text-amber-300">Talal Qasim</span>
-                <span className="text-gray-400">{`',`}</span>
-              </div>
-              <div className="ml-4 lg:ml-8 mr-2">
-                <span className=" text-white">skills:</span>
-                <span className="text-gray-400">{`['`}</span>
-                <span className="text-amber-300">Java</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">Spring Boot</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">Python</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">PostgreSQL</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">Kafka</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">Docker</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">AWS</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">Redis</span>
-                <span className="text-gray-400">{"', '"}</span>
-                <span className="text-amber-300">WebSockets</span>
-                <span className="text-gray-400">{"'],"}</span>
-              </div>
-              <div>
-                <span className="ml-4 lg:ml-8 mr-2 text-white">hardWorker:</span>
-                <span className="text-orange-400">true</span>
-                <span className="text-gray-400">,</span>
-              </div>
-              <div>
-                <span className="ml-4 lg:ml-8 mr-2 text-white">quickLearner:</span>
-                <span className="text-orange-400">true</span>
-                <span className="text-gray-400">,</span>
-              </div>
-              <div>
-                <span className="ml-4 lg:ml-8 mr-2 text-white">problemSolver:</span>
-                <span className="text-orange-400">true</span>
-                <span className="text-gray-400">,</span>
-              </div>
-              <div>
-                <span className="ml-4 lg:ml-8 mr-2 text-green-400">hireable:</span>
-                <span className="text-orange-400">function</span>
-                <span className="text-gray-400">{'() {'}</span>
-              </div>
-              <div>
-                <span className="ml-8 lg:ml-16 mr-2 text-orange-400">return</span>
-                <span className="text-gray-400">{`(`}</span>
-              </div>
-              <div>
-                <span className="ml-12 lg:ml-24 text-cyan-400">this.</span>
-                <span className="mr-2 text-white">hardWorker</span>
-                <span className="text-amber-300">&amp;&amp;</span>
-              </div>
-              <div>
-                <span className="ml-12 lg:ml-24 text-cyan-400">this.</span>
-                <span className="mr-2 text-white">problemSolver</span>
-                <span className="text-amber-300">&amp;&amp;</span>
-              </div>
-              <div>
-                <span className="ml-12 lg:ml-24 text-cyan-400">this.</span>
-                <span className="mr-2 text-white">skills.length</span>
-                <span className="mr-2 text-amber-300">&gt;=</span>
-                <span className="text-orange-400">5</span>
-              </div>
-              <div><span className="ml-8 lg:ml-16 mr-2 text-gray-400">{`);`}</span></div>
-              <div><span className="ml-4 lg:ml-8 text-gray-400">{`};`}</span></div>
-              <div><span className="text-gray-400">{`};`}</span></div>
+            <code className="font-mono text-xs md:text-sm lg:text-base" aria-label="Animated code introduction">
+              {codeLines.map(renderTypedLine)}
             </code>
           </div>
         </div>
