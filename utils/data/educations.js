@@ -16,11 +16,11 @@ export const educations = [
   },
   {
     id: 2,
-    title: "Spring Boot with Spring AI",
+    title: "Java and Spring Boot with Spring AI",
     credential: "Certification",
     image: "/education-images/spring-boot-ai.jpg",
     duration: "Completed 2026",
-    institution: "Spring Boot Certification",
+    institution: "Udemy",
     location: "Online",
     details: [
       "Completed Spring Boot certification with Spring AI in 2026.",
@@ -31,7 +31,7 @@ export const educations = [
   {
     id: 3,
     title: "Full Stack Development",
-    credential: "Certificate",
+    credential: "Certification",
     image: "/education-images/coding-certificate.jfif",
     duration: "May 2022 - Jul 2022",
     institution: "AstroLabs",
@@ -49,7 +49,7 @@ export const educations = [
     image: "/education-images/high-school.png",
     duration: "Completed",
     institution: "High School",
-    location: "",
+    location: "Abu Dhabi, UAE",
     details: [
       "Subjects: Physics, Chemistry, and Mathematics."
     ],
