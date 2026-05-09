@@ -10,6 +10,7 @@ import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
+import SectionVisualFrame from "../../helper/section-visual-frame";
 
 const codeLines = [
   [
@@ -156,7 +157,7 @@ function HeroSection() {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-between py-4 lg:py-12">
+    <SectionVisualFrame variant="hero" accent="emerald" className="relative flex flex-col items-center justify-between py-4 lg:py-12">
       <Image
         src="/hero.svg"
         alt="Hero"
@@ -216,7 +217,12 @@ function HeroSection() {
           </div>
 
         </div>
-        <div className="order-1 lg:order-2 from-[#0d1224] border-[#1b2c68a0] relative rounded-lg border bg-gradient-to-r to-[#0a0d37]">
+        <div className="ide-terminal-pulse order-1 lg:order-2 from-[#0d1224] border-[#1b2c68a0] relative overflow-hidden rounded-lg border bg-gradient-to-r to-[#0a0d37]">
+          <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,transparent,rgba(22,242,179,0.08),transparent)] opacity-60" />
+          <div aria-hidden="true" className="absolute right-4 top-4 hidden items-center gap-2 rounded-full border border-[#16f2b3]/25 bg-[#071323]/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#16f2b3] sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#16f2b3] shadow-[0_0_12px_rgba(22,242,179,0.95)]" />
+            Runtime online
+          </div>
           <div className="flex flex-row">
             <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-pink-500 to-violet-600"></div>
             <div className="h-[1px] w-full bg-gradient-to-r from-violet-600 to-transparent"></div>
@@ -235,7 +241,7 @@ function HeroSection() {
           </div>
         </div>
       </div>
-    </section>
+    </SectionVisualFrame>
   );
 };
 

@@ -6,11 +6,12 @@ import { CiLocationOn } from "react-icons/ci";
 import { FaInstagram } from "react-icons/fa";
 import { IoLogoGithub, IoMdCall } from "react-icons/io";
 import { MdAlternateEmail } from "react-icons/md";
+import SectionVisualFrame from '../../helper/section-visual-frame';
 import ContactForm from './contact-form';
 
 function ContactSection() {
   return (
-    <div id="contact" className="my-12 lg:my-16 relative mt-24 text-white">
+    <SectionVisualFrame id="contact" variant="contact" accent="emerald" className="my-12 lg:my-16 relative mt-24 text-white">
       <div className="hidden lg:flex flex-col items-center absolute top-24 -right-8">
         <span className="bg-[#1a1443] w-fit text-white rotate-90 p-2 px-5 text-xl rounded-md">
           CONTACT
@@ -20,6 +21,21 @@ function ContactSection() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
         <ContactForm />
         <div className="lg:w-3/4 ">
+          <div className="contact-radar relative mb-8 hidden h-44 w-full max-w-md items-center justify-center lg:flex">
+            <svg aria-hidden="true" className="absolute inset-0 h-full w-full text-[#16f2b3]" viewBox="0 0 420 180">
+              <circle className="contact-radar__ring" cx="210" cy="90" r="34" fill="none" stroke="currentColor" strokeOpacity="0.42" />
+              <circle className="contact-radar__ring" cx="210" cy="90" r="68" fill="none" stroke="currentColor" strokeOpacity="0.24" />
+              <circle className="contact-radar__ring" cx="210" cy="90" r="102" fill="none" stroke="currentColor" strokeOpacity="0.14" />
+              <path d="M210 90 H356 M210 90 L94 38 M210 90 L104 144" fill="none" stroke="currentColor" strokeOpacity="0.36" />
+              <circle cx="210" cy="90" r="5" fill="currentColor" />
+              <circle cx="356" cy="90" r="4" fill="currentColor" />
+              <circle cx="94" cy="38" r="4" fill="currentColor" />
+              <circle cx="104" cy="144" r="4" fill="currentColor" />
+            </svg>
+            <div className="relative rounded-full border border-[#16f2b3]/30 bg-[#071323]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#16f2b3]">
+              Available for contact
+            </div>
+          </div>
           <div className="flex flex-col gap-5 lg:gap-9">
             <p className="text-sm md:text-xl flex items-center gap-3">
               <MdAlternateEmail
@@ -69,7 +85,7 @@ function ContactSection() {
           </div>
         </div>
       </div>
-    </div>
+    </SectionVisualFrame>
   );
 };
 
