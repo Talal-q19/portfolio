@@ -1,41 +1,120 @@
-// @flow strict
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const NAV_ITEMS = [
+  { label: "ABOUT", target: "about" },
+  { label: "EXPERIENCE", target: "experience" },
+  { label: "SKILLS", target: "skills" },
+  { label: "EDUCATION", target: "education" },
+  { label: "PROJECTS", target: "projects" },
+];
 
 function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 24);
+
+      const currentSection = NAV_ITEMS.find(({ target }) => {
+        const section = document.getElementById(target);
+
+        if (!section) {
+          return false;
+        }
+
+        const rect = section.getBoundingClientRect();
+        return rect.top <= 150 && rect.bottom > 150;
+      });
+
+      setActiveSection(currentSection?.target || "");
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (event, target) => {
+    event.preventDefault();
+
+    if (window.location.pathname !== "/") {
+      window.location.href = `/#${target}`;
+      return;
+    }
+
+    const section = document.getElementById(target);
+
+    if (!section) {
+      return;
+    }
+
+    const navOffset = 112;
+    const top = section.getBoundingClientRect().top + window.scrollY - navOffset;
+
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
+
+    window.history.pushState(null, "", `/#${target}`);
+    setActiveSection(target);
+  };
+
   return (
-    <nav className="bg-transparent">
-      <div className="flex items-center justify-between py-5">
+    <nav
+      className={`fixed inset-x-0 top-0 z-[100] border-b border-[#16f2b3]/10 bg-[#0d1224] transition-all duration-500 ${
+        isScrolled
+          ? "shadow-[0_10px_34px_rgba(13,18,36,0.82)]"
+          : "shadow-[0_10px_40px_rgba(3,7,18,0.35)]"
+      }`}
+    >
+      <div className="mx-auto flex max-w-[92rem] items-center justify-between px-6 py-4 sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem]">
         <div className="flex flex-shrink-0 items-center">
           <Link
             href="/"
-            className=" text-[#16f2b3] text-3xl font-bold">
+            className="text-2xl font-bold text-[#16f2b3] no-underline transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_14px_rgba(22,242,179,0.9)] sm:text-3xl"
+          >
             Talal Qasim
           </Link>
         </div>
 
-        <ul className="mt-4 flex h-screen max-h-0 w-full flex-col items-start text-sm opacity-0 md:mt-0 md:h-auto md:max-h-screen md:w-auto md:flex-row md:space-x-1 md:border-0 md:opacity-100" id="navbar-default">
-          <li>
-            <Link className="block px-4 py-2 no-underline outline-none hover:no-underline" href="/#about">
-              <div className="text-sm text-white transition-colors duration-300 hover:text-pink-600">ABOUT</div>
-            </Link>
-          </li>
-          <li>
-            <Link className="block px-4 py-2 no-underline outline-none hover:no-underline" href="/#experience"><div className="text-sm text-white transition-colors duration-300 hover:text-pink-600">EXPERIENCE</div></Link>
-          </li>
-          <li>
-            <Link className="block px-4 py-2 no-underline outline-none hover:no-underline" href="/#skills"><div className="text-sm text-white transition-colors duration-300 hover:text-pink-600">SKILLS</div></Link>
-          </li>
-          <li>
-            <Link className="block px-4 py-2 no-underline outline-none hover:no-underline" href="/#education"><div className="text-sm text-white transition-colors duration-300 hover:text-pink-600">EDUCATION</div></Link>
-          </li>
-          <li>
-            <Link className="block px-4 py-2 no-underline outline-none hover:no-underline" href="/#projects"><div className="text-sm text-white transition-colors duration-300 hover:text-pink-600">PROJECTS</div></Link>
-          </li>
+        <ul
+          className={`hidden items-center rounded-lg p-1 text-sm transition-all duration-500 md:flex ${
+            isScrolled
+              ? "border border-white/5 bg-transparent shadow-none"
+              : "border border-white/5 bg-[#080b18]/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+          }`}
+          id="navbar-default"
+        >
+          {NAV_ITEMS.map(({ label, target }) => {
+            const isActive = activeSection === target;
+
+            return (
+              <li key={target}>
+                <Link
+                  className={`block rounded-md px-4 py-2 text-xs font-semibold tracking-[0.08em] no-underline outline-none transition-all duration-300 hover:border-[#16f2b3]/50 hover:bg-[#16f2b3]/10 hover:text-[#16f2b3] hover:shadow-[0_0_22px_rgba(22,242,179,0.42)] focus-visible:border-[#16f2b3] focus-visible:bg-[#16f2b3]/10 focus-visible:text-[#16f2b3] ${
+                    isActive
+                      ? "border border-[#16f2b3]/45 bg-[#16f2b3]/10 text-[#16f2b3] shadow-[0_0_18px_rgba(22,242,179,0.35)]"
+                      : "border border-transparent text-white"
+                  }`}
+                  href={`/#${target}`}
+                  onClick={(event) => scrollToSection(event, target)}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

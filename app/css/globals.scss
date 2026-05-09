@@ -2,6 +2,7 @@
 
 :root {
   --foreground-rgb: rgb(211, 216, 232);
+  --nav-safe-top: 6.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +16,20 @@ body {
   background-color: #0d1224;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-safe-top);
+}
+
+#about,
+#experience,
+#skills,
+#education,
+#projects,
+#contact {
+  scroll-margin-top: var(--nav-safe-top);
+}
+
 #skills,
 #projects {
   overflow-anchor: none;
@@ -22,23 +37,27 @@ body {
 
 #sticky-card-1 {
   --index: 1;
+  --sticky-offset: 0rem;
 }
 
 #sticky-card-2 {
   --index: 2;
+  --sticky-offset: 4rem;
 }
 
 #sticky-card-3 {
   --index: 3;
+  --sticky-offset: 8rem;
 }
 
 #sticky-card-4 {
   --index: 4;
+  --sticky-offset: 12rem;
 }
 
 .sticky-card {
   // padding-top: calc(var(--index) * 2.5rem);
-  top: calc(var(--index) * 4rem);
+  top: calc(var(--nav-safe-top) + var(--sticky-offset));
 }
 
 .skill-slide-panel {
