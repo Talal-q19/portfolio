@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import * as React from 'react';
+import { FiMaximize2, FiMinus, FiX } from 'react-icons/fi';
 
 const projectImages = {
   attendance: ['/project-images/federal-dashboard.png'],
@@ -9,7 +10,9 @@ const projectImages = {
   dataVisualization: ['/project-images/data-visualization.png'],
 };
 
-function WindowControl({ label, color, icon, onClick, pressed }) {
+function WindowControl({ label, color, children, onClick, pressed }) {
+  const fallbackIcon = label.startsWith('Expand') ? <FiMaximize2 size={9} /> : null;
+
   return (
     <button
       type="button"
@@ -20,7 +23,7 @@ function WindowControl({ label, color, icon, onClick, pressed }) {
       className={`group flex h-3.5 w-3.5 items-center justify-center rounded-full text-[9px] font-bold leading-none text-[#08101f]/80 shadow-[0_0_12px_rgba(255,255,255,0.18)] transition-all duration-300 hover:scale-125 hover:brightness-125 focus:outline-none focus:ring-2 focus:ring-white/60 lg:h-4 lg:w-4 lg:text-[10px] ${color}`}
     >
       <span className="translate-y-[-0.5px] opacity-80 transition-opacity duration-200 group-hover:opacity-100">
-        {icon}
+        {children || fallbackIcon}
       </span>
     </button>
   );
@@ -59,24 +62,23 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
   }, [isExpanded, isMinimized, slides.length]);
 
   return (
-    <div className={`from-[#0d1224] border-[#1b2c68a0] relative w-full rounded-lg border bg-gradient-to-r to-[#0a0d37] transition-all duration-500 ease-out ${isExpanded ? 'shadow-[0_24px_80px_rgba(22,242,179,0.16)]' : ''}`}>
-      <div className="flex flex-row">
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-pink-500 to-violet-600"></div>
-        <div className="h-[1px] w-full bg-gradient-to-r from-violet-600 to-transparent"></div>
-      </div>
-
-      <div className="px-4 lg:px-8 py-3 lg:py-5 relative">
+    <div data-expanded={isExpanded ? 'true' : 'false'} className={`project-circuit-frame from-[#0d1224] border-[#1b2c68a0] relative w-full overflow-hidden rounded-lg border bg-gradient-to-r to-[#0a0d37] transition-all duration-500 ease-out ${isExpanded ? 'shadow-[0_24px_80px_rgba(22,242,179,0.16)]' : ''}`}>
+      <div className="px-4 lg:px-8 py-3 lg:py-5 relative z-10">
         <div className="absolute top-1/2 flex -translate-y-1/2 flex-row items-center space-x-1.5 lg:space-x-2">
-          <WindowControl label={`Close ${project.name} preview`} color="bg-red-400" icon="x" onClick={onClose} pressed={false} />
-          <WindowControl label={`Minimize ${project.name}`} color="bg-orange-400" icon="-" onClick={onMinimize} pressed={isMinimized} />
-          <WindowControl label={`Expand ${project.name}`} color="bg-green-200" icon="□" onClick={onExpand} pressed={isExpanded} />
+          <WindowControl label={`Close ${project.name} preview`} color="bg-red-400" onClick={onClose} pressed={false}>
+            <FiX size={10} />
+          </WindowControl>
+          <WindowControl label={`Minimize ${project.name}`} color="bg-orange-400" onClick={onMinimize} pressed={isMinimized}>
+            <FiMinus size={10} />
+          </WindowControl>
+          <WindowControl label={`Expand ${project.name}`} color="bg-green-200" onClick={onExpand} pressed={isExpanded} />
         </div>
         <p className="ml-14 truncate text-center text-base text-[#16f2b3] lg:ml-20 lg:text-xl">
           {project.name}
         </p>
       </div>
 
-      <div className={`grid border-t-[2px] border-indigo-900 transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>
+      <div className={`relative z-10 grid border-t-[2px] border-indigo-900 transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>
         <div className="overflow-hidden">
           <div className="px-4 py-4 lg:px-8 lg:py-8">
             <code className="font-mono text-xs md:text-sm lg:text-base">

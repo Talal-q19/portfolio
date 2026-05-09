@@ -8,6 +8,7 @@ import { FiChevronDown } from "react-icons/fi";
 import lottieFile from '../../../assets/lottie/study.json';
 import AnimationLottie from "../../helper/animation-lottie";
 import GlowCard from "../../helper/glow-card";
+import SectionVisualFrame from "../../helper/section-visual-frame";
 
 function Education() {
   const [expandedEducations, setExpandedEducations] = useState({});
@@ -20,7 +21,7 @@ function Education() {
   };
 
   return (
-    <div id="education" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
+    <SectionVisualFrame id="education" variant="timeline" accent="amber" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
       <Image
         src="/section.svg"
         alt="Hero"
@@ -53,11 +54,23 @@ function Education() {
           </div>
 
           <div>
-            <div className="flex flex-col gap-6">
+            <div className="relative flex flex-col gap-6 pl-4 sm:pl-6">
+              <div aria-hidden="true" className="timeline-node-line absolute bottom-4 left-1 top-4 w-px rounded-full sm:left-2" />
               {
                 educations.map(education => (
                   <GlowCard key={education.id} identifier={`education-${education.id}`}>
                     <div className="p-3 relative overflow-hidden text-white">
+                      <span aria-hidden="true" className="absolute left-1 top-9 z-20 h-3 w-3 rounded-full border border-amber-300/70 bg-[#0d1224] shadow-[0_0_16px_rgba(252,211,77,0.65)]" />
+                      <svg aria-hidden="true" className="absolute inset-0 z-0 h-full w-full pointer-events-none" viewBox="0 0 520 180" preserveAspectRatio="none">
+                        <path
+                          className="timeline-card-trace"
+                          data-active={expandedEducations[education.id] ? "true" : "false"}
+                          d="M18 42 H132 C192 42 205 126 276 126 H502"
+                          fill="none"
+                          stroke="rgba(252,211,77,0.5)"
+                          strokeWidth="1.2"
+                        />
+                      </svg>
                       <Image
                         src="/blur-23.svg"
                         alt="Hero"
@@ -167,7 +180,7 @@ function Education() {
           </div>
         </div>
       </div>
-    </div>
+    </SectionVisualFrame>
   );
 };
 

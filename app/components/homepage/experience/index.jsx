@@ -8,6 +8,7 @@ import { FiChevronDown } from "react-icons/fi";
 import experience from '../../../assets/lottie/code.json';
 import AnimationLottie from "../../helper/animation-lottie";
 import GlowCard from "../../helper/glow-card";
+import SectionVisualFrame from "../../helper/section-visual-frame";
 
 const companyLogos = {
   "EUNX Investment LLC": "/company-logos/eunx.jpg",
@@ -26,7 +27,7 @@ function Experience() {
   };
 
   return (
-    <div id="experience" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
+    <SectionVisualFrame id="experience" variant="timeline" accent="violet" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
       <Image
         src="/section.svg"
         alt="Hero"
@@ -54,11 +55,23 @@ function Experience() {
           </div>
 
           <div>
-            <div className="flex flex-col gap-6">
+            <div className="relative flex flex-col gap-6 pl-4 sm:pl-6">
+              <div aria-hidden="true" className="timeline-node-line absolute bottom-4 left-1 top-4 w-px rounded-full sm:left-2" />
               {
                 experiences.map(experience => (
                   <GlowCard key={experience.id} identifier={`experience-${experience.id}`}>
                     <div className="p-3 relative overflow-hidden">
+                      <span aria-hidden="true" className="absolute left-1 top-9 z-20 h-3 w-3 rounded-full border border-[#16f2b3]/70 bg-[#0d1224] shadow-[0_0_16px_rgba(22,242,179,0.75)]" />
+                      <svg aria-hidden="true" className="absolute inset-0 z-0 h-full w-full pointer-events-none" viewBox="0 0 520 180" preserveAspectRatio="none">
+                        <path
+                          className="timeline-card-trace"
+                          data-active={expandedExperiences[experience.id] ? "true" : "false"}
+                          d="M18 42 H138 C196 42 200 132 268 132 H502"
+                          fill="none"
+                          stroke="rgba(22,242,179,0.56)"
+                          strokeWidth="1.2"
+                        />
+                      </svg>
                       <Image
                         src="/blur-23.svg"
                         alt="Hero"
@@ -135,7 +148,7 @@ function Experience() {
           </div>
         </div>
       </div>
-    </div>
+    </SectionVisualFrame>
   );
 };
 
