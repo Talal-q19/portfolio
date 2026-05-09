@@ -3,7 +3,7 @@ export const projectsData = [
         id: 1,
         name: 'EUNX Investment LLC Fintech Platform',
         status: 'Under progress currently',
-        images: ['/company-logos/eunx.jfif'],
+        images: ['/company-logos/eunx.svg'],
         imageKind: 'logo',
         description: "Built secure backend services for a production-grade crypto trading and fintech ecosystem, covering authentication, market data, wallets, payments, KYC, admin operations, audit logging, and real-time communication.",
         details: [
@@ -14,7 +14,7 @@ export const projectsData = [
             "Built Admin Dashboard backend systems for user management, compliance workflows, wallet operations, audit visibility, permission controls, and operational tools."
         ],
         tools: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'Kafka', 'WebSockets', 'Docker', 'AWS EC2', 'Amazon RDS', 'JWT', 'OAuth 2.0'],
-        role: 'Backend Developer',
+        role: 'Backend Engineer',
         code: '',
         demo: '',
     },
@@ -55,7 +55,7 @@ export const projectsData = [
         ],
         tools: ['Node.js', 'Express.js', 'MySQL', 'Python', 'HTML', 'CSS', 'Javascript'],
         code: '',
-        role: 'Backend Developer',
+        role: 'Software Engineer',
         demo: '',
     },
     {
@@ -76,7 +76,7 @@ export const projectsData = [
         tools: ['Python', 'React', 'MySQL', 'Pandas', "Scikit-learn", "Flask"],
         code: '',
         demo: '',
-        role: 'Full Stack Developer',
+        role: 'Software Engineer',
     }
 ];
 
