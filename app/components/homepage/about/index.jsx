@@ -24,14 +24,14 @@ function AboutSection() {
           </p>
         </div>
         <div className="flex justify-center order-1 lg:order-2">
-          <div className="profile-command-frame relative">
-            <div className="relative overflow-hidden rounded-lg border border-[#16f2b3]/20 bg-[#071323] shadow-[0_24px_80px_rgba(22,242,179,0.12)]">
+          <div className="profile-command-frame group relative">
+            <div className="relative overflow-hidden rounded-lg border border-[#16f2b3]/20 bg-[#071323] shadow-[0_24px_80px_rgba(22,242,179,0.12)] transition-all duration-500 lg:group-hover:border-[#16f2b3]/60 lg:group-hover:shadow-[0_28px_90px_rgba(22,242,179,0.28)]">
               <Image
                 src={personalData.profile}
                 width={280}
                 height={280}
                 alt="Talal Qasim"
-                className="rounded-lg transition-all duration-1000 grayscale hover:grayscale-0 hover:scale-105 cursor-pointer"
+                className="rounded-lg transition-transform duration-700 lg:group-hover:scale-105"
               />
               <div aria-hidden="true" className="profile-scan-overlay absolute inset-0 pointer-events-none" />
               <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#071323]/90 to-transparent" />
