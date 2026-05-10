@@ -171,7 +171,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                   <div className="flex flex-col justify-between gap-5">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-pink-300/90">
-                        CV Project Notes
+                        Project Notes
                       </p>
                       <h3 className="mt-2 text-xl font-semibold leading-tight text-white md:text-2xl">
                         {project.name}
