@@ -77,6 +77,27 @@ export const projectsData = [
         code: '',
         demo: '',
         role: 'Software Engineer',
+    },
+    {
+        id: 5,
+        name: 'Portfolio',
+        images: [
+            '/project-images/portfolio-home.png',
+            '/project-images/portfolio-projects.png',
+            '/project-images/portfolio-contact.png'
+        ],
+        description: "Built a full-stack developer portfolio with a polished Next.js frontend, interactive project showcases, structured career sections, protected contact workflows, and server-side email delivery.",
+        details: [
+            "Developed the frontend with Next.js, React, Tailwind CSS, Sass, animated Lottie visuals, sticky project cards, responsive sections, and optimized image-driven project previews.",
+            "Built backend API routes for contact form handling, input validation, email template generation, SMTP delivery with Nodemailer, and environment-based configuration.",
+            "Integrated Google reCAPTCHA verification support and client-side validation to reduce invalid submissions before they reach the email workflow.",
+            "Organized profile, skills, education, experience, company logos, CV assets, and project data into reusable data modules for easier updates.",
+            "Configured the app for local development and deployment with Next.js metadata, Docker files, environment variables, and static assets served through the public folder."
+        ],
+        tools: ['Next.js', 'React', 'JavaScript', 'Tailwind CSS', 'Sass', 'Node.js', 'Nodemailer', 'Axios', 'reCAPTCHA', 'Docker'],
+        code: '',
+        demo: '',
+        role: 'Full Stack Developer',
     }
 ];
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { IoClose, IoMenu } from "react-icons/io5";
 
 const NAV_ITEMS = [
   { label: "ABOUT", target: "about" },
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,6 +52,7 @@ function Navbar() {
 
   const scrollToSection = (event, target) => {
     event.preventDefault();
+    setIsMenuOpen(false);
 
     if (window.location.pathname !== "/") {
       window.location.href = `/#${target}`;
@@ -86,14 +89,25 @@ function Navbar() {
         <div className="flex flex-shrink-0 items-center">
           <Link
             href="/"
-            className="text-2xl font-bold text-[#16f2b3] no-underline transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_14px_rgba(22,242,179,0.9)] sm:text-3xl"
+            className="text-xl font-bold text-[#16f2b3] no-underline transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_14px_rgba(22,242,179,0.9)] sm:text-3xl"
           >
             Talal Qasim
           </Link>
         </div>
 
+        <button
+          type="button"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[#16f2b3]/25 bg-[#080b18]/70 text-[#16f2b3] transition-all duration-300 hover:border-[#16f2b3]/60 hover:bg-[#16f2b3]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16f2b3] lg:hidden"
+          aria-controls="navbar-mobile"
+          aria-expanded={isMenuOpen}
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          onClick={() => setIsMenuOpen((current) => !current)}
+        >
+          {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
+        </button>
+
         <ul
-          className={`hidden items-center rounded-lg p-1 text-sm transition-all duration-500 md:flex ${
+          className={`hidden items-center rounded-lg p-1 text-sm transition-all duration-500 lg:flex ${
             isScrolled
               ? "border border-white/5 bg-transparent shadow-none"
               : "border border-white/5 bg-[#080b18]/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
@@ -110,6 +124,37 @@ function Navbar() {
                     isActive
                       ? "border border-[#16f2b3]/45 bg-[#16f2b3]/10 text-[#16f2b3] shadow-[0_0_18px_rgba(22,242,179,0.35)]"
                       : "border border-transparent text-white"
+                  }`}
+                  href={`/#${target}`}
+                  onClick={(event) => scrollToSection(event, target)}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div
+        className={`mx-6 overflow-hidden rounded-lg border border-[#16f2b3]/15 bg-[#080b18]/95 shadow-[0_18px_40px_rgba(3,7,18,0.62)] transition-all duration-300 sm:mx-12 lg:hidden ${
+          isMenuOpen
+            ? "mb-4 max-h-96 opacity-100"
+            : "max-h-0 border-transparent opacity-0"
+        }`}
+        id="navbar-mobile"
+      >
+        <ul className="grid grid-cols-2 gap-2 p-3 text-sm">
+          {NAV_ITEMS.map(({ label, target }) => {
+            const isActive = activeSection === target;
+
+            return (
+              <li key={target}>
+                <Link
+                  className={`block rounded-md border px-3 py-3 text-center text-xs font-semibold tracking-[0.08em] no-underline outline-none transition-all duration-300 focus-visible:border-[#16f2b3] focus-visible:bg-[#16f2b3]/10 focus-visible:text-[#16f2b3] ${
+                    isActive
+                      ? "border-[#16f2b3]/45 bg-[#16f2b3]/10 text-[#16f2b3] shadow-[0_0_18px_rgba(22,242,179,0.28)]"
+                      : "border-white/5 text-white"
                   }`}
                   href={`/#${target}`}
                   onClick={(event) => scrollToSection(event, target)}
