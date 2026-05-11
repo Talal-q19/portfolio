@@ -30,6 +30,8 @@ export default function Preloader() {
           clearInterval(interval);
           // Wait briefly at 100% before starting the fade-out
           setTimeout(() => setIsFading(true), 300);
+          // Scroll to top so mobile opens at the hero, not mid-page
+          setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 300);
           // Completely unmount after fade-out completes
           setTimeout(() => setIsVisible(false), 1100);
           return 100;
