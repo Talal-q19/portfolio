@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { projectsData } from '@/utils/data/projects-data';
 import SectionVisualFrame from '../../helper/section-visual-frame';
 import ProjectCard from './project-card';
@@ -45,12 +46,16 @@ const Projects = () => {
       </div>
 
       <div className="pt-24">
-        <div className={`flex flex-col transition-[gap] duration-500 ease-out ${hasActiveProject ? 'gap-10' : 'gap-6'}`}>
+        <div className={`flex flex-col transition-[gap] duration-500 ease-out ${hasActiveProject ? 'gap-6' : 'gap-4'}`}>
           {projectsData.map((project, index) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
               id={`sticky-card-${index + 1}`}
               key={index}
-              className={`w-full mx-auto transition-[max-width,transform] duration-500 ease-out ${hasActiveProject ? 'relative' : 'sticky-card sticky'} ${expandedProjectId === project.id ? 'max-w-4xl scale-[1.005]' : 'max-w-2xl scale-100'}`}
+              className={`w-full mx-auto transition-[max-width,transform] duration-500 ease-out ${hasActiveProject ? 'relative' : 'sticky-card sticky'} ${expandedProjectId === project.id ? 'max-w-6xl scale-[1.005]' : 'max-w-5xl scale-100'}`}
             >
               <div className="box-border flex items-center justify-center rounded shadow-[0_0_30px_0_rgba(0,0,0,0.3)] transition-all duration-[0.5s]">
                 <ProjectCard
@@ -62,7 +67,7 @@ const Projects = () => {
                   onMinimize={() => handleMinimize(project.id)}
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

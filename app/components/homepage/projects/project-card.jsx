@@ -45,6 +45,33 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
   const previewImage = slides[currentSlide];
   const details = project.details?.length ? project.details : [project.description];
 
+  const touchStartX = React.useRef(null);
+  const touchEndX = React.useRef(null);
+  const minSwipeDistance = 40;
+
+  const onTouchStart = (e) => {
+    touchEndX.current = null;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      setCurrentSlide((slide) => (slide + 1) % slides.length);
+    }
+    if (isRightSwipe) {
+      setCurrentSlide((slide) => (slide === 0 ? slides.length - 1 : slide - 1));
+    }
+  };
+
   React.useEffect(() => {
     setCurrentSlide(0);
   }, [isExpanded, project.id]);
@@ -63,7 +90,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
   return (
     <div data-expanded={isExpanded ? 'true' : 'false'} className={`project-circuit-frame from-[#0d1224] border-[#1b2c68a0] relative w-full overflow-hidden rounded-lg border bg-gradient-to-r to-[#0a0d37] transition-all duration-500 ease-out ${isExpanded ? 'shadow-[0_24px_80px_rgba(22,242,179,0.16)]' : ''}`}>
-      <div className="px-4 lg:px-8 py-3 lg:py-5 relative z-10">
+      <div className="px-4 lg:px-6 py-2 lg:py-3 relative z-10">
         <div className="absolute top-1/2 flex -translate-y-1/2 flex-row items-center space-x-1.5 lg:space-x-2">
           <WindowControl label={`Close ${project.name} preview`} color="bg-red-400" onClick={onClose} pressed={false}>
             <FiX size={10} />
@@ -80,8 +107,8 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
       <div className={`relative z-10 grid border-t-[2px] border-indigo-900 transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>
         <div className="overflow-hidden">
-          <div className="px-4 py-4 lg:px-8 lg:py-8">
-            <code className="font-mono text-xs md:text-sm lg:text-base">
+          <div className="px-4 py-2 lg:px-6 lg:py-4">
+            <code className="font-mono text-[11px] md:text-xs lg:text-sm">
               <div className="blink">
                 <span className="mr-2 text-pink-500">const</span>
                 <span className="mr-2 text-white">project</span>
@@ -133,9 +160,14 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
           <div className={`grid transition-[grid-template-rows,opacity,transform] duration-500 ease-out ${isExpanded ? 'grid-rows-[1fr] translate-y-0 opacity-100' : 'grid-rows-[0fr] -translate-y-3 opacity-0'}`}>
             <div className="overflow-hidden">
-              <div className="mx-3 mb-4 overflow-hidden rounded-lg border border-cyan-300/20 bg-[#080b22]/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:mx-6 lg:mb-6">
-                <div className="grid gap-5 p-4 md:grid-cols-[minmax(0,1.18fr)_minmax(0,0.82fr)] lg:p-6">
-                  <div className="project-media-reveal relative min-h-[220px] overflow-hidden rounded-md border border-white/10 bg-[#06091d] md:min-h-[320px]">
+              <div className="mx-3 mb-3 overflow-hidden rounded-lg border border-cyan-300/20 bg-[#080b22]/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:mx-4 lg:mb-4">
+                <div className="grid grid-cols-1 gap-4 p-3 md:grid-cols-2 lg:p-5 lg:gap-6">
+                  <div 
+                    className="project-media-reveal relative aspect-video w-full overflow-hidden rounded-md border border-white/10 bg-[#06091d] flex items-center justify-center cursor-ew-resize sm:cursor-default"
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                  >
                     <div className="project-window-scan absolute inset-0 z-10 pointer-events-none"></div>
                     {previewImage && (
                       <Image
@@ -144,7 +176,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                         alt={`${project.name} preview ${currentSlide + 1}`}
                         fill
                         sizes="(max-width: 768px) 100vw, 58vw"
-                        className={`project-slide-image ${project.imageKind === 'logo' ? 'project-logo-float object-contain p-10 sm:p-14' : 'object-contain object-center p-1'} transition-transform duration-700 ease-out ${isExpanded ? 'scale-100' : 'scale-95'}`}
+                        className={`project-slide-image w-full h-full ${project.imageKind === 'logo' ? 'project-logo-float object-contain p-10 sm:p-14' : 'object-cover object-center'} transition-transform duration-700 ease-out ${isExpanded ? 'scale-100' : 'scale-95'}`}
                         priority={project.id === 1}
                       />
                     )}
@@ -168,9 +200,9 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                     )}
                   </div>
 
-                  <div className="flex flex-col justify-between gap-5">
+                  <div className="flex flex-col justify-between gap-3 lg:gap-4 md:aspect-video overflow-y-auto pr-2 custom-scrollbar">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-pink-300/90">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-pink-300/90">
                         Project Notes
                       </p>
                       <h3 className="mt-2 text-xl font-semibold leading-tight text-white md:text-2xl">
