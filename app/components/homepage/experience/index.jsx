@@ -33,7 +33,7 @@ function Experience() {
         alt="Hero"
         width={1572}
         height={795}
-        className="absolute top-0 -z-10"
+        className="absolute left-1/2 top-0 -z-10 w-full max-w-[1572px] -translate-x-1/2"
       />
 
       <div className="flex justify-center my-5 lg:py-8">

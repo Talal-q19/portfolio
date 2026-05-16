@@ -3,12 +3,16 @@
 import Image from 'next/image';
 import * as React from 'react';
 import { FiMaximize2, FiMinus, FiX } from 'react-icons/fi';
+import { skillsImage } from '@/utils/skill-image';
 
 const projectImages = {
   attendance: ['/project-images/federal-dashboard.png'],
   streaming: ['/project-images/stream-hub.png'],
   dataVisualization: ['/project-images/data-visualization.png'],
 };
+
+const genericToolBadge =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2316f2b3'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='none' stroke='url(%23g)' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='12' fill='url(%23g)' fill-opacity='.88'/%3E%3Cpath d='M20 32h8M36 32h8M32 20v8M32 36v8' stroke='%23fff' stroke-opacity='.85' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E";
 
 function WindowControl({ label, color, children, onClick, pressed }) {
   const fallbackIcon = label.startsWith('Expand') ? <FiMaximize2 size={9} /> : null;
@@ -223,11 +227,41 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                     </ul>
 
                     <div className="flex flex-wrap gap-2">
-                      {project.tools.slice(0, 8).map((tool) => (
-                        <span key={tool} className="rounded-full border border-violet-300/20 bg-violet-500/10 px-3 py-1 text-xs text-violet-100">
-                          {tool}
-                        </span>
-                      ))}
+                      {project.tools.slice(0, 8).map((tool) => {
+                        const toolIcon = skillsImage(tool);
+
+                        return (
+                          <span
+                            key={tool}
+                            title={tool}
+                            aria-label={tool}
+                            className="group inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-500/10 px-2.5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-transform duration-300 hover:scale-105 hover:border-[#16f2b3]/35 hover:bg-[#16f2b3]/10"
+                          >
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-[#0d1224]/80">
+                              {toolIcon ? (
+                                <Image
+                                  src={toolIcon}
+                                  alt={tool}
+                                  width={20}
+                                  height={20}
+                                  className="h-4.5 w-4.5 object-contain"
+                                />
+                              ) : (
+                                <Image
+                                  src={genericToolBadge}
+                                  alt={tool}
+                                  width={20}
+                                  height={20}
+                                  className="h-4.5 w-4.5 object-contain"
+                                />
+                              )}
+                            </span>
+                            <span className="max-w-[7.5rem] truncate text-[11px] font-medium leading-none text-violet-50">
+                              {tool}
+                            </span>
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

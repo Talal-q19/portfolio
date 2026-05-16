@@ -27,7 +27,7 @@ function Education() {
         alt="Hero"
         width={1572}
         height={795}
-        className="absolute top-0 -z-10"
+        className="absolute left-1/2 top-0 -z-10 w-full max-w-[1572px] -translate-x-1/2"
       />
       <div className="flex justify-center -translate-y-[1px]">
         <div className="w-3/4">

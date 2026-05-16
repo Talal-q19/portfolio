@@ -47,7 +47,7 @@ export const educations = [
     title: "High School",
     credential: "Certificate",
     image: "/education-images/high-school.png",
-    duration: "Completed",
+    duration: " Completed 2020",
     institution: "High School",
     location: "Abu Dhabi, UAE",
     details: [
