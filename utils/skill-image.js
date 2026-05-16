@@ -91,6 +91,24 @@ import springboot from '../app/assets/svg/skills/springboot.svg'
 export const skillsImage = (skill) => {
   const skillID = skill.toLowerCase();
   switch (skillID) {
+    case 'node.js':
+    case 'node js':
+    case 'node':
+    case 'nodejs':
+      return javascript;
+    case 'express.js':
+    case 'express js':
+    case 'express':
+    case 'expressjs':
+      return javascript;
+    case 'flask':
+    case 'axios':
+    case 'nodemailer':
+    case 'jwt':
+    case 'oauth 2.0':
+    case 'recaptcha':
+    case 'sass':
+      return python;
     case 'gcp':
       return gcp;
     case 'html':
@@ -110,14 +128,21 @@ export const skillsImage = (skill) => {
     case 'angular':
       return angular;
     case 'javascript':
+    case 'javascript ':
+      return javascript;
+    case 'js':
       return javascript;
     case 'kafka':
       return kafka;
     case 'rabbitmq':
       return rabbitmq;
     case 'next js':
+    case 'next.js':
+    case 'nextjs':
       return nextJS;
     case 'nuxt js':
+    case 'nuxt.js':
+    case 'nuxtjs':
       return nuxtJS;
     case 'react':
       return react;
@@ -142,6 +167,7 @@ export const skillsImage = (skill) => {
     case 'mysql':
       return mysql;
     case 'postgresql':
+    case 'postgres':
       return postgresql;
     case 'tailwind':
       return tailwind;
@@ -252,6 +278,7 @@ export const skillsImage = (skill) => {
     case 'pandas':
       return pandas;
     case 'sklearn':
+    case 'scikit-learn':
       return scikitlearn;
     case '.net':
       return dotnet;
@@ -266,6 +293,7 @@ export const skillsImage = (skill) => {
     case 'fastapi':
       return fastapi;
     case 'spring boot':
+    case 'springboot':
       return springboot;
     default:
       break;
