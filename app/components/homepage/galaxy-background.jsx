@@ -10,7 +10,8 @@ const Starfield = (props) => {
   
   // Generate random points in a sphere for the galaxy
   const sphere = useMemo(() => {
-    return random.inSphere(new Float32Array(5000), { radius: 1.5 });
+    // 5000 points * 3 values per point (x, y, z) = 15000
+    return random.inSphere(new Float32Array(15000), { radius: 1.5 });
   }, []);
 
   useFrame((state, delta) => {
@@ -35,14 +36,15 @@ const Starfield = (props) => {
   );
 };
 
-export default function GalaxyBackground() {
+export default function GalaxyBackground({ onLoaded }) {
   return (
-    <div className="absolute inset-0 z-0 h-full w-full bg-space-950">
-      <Canvas camera={{ position: [0, 0, 1] }}>
+    <div 
+      className="absolute -top-[var(--nav-safe-top)] bottom-0 left-1/2 -translate-x-1/2 z-0 w-[100vw] bg-[#050505]"
+      style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' }}
+    >
+      <Canvas camera={{ position: [0, 0, 1] }} onCreated={() => onLoaded && onLoaded()}>
         <Starfield />
       </Canvas>
-      {/* Gradient mask to fade into the solid background below */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-space-950 to-transparent z-10 pointer-events-none" />
     </div>
   );
 }

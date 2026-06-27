@@ -42,7 +42,7 @@ function Skills() {
   }, [visibleSkills]);
 
   return (
-    <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#25213b]">
+    <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#262626]">
       <div className={`absolute left-1/2 top-10 h-28 w-2/3 -translate-x-1/2 bg-gradient-to-r ${activeAccent.glow} blur-3xl opacity-70`} />
 
       <div className="flex justify-center -translate-y-[1px]">
@@ -68,19 +68,19 @@ function Skills() {
               {activeCategory.eyebrow}
             </span>
             <div className="mt-3 flex items-baseline gap-3">
-              <p className="text-sm font-semibold text-[#8f98c2]">
+              <p className="text-sm font-semibold text-[#a8b4c3]">
                 0{activeSlide + 1}/0{skillCategories.length}
               </p>
               <h3 className={`text-2xl font-semibold sm:text-3xl ${activeAccent.title}`}>
                 {activeCategory.title}
               </h3>
             </div>
-            <p className="mt-2 text-sm leading-6 text-[#d3d8e8] sm:text-base">
+            <p className="mt-2 text-sm leading-6 text-[#a8b4c3] sm:text-base">
               {activeCategory.description}
             </p>
           </div>
 
-          <div className="grid h-fit grid-cols-3 gap-2 rounded-lg border border-[#252a46] bg-[#0b1022] p-1">
+          <div className="grid h-fit grid-cols-3 gap-2 rounded-lg border border-[#262626] bg-[#07101d] p-1">
             {skillCategories.map((category, index) => {
               const isActive = index === activeSlide;
 
@@ -89,11 +89,10 @@ function Skills() {
                   key={category.title}
                   type="button"
                   onClick={() => setActiveSlide(index)}
-                  className={`rounded-md px-3 py-2 text-xs font-semibold uppercase transition-all duration-300 sm:text-sm ${
-                    isActive
-                      ? `${accentStyles[category.accent].badge} shadow-lg shadow-black/20`
-                      : "text-[#9ba3c7] hover:bg-[#151a32] hover:text-white"
-                  }`}
+                  className={`rounded-md px-3 py-2 text-xs font-semibold uppercase transition-all duration-300 sm:text-sm ${isActive
+                    ? `${accentStyles[category.accent].badge} shadow-lg shadow-black/20`
+                    : "text-[#a8b4c3] hover:bg-[#151515] hover:text-white"
+                    }`}
                   aria-pressed={isActive}
                 >
                   {category.title}

@@ -27,7 +27,7 @@ function Experience() {
   };
 
   return (
-    <SectionVisualFrame id="experience" variant="timeline" accent="violet" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
+    <SectionVisualFrame id="experience" variant="timeline" accent="cyan" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
       <Image
         src="/section.svg"
         alt="Hero"

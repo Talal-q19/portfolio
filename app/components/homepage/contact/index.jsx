@@ -11,7 +11,7 @@ import ContactForm from './contact-form';
 
 function ContactSection() {
   return (
-    <SectionVisualFrame id="contact" variant="contact" accent="emerald" className="my-12 lg:my-16 relative mt-24 text-white">
+    <SectionVisualFrame id="contact" variant="contact" accent="emerald" className="my-12 lg:my-16 relative mt-24 text-white border-t border-[#262626]">
       <div className="hidden lg:flex flex-col items-center absolute top-24 -right-8">
         <span className="w-fit rotate-90 rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
           CONTACT
