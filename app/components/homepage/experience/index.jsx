@@ -27,7 +27,7 @@ function Experience() {
   };
 
   return (
-    <SectionVisualFrame id="experience" variant="timeline" accent="violet" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
+    <SectionVisualFrame id="experience" variant="timeline" accent="violet" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
       <Image
         src="/section.svg"
         alt="Hero"
@@ -38,11 +38,11 @@ function Experience() {
 
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
-          <span className="bg-[#1a1443] w-fit text-white p-2 px-5 text-xl rounded-md">
+          <span className="h-px w-24 bg-[#262626]"></span>
+          <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
             Experiences
           </span>
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
+          <span className="h-px w-24 bg-[#262626]"></span>
         </div>
       </div>
 
@@ -61,14 +61,14 @@ function Experience() {
                 experiences.map(experience => (
                   <GlowCard key={experience.id} identifier={`experience-${experience.id}`}>
                     <div className="p-3 relative overflow-hidden">
-                      <span aria-hidden="true" className="absolute left-1 top-9 z-20 h-3 w-3 rounded-full border border-[#16f2b3]/70 bg-[#0d1224] shadow-[0_0_16px_rgba(22,242,179,0.75)]" />
+                      <span aria-hidden="true" className="absolute left-1 top-9 z-20 h-3 w-3 rounded-full border border-[#D4AF37]/70 bg-[#07101d] shadow-[0_0_16px_rgba(100,216,255,0.65)]" />
                       <svg aria-hidden="true" className="absolute inset-0 z-0 h-full w-full pointer-events-none" viewBox="0 0 520 180" preserveAspectRatio="none">
                         <path
                           className="timeline-card-trace"
                           data-active={expandedExperiences[experience.id] ? "true" : "false"}
                           d="M18 42 H138 C196 42 200 132 268 132 H502"
                           fill="none"
-                          stroke="rgba(22,242,179,0.56)"
+                          stroke="rgba(100,216,255,0.5)"
                           strokeWidth="1.2"
                         />
                       </svg>
@@ -80,12 +80,12 @@ function Experience() {
                         className="absolute bottom-0 opacity-80 pointer-events-none"
                       />
                       <div className="relative z-10 flex justify-center">
-                        <p className="text-xs sm:text-sm text-[#16f2b3]">
+                        <p className="text-xs sm:text-sm text-[#D4AF37]">
                           {experience.duration}
                         </p>
                       </div>
                       <div className="relative z-10 flex items-center gap-x-8 px-3 py-5">
-                        <div className="text-violet-500 transition-all duration-300 hover:scale-125">
+                        <div className="text-[#F59E0B] transition-all duration-300 hover:scale-110">
                           <BsPersonWorkspace size={36} aria-hidden="true" />
                         </div>
                         <div className="flex min-w-0 flex-1 items-center">
@@ -110,7 +110,7 @@ function Experience() {
                           aria-expanded={!!expandedExperiences[experience.id]}
                           aria-controls={`experience-details-${experience.id}`}
                           onClick={() => toggleExperience(experience.id)}
-                          className="group flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#2a2e5a] bg-[#0d1224]/80 text-[#16f2b3] outline-none transition-all duration-300 hover:border-[#16f2b3] hover:bg-[#16f2b3]/10 focus-visible:border-[#16f2b3]"
+                          className="group flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#262626] bg-[#07101d]/80 text-[#D4AF37] outline-none transition-all duration-300 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 focus-visible:border-[#D4AF37]"
                         >
                           <span className="sr-only">
                             {expandedExperiences[experience.id] ? "Hide details" : "Show details"}
@@ -128,11 +128,11 @@ function Experience() {
                         className={`relative z-10 grid transition-[grid-template-rows,opacity,transform] duration-500 ease-out ${expandedExperiences[experience.id] ? "grid-rows-[1fr] opacity-100 translate-y-0" : "grid-rows-[0fr] opacity-0 -translate-y-2"}`}
                       >
                         <div className="overflow-hidden">
-                          <div className="mx-3 mb-3 border-t border-[#2a2e5a] pt-4">
+                          <div className="mx-3 mb-3 border-t border-[#262626] pt-4">
                             <ul className="space-y-3 text-sm leading-6 text-gray-300 sm:text-[15px]">
                               {experience.highlights.map((highlight) => (
                                 <li key={highlight} className="flex gap-3">
-                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#16f2b3] shadow-[0_0_12px_rgba(22,242,179,0.8)]" />
+                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(100,216,255,0.7)]" />
                                   <span>{highlight}</span>
                                 </li>
                               ))}

@@ -53,15 +53,15 @@ function Skills() {
 
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
-          <span className="bg-[#1a1443] w-fit text-white p-2 px-5 text-xl rounded-md">
+          <span className="h-px w-24 bg-[#262626]"></span>
+          <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
             Skills
           </span>
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
+          <span className="h-px w-24 bg-[#262626]"></span>
         </div>
       </div>
 
-      <div className="my-10 overflow-hidden rounded-lg border border-[#252a46] bg-[#0f1428]/80 p-4 shadow-2xl shadow-black/20 sm:p-6 lg:my-12">
+      <div className="ufo-panel my-10 p-4 sm:p-6 lg:my-12">
         <div className="mb-6 flex min-h-[174px] flex-col gap-5 sm:min-h-[150px] lg:min-h-[116px] lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <span className={`inline-flex rounded-md border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${activeAccent.badge}`}>
@@ -118,7 +118,7 @@ function Skills() {
                   className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 m-2 sm:m-3 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
                   key={`${skill}-${id}`}
                 >
-                  <div className="skill-card-inner h-full w-full rounded-lg border border-[#1f223c] bg-[#11152c] shadow-none shadow-gray-50 group-hover:border-white/40 transition-all duration-500">
+                  <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
                     <div className="flex -translate-y-[1px] justify-center">
                       <div className="w-3/4">
                         <div className={`h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent`} />

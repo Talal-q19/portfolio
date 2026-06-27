@@ -1,0 +1,11 @@
+.galaxy-container {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.galaxy-container canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}

@@ -10,14 +10,15 @@ import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
+import { useReducedMotion } from "../../../hooks/use-reduced-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 
 const codeLines = [
   [
-    { text: "const ", className: "text-pink-500" },
-    { text: "coder ", className: "text-white" },
-    { text: "= ", className: "text-pink-500" },
-    { text: "{", className: "text-gray-400" },
+    { text: "const ", className: "text-[#D4AF37]" },
+    { text: "coder ", className: "text-[#f4f1e8]" },
+    { text: "= ", className: "text-[#D4AF37]" },
+    { text: "{", className: "text-[#718297]" },
   ],
   [
     { text: "  name: ", className: "text-white" },
@@ -94,6 +95,7 @@ const codeLines = [
 
 function HeroSection() {
   const [typedCharacters, setTypedCharacters] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
 
   const totalCharacters = useMemo(() => {
     return codeLines.reduce((total, line) => (
@@ -157,59 +159,68 @@ function HeroSection() {
   };
 
   return (
-    <SectionVisualFrame variant="hero" accent="emerald" className="relative flex flex-col items-center justify-between py-4 lg:py-12">
-      <Image
-        src="/hero.svg"
-        alt="Hero"
-        width={1572}
-        height={795}
-        className="absolute left-1/2 -top-[98px] -z-10 w-full max-w-[1572px] -translate-x-1/2"
-      />
-
-      <div className="grid grid-cols-1 items-start lg:grid-cols-2 lg:gap-12 gap-y-8">
+    <SectionVisualFrame variant="hero" accent="emerald" className="hero-space relative flex min-h-[calc(100svh-var(--nav-safe-top))] flex-col items-center justify-center py-8 lg:py-12">
+      <div className="relative z-10 grid grid-cols-1 items-start gap-y-8 lg:grid-cols-2 lg:gap-12">
         <div className="order-2 lg:order-1 flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
-          <h1 className="text-3xl font-bold leading-10 text-white md:font-extrabold lg:text-[2.6rem] lg:leading-[3.5rem]">
-            Hello, <br />
-            This is {' '}
-            <span className=" text-pink-500">{personalData.name}</span>
-            {` , I'm a Professional `}
-            <span className=" text-[#16f2b3]">{personalData.designation}</span>
-            .
-          </h1>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+            <div className="ufo-panel group relative aspect-square w-32 sm:w-40 shrink-0 rounded-full border-2 p-1 border-[#D4AF37]">
+              <div className="relative h-full overflow-hidden rounded-full border border-[#262626] bg-[#07101d] shadow-[0_24px_80px_rgba(0,0,0,0.36)] transition-all duration-500 hover:border-[#D4AF37]/55">
+                <Image
+                  src={personalData.profile}
+                  fill
+                  sizes="(min-width: 640px) 160px, 128px"
+                  alt="Talal Qasim"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
+            <div>
+              <p className="mb-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.3em] text-[#D4AF37] sm:text-xs">
+                Backend engineering · Dubai
+              </p>
+              <h1 className="max-w-[14ch] text-4xl font-semibold leading-[1.08] text-[#f4f1e8] md:text-5xl lg:text-[3.6rem]">
+                Systems built for the <span className="text-[#F59E0B]">real world.</span>
+              </h1>
+            </div>
+          </div>
+          <p className="mt-2 max-w-xl text-base leading-7 text-[#a8b4c3] md:text-lg">
+            {personalData.description}
+          </p>
 
           <div className="my-12 flex items-center gap-5">
             <Link
               href={personalData.github}
               target='_blank'
-              className="transition-all text-pink-500 hover:scale-125 duration-300"
+              aria-label="GitHub profile"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#262626] bg-[#07101d]/80 text-[#a8b4c3] transition-all duration-300 hover:border-[#D4AF37]/60 hover:text-[#D4AF37]"
             >
               <BsGithub size={30} />
             </Link>
             <Link
               href={personalData.linkedIn}
               target='_blank'
-              className="transition-all text-pink-500 hover:scale-125 duration-300"
+              aria-label="LinkedIn profile"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#262626] bg-[#07101d]/80 text-[#a8b4c3] transition-all duration-300 hover:border-[#D4AF37]/60 hover:text-[#D4AF37]"
             >
               <BsLinkedin size={30} />
             </Link>
             <Link
               href={personalData.instagram}
               target='_blank'
-              className="transition-all text-pink-500 hover:scale-125 duration-300"
+              aria-label="Instagram profile"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#262626] bg-[#07101d]/80 text-[#a8b4c3] transition-all duration-300 hover:border-[#D4AF37]/60 hover:text-[#D4AF37]"
             >
               <FaInstagram size={30} />
             </Link>
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="#contact" className="bg-gradient-to-r to-pink-500 from-violet-600 p-[1px] rounded-full transition-all duration-300 hover:from-pink-500 hover:to-violet-600">
-              <button className="px-3 text-xs md:px-8 py-3 md:py-4 bg-[#0d1224] rounded-full border-none text-center md:text-sm font-medium uppercase tracking-wider text-[#ffff] no-underline transition-all duration-200 ease-out  md:font-semibold flex items-center gap-1 hover:gap-3">
-                <span>Contact me</span>
-                <RiContactsFill size={16} />
-              </button>
+            <Link href="#contact" className="flex min-h-11 items-center gap-2 rounded-full border border-[#D4AF37]/55 bg-[#07101d]/85 px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.13em] text-[#f4f1e8] transition-all duration-200 hover:bg-[#D4AF37]/10 md:px-7">
+              <span>Contact me</span>
+              <RiContactsFill size={16} />
             </Link>
 
-            <Link className="flex items-center gap-1 hover:gap-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 px-3 md:px-8 py-3 md:py-4 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-white no-underline transition-all duration-200 ease-out hover:text-white hover:no-underline md:font-semibold" role="button" target="_blank" href={personalData.resume}
+            <Link className="flex min-h-11 items-center gap-2 rounded-full bg-[#F59E0B] px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.13em] text-[#07101d] transition-all duration-200 hover:bg-[#ffe1a3] md:px-7" role="button" target="_blank" href={personalData.resume}
             >
               <span>Get Resume</span>
               <MdDownload size={16} />
@@ -217,15 +228,14 @@ function HeroSection() {
           </div>
 
         </div>
-        <div className="ide-terminal-pulse order-1 lg:order-2 from-[#0d1224] border-[#1b2c68a0] relative overflow-hidden rounded-lg border bg-gradient-to-r to-[#0a0d37]">
-          <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,transparent,rgba(22,242,179,0.08),transparent)] opacity-60" />
-          <div aria-hidden="true" className="absolute right-4 top-4 hidden items-center gap-2 rounded-full border border-[#16f2b3]/25 bg-[#071323]/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#16f2b3] sm:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#16f2b3] shadow-[0_0_12px_rgba(22,242,179,0.95)]" />
-            Runtime online
+        <div className="ufo-panel order-1 lg:order-2 relative overflow-hidden backdrop-blur-sm">
+          <div aria-hidden="true" className="absolute right-4 top-4 hidden items-center gap-2 rounded-full border border-[#D4AF37]/25 bg-[#07101d]/80 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#D4AF37] sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(100,216,255,0.85)]" />
+            Signal online
           </div>
           <div className="flex flex-row">
-            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-pink-500 to-violet-600"></div>
-            <div className="h-[1px] w-full bg-gradient-to-r from-violet-600 to-transparent"></div>
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-[#F59E0B]"></div>
+            <div className="h-px w-full bg-gradient-to-r from-[#F59E0B] to-transparent"></div>
           </div>
           <div className="px-4 lg:px-8 py-5">
             <div className="flex flex-row space-x-2">
@@ -234,7 +244,7 @@ function HeroSection() {
               <div className="h-3 w-3 rounded-full bg-green-200"></div>
             </div>
           </div>
-          <div className="overflow-hidden border-t-[2px] border-indigo-900 px-4 lg:px-8 py-4 lg:py-8">
+          <div className="overflow-hidden border-t border-[#262626] px-4 py-4 lg:px-8 lg:py-8">
             <code className="font-mono text-xs md:text-sm lg:text-base" aria-label="Animated code introduction">
               {codeLines.map(renderTypedLine)}
             </code>

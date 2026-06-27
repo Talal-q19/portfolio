@@ -79,7 +79,7 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-[100] border-b border-[#16f2b3]/10 bg-[#0d1224] transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-[100] border-b border-[#64d8ff]/10 bg-[#03060d]/90 backdrop-blur-xl transition-all duration-500 ${
         isScrolled
           ? "shadow-[0_10px_34px_rgba(13,18,36,0.82)]"
           : "shadow-[0_10px_40px_rgba(3,7,18,0.35)]"
@@ -89,7 +89,7 @@ function Navbar() {
         <div className="flex flex-shrink-0 items-center">
           <Link
             href="/"
-            className="text-xl font-bold text-[#16f2b3] no-underline transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_14px_rgba(22,242,179,0.9)] sm:text-3xl"
+            className="text-xl font-semibold tracking-[-0.04em] text-[#f4f1e8] no-underline transition-colors duration-300 hover:text-[#64d8ff] sm:text-2xl"
           >
             Talal Qasim
           </Link>
@@ -97,7 +97,7 @@ function Navbar() {
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[#16f2b3]/25 bg-[#080b18]/70 text-[#16f2b3] transition-all duration-300 hover:border-[#16f2b3]/60 hover:bg-[#16f2b3]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16f2b3] lg:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[#203247] bg-[#07101d]/80 text-[#64d8ff] transition-all duration-300 hover:border-[#64d8ff]/60 hover:bg-[#64d8ff]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64d8ff] lg:hidden"
           aria-controls="navbar-mobile"
           aria-expanded={isMenuOpen}
           aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -110,7 +110,7 @@ function Navbar() {
           className={`hidden items-center rounded-lg p-1 text-sm transition-all duration-500 lg:flex ${
             isScrolled
               ? "border border-white/5 bg-transparent shadow-none"
-              : "border border-white/5 bg-[#080b18]/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+              : "border border-[#203247]/70 bg-[#07101d]/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
           }`}
           id="navbar-default"
         >
@@ -120,10 +120,10 @@ function Navbar() {
             return (
               <li key={target}>
                 <Link
-                  className={`block rounded-md px-4 py-2 text-xs font-semibold tracking-[0.08em] no-underline outline-none transition-all duration-300 hover:border-[#16f2b3]/50 hover:bg-[#16f2b3]/10 hover:text-[#16f2b3] hover:shadow-[0_0_22px_rgba(22,242,179,0.42)] focus-visible:border-[#16f2b3] focus-visible:bg-[#16f2b3]/10 focus-visible:text-[#16f2b3] ${
+                  className={`block rounded-md px-4 py-2 font-mono text-[0.68rem] font-bold tracking-[0.1em] no-underline outline-none transition-all duration-300 hover:border-[#64d8ff]/40 hover:bg-[#64d8ff]/8 hover:text-[#64d8ff] focus-visible:border-[#64d8ff] focus-visible:bg-[#64d8ff]/10 focus-visible:text-[#64d8ff] ${
                     isActive
-                      ? "border border-[#16f2b3]/45 bg-[#16f2b3]/10 text-[#16f2b3] shadow-[0_0_18px_rgba(22,242,179,0.35)]"
-                      : "border border-transparent text-white"
+                      ? "border border-[#64d8ff]/35 bg-[#64d8ff]/10 text-[#64d8ff]"
+                      : "border border-transparent text-[#a8b4c3]"
                   }`}
                   href={`/#${target}`}
                   onClick={(event) => scrollToSection(event, target)}
@@ -137,7 +137,7 @@ function Navbar() {
       </div>
 
       <div
-        className={`mx-6 overflow-hidden rounded-lg border border-[#16f2b3]/15 bg-[#080b18]/95 shadow-[0_18px_40px_rgba(3,7,18,0.62)] transition-all duration-300 sm:mx-12 lg:hidden ${
+        className={`mx-6 overflow-hidden rounded-lg border border-[#203247] bg-[#07101d]/95 shadow-[0_18px_40px_rgba(0,0,0,0.62)] transition-all duration-300 sm:mx-12 lg:hidden ${
           isMenuOpen
             ? "mb-4 max-h-96 opacity-100"
             : "max-h-0 border-transparent opacity-0"
@@ -151,10 +151,10 @@ function Navbar() {
             return (
               <li key={target}>
                 <Link
-                  className={`block rounded-md border px-3 py-3 text-center text-xs font-semibold tracking-[0.08em] no-underline outline-none transition-all duration-300 focus-visible:border-[#16f2b3] focus-visible:bg-[#16f2b3]/10 focus-visible:text-[#16f2b3] ${
+                  className={`block rounded-md border px-3 py-3 text-center font-mono text-xs font-bold tracking-[0.08em] no-underline outline-none transition-all duration-300 focus-visible:border-[#64d8ff] focus-visible:bg-[#64d8ff]/10 focus-visible:text-[#64d8ff] ${
                     isActive
-                      ? "border-[#16f2b3]/45 bg-[#16f2b3]/10 text-[#16f2b3] shadow-[0_0_18px_rgba(22,242,179,0.28)]"
-                      : "border-white/5 text-white"
+                      ? "border-[#64d8ff]/40 bg-[#64d8ff]/10 text-[#64d8ff]"
+                      : "border-[#203247] text-[#a8b4c3]"
                   }`}
                   href={`/#${target}`}
                   onClick={(event) => scrollToSection(event, target)}

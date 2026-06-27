@@ -93,7 +93,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
   }, [isExpanded, isMinimized, slides.length]);
 
   return (
-    <div data-expanded={isExpanded ? 'true' : 'false'} className={`project-circuit-frame from-[#0d1224] border-[#1b2c68a0] relative w-full overflow-hidden rounded-lg border bg-gradient-to-r to-[#0a0d37] transition-all duration-500 ease-out ${isExpanded ? 'shadow-[0_24px_80px_rgba(22,242,179,0.16)]' : ''}`}>
+    <div data-expanded={isExpanded ? 'true' : 'false'} className={`ufo-panel w-full transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(100,216,255,0.12)]' : ''}`}>
       <div className="px-4 lg:px-6 py-2 lg:py-3 relative z-10">
         <div className="absolute top-1/2 flex -translate-y-1/2 flex-row items-center space-x-1.5 lg:space-x-2">
           <WindowControl label={`Close ${project.name} preview`} color="bg-red-400" onClick={onClose} pressed={false}>
@@ -104,19 +104,19 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
           </WindowControl>
           <WindowControl label={`Expand ${project.name}`} color="bg-green-200" onClick={onExpand} pressed={isExpanded} />
         </div>
-        <p className="ml-14 truncate text-center text-base text-[#16f2b3] lg:ml-20 lg:text-xl">
+        <p className="ml-14 truncate text-center text-base text-[#D4AF37] lg:ml-20 lg:text-xl">
           {project.name}
         </p>
       </div>
 
-      <div className={`relative z-10 grid border-t-[2px] border-indigo-900 transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>
+      <div className={`relative z-10 grid border-t border-[#262626] transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>
         <div className="overflow-hidden">
           <div className="px-4 py-2 lg:px-6 lg:py-4">
             <code className="font-mono text-[11px] md:text-xs lg:text-sm">
               <div className="blink">
-                <span className="mr-2 text-pink-500">const</span>
+                <span className="mr-2 text-[#D4AF37]">const</span>
                 <span className="mr-2 text-white">project</span>
-                <span className="mr-2 text-pink-500">=</span>
+                <span className="mr-2 text-[#D4AF37]">=</span>
                 <span className="text-gray-400">{'{'}</span>
               </div>
               <div>
@@ -130,7 +130,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                 <div>
                   <span className="ml-4 mr-2 text-white lg:ml-8">status:</span>
                   <span className="text-gray-400">{`'`}</span>
-                  <span className="text-[#16f2b3]">{project.status}</span>
+                  <span className="text-[#D4AF37]">{project.status}</span>
                   <span className="text-gray-400">{`',`}</span>
                 </div>
               )}
@@ -164,7 +164,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
           <div className={`grid transition-[grid-template-rows,opacity,transform] duration-500 ease-out ${isExpanded ? 'grid-rows-[1fr] translate-y-0 opacity-100' : 'grid-rows-[0fr] -translate-y-3 opacity-0'}`}>
             <div className="overflow-hidden">
-              <div className="mx-3 mb-3 overflow-hidden rounded-lg border border-cyan-300/20 bg-[#080b22]/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:mx-4 lg:mb-4">
+              <div className="mx-3 mb-3 overflow-hidden rounded-lg border border-[#262626] bg-[#03060d]/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] lg:mx-4 lg:mb-4">
                 <div className="grid grid-cols-1 gap-4 p-3 md:grid-cols-2 lg:p-5 lg:gap-6">
                   <div 
                     className="project-media-reveal relative aspect-video w-full overflow-hidden rounded-md border border-white/10 bg-[#06091d] flex items-center justify-center cursor-ew-resize sm:cursor-default"
@@ -192,13 +192,13 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                             type="button"
                             aria-label={`Show ${project.name} image ${index + 1}`}
                             onClick={() => setCurrentSlide(index)}
-                            className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === index ? 'w-5 bg-[#16f2b3]' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
+                            className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === index ? 'w-5 bg-[#D4AF37]' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
                           />
                         ))}
                       </div>
                     )}
                     {project.status && (
-                      <span className="absolute left-3 top-3 z-20 rounded-full border border-[#16f2b3]/40 bg-[#071323]/85 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#16f2b3]">
+                      <span className="absolute left-3 top-3 z-20 rounded-full border border-[#D4AF37]/40 bg-[#07101d]/85 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
                         {project.status}
                       </span>
                     )}
@@ -206,7 +206,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
                   <div className="flex flex-col justify-between gap-3 lg:gap-4 md:aspect-video overflow-y-auto pr-2 custom-scrollbar">
                     <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-pink-300/90">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F59E0B]/90">
                         Project Notes
                       </p>
                       <h3 className="mt-2 text-xl font-semibold leading-tight text-white md:text-2xl">
@@ -220,7 +220,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                     <ul className="space-y-3 text-sm leading-6 text-slate-200">
                       {details.map((detail, index) => (
                         <li key={index} className="flex gap-3">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#16f2b3] shadow-[0_0_14px_rgba(22,242,179,0.7)]"></span>
+                           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_14px_rgba(100,216,255,0.6)]"></span>
                           <span>{detail}</span>
                         </li>
                       ))}
@@ -235,9 +235,9 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                             key={tool}
                             title={tool}
                             aria-label={tool}
-                            className="group inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-500/10 px-2.5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-transform duration-300 hover:scale-105 hover:border-[#16f2b3]/35 hover:bg-[#16f2b3]/10"
+                            className="group inline-flex items-center gap-2 rounded-full border border-[#262626] bg-[#151515]/55 px-2.5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-transform duration-300 hover:scale-105 hover:border-[#D4AF37]/35 hover:bg-[#D4AF37]/10"
                           >
-                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-[#0d1224]/80">
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-[#07101d]/80">
                               {toolIcon ? (
                                 <Image
                                   src={toolIcon}
@@ -256,7 +256,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                                 />
                               )}
                             </span>
-                            <span className="max-w-[7.5rem] truncate text-[11px] font-medium leading-none text-violet-50">
+                            <span className="max-w-[7.5rem] truncate text-[11px] font-medium leading-none text-[#d8e0e8]">
                               {tool}
                             </span>
                           </span>
@@ -272,7 +272,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
       </div>
 
       {isMinimized && (
-        <div className="border-t border-indigo-900 px-4 py-3 text-center text-xs uppercase tracking-[0.2em] text-slate-400">
+        <div className="border-t border-[#262626] px-4 py-3 text-center font-mono text-xs uppercase tracking-[0.2em] text-slate-400">
           Minimized
         </div>
       )}
