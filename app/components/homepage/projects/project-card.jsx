@@ -93,7 +93,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
   }, [isExpanded, isMinimized, slides.length]);
 
   return (
-    <div data-expanded={isExpanded ? 'true' : 'false'} className={`project-circuit-frame relative w-full overflow-hidden rounded-lg border border-[#262626] bg-gradient-to-r from-[#07101d] to-[#101010] transition-all duration-500 ease-out ${isExpanded ? 'shadow-[0_24px_80px_rgba(100,216,255,0.12)]' : ''}`}>
+    <div data-expanded={isExpanded ? 'true' : 'false'} className={`ufo-panel w-full transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(100,216,255,0.12)]' : ''}`}>
       <div className="px-4 lg:px-6 py-2 lg:py-3 relative z-10">
         <div className="absolute top-1/2 flex -translate-y-1/2 flex-row items-center space-x-1.5 lg:space-x-2">
           <WindowControl label={`Close ${project.name} preview`} color="bg-red-400" onClick={onClose} pressed={false}>
@@ -220,7 +220,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                     <ul className="space-y-3 text-sm leading-6 text-slate-200">
                       {details.map((detail, index) => (
                         <li key={index} className="flex gap-3">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_14px_rgba(100,216,255,0.6)]"></span>
+                           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_14px_rgba(100,216,255,0.6)]"></span>
                           <span>{detail}</span>
                         </li>
                       ))}

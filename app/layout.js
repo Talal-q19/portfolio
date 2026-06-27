@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import Preloader from "./components/helper/preloader";
 import ScrollToTop from "./components/helper/scroll-to-top";
 import Navbar from "./components/navbar";
+import ParticlesBackground from "./components/helper/particles-background";
 import "./css/card.scss";
 import "./css/globals.scss";
 const spaceGrotesk = Space_Grotesk({
@@ -55,7 +56,8 @@ export default function RootLayout({ children }) {
       <body className={`${spaceGrotesk.variable} ${inter.variable}`}>
         <ToastContainer />
         <Preloader />
-        <main className="min-h-screen relative mx-auto overflow-x-hidden px-6 pt-[var(--nav-safe-top)] sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-white">
+        <ParticlesBackground />
+        <main className="min-h-screen relative mx-auto overflow-x-hidden px-6 pt-[var(--nav-safe-top)] sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-white z-10">
           <Navbar />
           {children}
           <ScrollToTop />

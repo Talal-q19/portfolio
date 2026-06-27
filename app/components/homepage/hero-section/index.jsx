@@ -12,7 +12,6 @@ import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
 import { useReducedMotion } from "../../../hooks/use-reduced-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
-import Galaxy from "../../reactbits/galaxy";
 
 const codeLines = [
   [
@@ -161,27 +160,11 @@ function HeroSection() {
 
   return (
     <SectionVisualFrame variant="hero" accent="emerald" className="hero-space relative flex min-h-[calc(100svh-var(--nav-safe-top))] flex-col items-center justify-center py-8 lg:py-12">
-      <div aria-hidden="true" className="absolute inset-x-[calc(50%-50vw)] inset-y-0 -z-20 overflow-hidden">
-        <Galaxy
-          density={0.82}
-          disableAnimation={prefersReducedMotion}
-          glowIntensity={0.2}
-          hueShift={188}
-          mouseInteraction={!prefersReducedMotion}
-          saturation={0.35}
-          speed={0.55}
-          starSpeed={0.32}
-          twinkleIntensity={0.16}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#03060d_0%,rgba(3,6,13,0.72)_38%,rgba(3,6,13,0.28)_67%,#03060d_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#03060d] to-transparent" />
-      </div>
-
       <div className="relative z-10 grid grid-cols-1 items-start gap-y-8 lg:grid-cols-2 lg:gap-12">
         <div className="order-2 lg:order-1 flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
-            <div className="profile-command-frame group relative aspect-square w-32 sm:w-40 shrink-0">
-              <div className="relative h-full overflow-hidden rounded-2xl border border-[#262626] bg-[#07101d] shadow-[0_24px_80px_rgba(0,0,0,0.36)] transition-all duration-500 hover:border-[#D4AF37]/55">
+            <div className="ufo-panel group relative aspect-square w-32 sm:w-40 shrink-0 rounded-full border-2 p-1 border-[#D4AF37]">
+              <div className="relative h-full overflow-hidden rounded-full border border-[#262626] bg-[#07101d] shadow-[0_24px_80px_rgba(0,0,0,0.36)] transition-all duration-500 hover:border-[#D4AF37]/55">
                 <Image
                   src={personalData.profile}
                   fill
@@ -189,7 +172,6 @@ function HeroSection() {
                   alt="Talal Qasim"
                   className="object-cover object-center transition-transform duration-700 hover:scale-105"
                 />
-                <div aria-hidden="true" className="profile-scan-overlay absolute inset-0 pointer-events-none" />
               </div>
             </div>
             <div>
@@ -246,8 +228,7 @@ function HeroSection() {
           </div>
 
         </div>
-        <div className="ide-terminal-pulse order-1 lg:order-2 relative overflow-hidden rounded-xl border border-[#262626] bg-[#07101d]/90 shadow-[0_24px_90px_rgba(0,0,0,0.38)] backdrop-blur-sm">
-          <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,transparent,rgba(100,216,255,0.06),transparent)] opacity-60" />
+        <div className="ufo-panel order-1 lg:order-2 relative overflow-hidden backdrop-blur-sm">
           <div aria-hidden="true" className="absolute right-4 top-4 hidden items-center gap-2 rounded-full border border-[#D4AF37]/25 bg-[#07101d]/80 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#D4AF37] sm:flex">
             <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(100,216,255,0.85)]" />
             Signal online
