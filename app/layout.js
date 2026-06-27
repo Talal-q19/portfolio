@@ -53,11 +53,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${inter.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} overflow-x-hidden`}>
         <ToastContainer />
         <Preloader />
         <ParticlesBackground />
-        <main className="min-h-screen relative mx-auto overflow-x-hidden px-6 pt-[var(--nav-safe-top)] sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-white z-10">
+        <main className="min-h-screen relative mx-auto px-6 pt-[var(--nav-safe-top)] sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-white z-10">
           <Navbar />
           {children}
           <ScrollToTop />

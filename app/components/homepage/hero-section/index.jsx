@@ -12,6 +12,7 @@ import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
 import { useReducedMotion } from "../../../hooks/use-reduced-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
+import GalaxyBackground from "../galaxy-background";
 
 const codeLines = [
   [
@@ -159,8 +160,10 @@ function HeroSection() {
   };
 
   return (
-    <SectionVisualFrame id="about" variant="hero" accent="emerald" className="hero-space relative flex min-h-[calc(100svh-var(--nav-safe-top))] flex-col items-center justify-center py-8 lg:py-12">
-      <div className="relative z-10 grid grid-cols-1 items-start gap-y-8 lg:grid-cols-2 lg:gap-12">
+    <section className="relative w-full">
+      <GalaxyBackground />
+      <SectionVisualFrame id="about" variant="hero" accent="emerald" className="hero-space relative flex min-h-[calc(100svh-var(--nav-safe-top))] flex-col items-center justify-center py-8 lg:py-12">
+        <div className="relative z-10 grid grid-cols-1 items-start gap-y-8 lg:grid-cols-2 lg:gap-12">
         <div className="order-2 lg:order-1 flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mb-6">
             <div className="ufo-panel group relative aspect-square w-32 sm:w-44 shrink-0 rounded-full border border-[#D4AF37]/40 p-1.5 shadow-[0_0_30px_rgba(212,175,55,0.15)] transition-all duration-500 hover:shadow-[0_0_50px_rgba(212,175,55,0.3)] hover:border-[#D4AF37]/80">
@@ -257,6 +260,7 @@ function HeroSection() {
         </div>
       </div>
     </SectionVisualFrame>
+    </section>
   );
 };
 

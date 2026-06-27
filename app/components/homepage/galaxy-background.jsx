@@ -37,12 +37,13 @@ const Starfield = (props) => {
 
 export default function GalaxyBackground() {
   return (
-    <div className="absolute inset-0 z-0 h-full w-full bg-space-950">
+    <div 
+      className="absolute -top-[var(--nav-safe-top)] bottom-0 left-1/2 -translate-x-1/2 z-0 w-[100vw] bg-[#050505]"
+      style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' }}
+    >
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Starfield />
       </Canvas>
-      {/* Gradient mask to fade into the solid background below */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-space-950 to-transparent z-10 pointer-events-none" />
     </div>
   );
 }
