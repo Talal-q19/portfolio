@@ -49,7 +49,7 @@ export default function Preloader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#0d1224] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${
+      className={`fixed inset-0 z-[9999] bg-[#03060d] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${
         isFading ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
       }`}
     >
@@ -75,7 +75,7 @@ export default function Preloader() {
           opacity: 0; /* initial state for animation */
         }
         .progress-glow {
-          box-shadow: 0 0 15px rgba(22, 242, 179, 0.3), 0 0 30px rgba(236, 72, 153, 0.2);
+          box-shadow: 0 0 15px rgba(100, 216, 255, 0.28), 0 0 30px rgba(255, 207, 112, 0.16);
         }
       `}</style>
 
@@ -89,7 +89,7 @@ export default function Preloader() {
             <span className="letter-t text-8xl sm:text-9xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 z-20">
               T
             </span>
-            <span className="letter-q text-8xl sm:text-9xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-[#16f2b3] via-[#8b5cf6] to-[#ec4899] elegant-text-shimmer z-10 opacity-90 mix-blend-screen">
+            <span className="letter-q z-10 bg-gradient-to-r from-[#64d8ff] via-[#f4f1e8] to-[#ffcf70] bg-clip-text font-mono text-8xl font-light text-transparent opacity-90 mix-blend-screen sm:text-9xl">
               Q
             </span>
           </div>
@@ -99,7 +99,7 @@ export default function Preloader() {
         <div className="w-full sm:w-80 h-[2px] bg-[#1a1f3c] rounded-full overflow-hidden relative">
           {/* Progress Bar Fill */}
           <div
-            className="h-full bg-gradient-to-r from-[#16f2b3] to-[#ec4899] transition-all duration-[20ms] ease-linear progress-glow relative"
+            className="relative h-full bg-gradient-to-r from-[#64d8ff] to-[#ffcf70] transition-all duration-[20ms] ease-linear progress-glow"
             style={{ width: `${progress}%` }}
           >
             {/* Highlight tip at the end of the bar */}

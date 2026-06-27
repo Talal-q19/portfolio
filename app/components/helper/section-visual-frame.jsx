@@ -40,11 +40,11 @@ const variantPaths = {
 };
 
 const accentClasses = {
-  emerald: "text-[#16f2b3]",
-  pink: "text-pink-500",
-  violet: "text-violet-500",
-  amber: "text-amber-300",
-  cyan: "text-cyan-300",
+  emerald: "text-[#64d8ff]",
+  pink: "text-[#ffcf70]",
+  violet: "text-[#75b8d6]",
+  amber: "text-[#ffcf70]",
+  cyan: "text-[#64d8ff]",
 };
 
 function SectionVisualFrame({

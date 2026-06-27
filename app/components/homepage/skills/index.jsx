@@ -53,11 +53,11 @@ function Skills() {
 
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
-          <span className="bg-[#1a1443] w-fit text-white p-2 px-5 text-xl rounded-md">
+          <span className="h-px w-24 bg-[#262626]"></span>
+          <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
             Skills
           </span>
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
+          <span className="h-px w-24 bg-[#262626]"></span>
         </div>
       </div>
 

@@ -1,7 +1,18 @@
 @use "tailwindcss";
 
 :root {
-  --foreground-rgb: rgb(211, 216, 232);
+  --space-950: #03060d;
+  --space-900: #07101d;
+  --space-850: #0a1422;
+  --space-800: #0e1a2b;
+  --space-border: #203247;
+  --starlight: #f4f1e8;
+  --moon-dust: #a8b4c3;
+  --signal: #64d8ff;
+  --signal-rgb: 100, 216, 255;
+  --solar: #ffcf70;
+  --solar-rgb: 255, 207, 112;
+  --foreground-rgb: 244, 241, 232;
   --nav-safe-top: 6.5rem;
 }
 
@@ -13,14 +24,37 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #0d1224;
+  background: var(--space-950);
+  font-family: var(--font-body), sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--starlight);
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.035em;
+}
+
+code,
+kbd,
+pre,
+.font-mono {
+  font-family: var(--font-mono), monospace;
+}
+
+::selection {
+  background: rgba(var(--signal-rgb), 0.24);
+  color: var(--starlight);
 }
 
 html,
 body {
   max-width: 100%;
   overflow-x: hidden;
-  scrollbar-color: #16f2b3 #080b22;
+  scrollbar-color: var(--signal) var(--space-950);
   scrollbar-width: thin;
 }
 
@@ -29,21 +63,21 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background: #080b22;
-  border-left: 1px solid rgba(42, 46, 90, 0.7);
+  background: var(--space-950);
+  border-left: 1px solid var(--space-border);
 }
 
 body::-webkit-scrollbar-thumb {
   background:
-    linear-gradient(180deg, rgba(22, 242, 179, 0.95), rgba(236, 72, 153, 0.72));
-  border: 2px solid #080b22;
+    linear-gradient(180deg, var(--signal), var(--solar));
+  border: 2px solid var(--space-950);
   border-radius: 999px;
-  box-shadow: 0 0 14px rgba(22, 242, 179, 0.24);
+  box-shadow: 0 0 14px rgba(var(--signal-rgb), 0.2);
 }
 
 body::-webkit-scrollbar-thumb:hover {
   background:
-    linear-gradient(180deg, rgba(22, 242, 179, 1), rgba(139, 92, 246, 0.9));
+    linear-gradient(180deg, var(--signal), var(--solar));
 }
 
 .section-visual-frame {
@@ -129,7 +163,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .profile-command-frame::before,
 .profile-command-frame::after {
-  border: 1px solid rgba(22, 242, 179, 0.45);
+  border: 1px solid rgba(var(--signal-rgb), 0.38);
   content: "";
   inset: -14px;
   opacity: 0.72;
@@ -163,7 +197,7 @@ body::-webkit-scrollbar-thumb:hover {
 .profile-scan-overlay {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 18%),
-    linear-gradient(90deg, transparent, rgba(22, 242, 179, 0.2), transparent);
+    linear-gradient(90deg, transparent, rgba(var(--signal-rgb), 0.18), transparent);
   mix-blend-mode: screen;
   opacity: 0;
   transform: translateX(-90%);
@@ -171,8 +205,8 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .timeline-node-line {
-  background: linear-gradient(180deg, rgba(22, 242, 179, 0.04), rgba(22, 242, 179, 0.55), rgba(236, 72, 153, 0.16));
-  box-shadow: 0 0 18px rgba(22, 242, 179, 0.22);
+  background: linear-gradient(180deg, rgba(var(--signal-rgb), 0.03), rgba(var(--signal-rgb), 0.52), rgba(var(--solar-rgb), 0.14));
+  box-shadow: 0 0 18px rgba(var(--signal-rgb), 0.2);
 }
 
 .timeline-card-trace {
@@ -189,8 +223,8 @@ body::-webkit-scrollbar-thumb:hover {
 
 .project-circuit-frame::before {
   background:
-    radial-gradient(circle at 14% 0%, rgba(22, 242, 179, 0.16), transparent 28%),
-    radial-gradient(circle at 86% 0%, rgba(236, 72, 153, 0.12), transparent 30%),
+    radial-gradient(circle at 14% 0%, rgba(var(--signal-rgb), 0.13), transparent 28%),
+    radial-gradient(circle at 86% 0%, rgba(var(--solar-rgb), 0.09), transparent 30%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 38%);
   content: "";
   inset: 0;
@@ -349,7 +383,7 @@ html {
 .project-window-scan {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 18%),
-    linear-gradient(90deg, transparent, rgba(22, 242, 179, 0.12), transparent);
+    linear-gradient(90deg, transparent, rgba(var(--signal-rgb), 0.12), transparent);
   mix-blend-mode: screen;
   opacity: 0.4;
   transform: translateX(-80%);
@@ -361,7 +395,7 @@ html {
 }
 
 .project-logo-float {
-  filter: drop-shadow(0 22px 36px rgba(22, 242, 179, 0.18));
+  filter: drop-shadow(0 22px 36px rgba(var(--signal-rgb), 0.16));
   animation: project-logo-float 5.6s ease-in-out infinite;
 }
 
@@ -377,7 +411,7 @@ html {
 
 .code-type-cursor {
   animation: code-cursor-blink 900ms steps(2, start) infinite;
-  border-right: 2px solid #16f2b3;
+  border-right: 2px solid var(--signal);
   margin-left: 2px;
 }
 
@@ -450,11 +484,11 @@ html {
 @keyframes terminal-pulse {
   0%,
   100% {
-    box-shadow: 0 18px 70px rgba(22, 242, 179, 0.08);
+    box-shadow: 0 18px 70px rgba(var(--signal-rgb), 0.08);
   }
 
   50% {
-    box-shadow: 0 22px 90px rgba(236, 72, 153, 0.12);
+    box-shadow: 0 22px 90px rgba(var(--solar-rgb), 0.1);
   }
 }
 

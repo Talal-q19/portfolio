@@ -13,16 +13,16 @@ function ContactSection() {
   return (
     <SectionVisualFrame id="contact" variant="contact" accent="emerald" className="my-12 lg:my-16 relative mt-24 text-white">
       <div className="hidden lg:flex flex-col items-center absolute top-24 -right-8">
-        <span className="bg-[#1a1443] w-fit text-white rotate-90 p-2 px-5 text-xl rounded-md">
+        <span className="w-fit rotate-90 rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
           CONTACT
         </span>
-        <span className="h-36 w-[2px] bg-[#1a1443]"></span>
+        <span className="h-36 w-px bg-[#262626]"></span>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
         <ContactForm />
         <div className="lg:w-3/4 ">
           <div className="contact-radar relative mb-8 hidden h-44 w-full max-w-md items-center justify-center lg:flex">
-            <svg aria-hidden="true" className="absolute inset-0 h-full w-full text-[#16f2b3]" viewBox="0 0 420 180">
+            <svg aria-hidden="true" className="absolute inset-0 h-full w-full text-[#D4AF37]" viewBox="0 0 420 180">
               <circle className="contact-radar__ring" cx="210" cy="90" r="34" fill="none" stroke="currentColor" strokeOpacity="0.42" />
               <circle className="contact-radar__ring" cx="210" cy="90" r="68" fill="none" stroke="currentColor" strokeOpacity="0.24" />
               <circle className="contact-radar__ring" cx="210" cy="90" r="102" fill="none" stroke="currentColor" strokeOpacity="0.14" />
@@ -32,21 +32,21 @@ function ContactSection() {
               <circle cx="94" cy="38" r="4" fill="currentColor" />
               <circle cx="104" cy="144" r="4" fill="currentColor" />
             </svg>
-            <div className="relative rounded-full border border-[#16f2b3]/30 bg-[#071323]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#16f2b3]">
+            <div className="relative rounded-full border border-[#D4AF37]/30 bg-[#07101d]/80 px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
               Available for contact
             </div>
           </div>
           <div className="flex flex-col gap-5 lg:gap-9">
             <p className="text-sm md:text-xl flex items-center gap-3">
               <MdAlternateEmail
-                className="bg-[#8b98a5] p-2 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
+                className="cursor-pointer rounded-full bg-[#262626] p-2 text-[#d8e0e8] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#07101d]"
                 size={36}
               />
               <span>{personalData.email}</span>
             </p>
             <p className="text-sm md:text-xl flex items-center gap-3">
               <IoMdCall
-                className="bg-[#8b98a5] p-2 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
+                className="cursor-pointer rounded-full bg-[#262626] p-2 text-[#d8e0e8] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#07101d]"
                 size={36}
               />
               <span>
@@ -55,7 +55,7 @@ function ContactSection() {
             </p>
             <p className="text-sm md:text-xl flex items-center gap-3">
               <CiLocationOn
-                className="bg-[#8b98a5] p-2 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
+                className="cursor-pointer rounded-full bg-[#262626] p-2 text-[#d8e0e8] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#07101d]"
                 size={36}
               />
               <span>
@@ -66,19 +66,19 @@ function ContactSection() {
           <div className="mt-8 lg:mt-16 flex items-center gap-5 lg:gap-10">
             <Link target="_blank" href={personalData.github}>
               <IoLogoGithub
-                className="bg-[#8b98a5] p-3 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
+                className="cursor-pointer rounded-full bg-[#262626] p-3 text-[#d8e0e8] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#07101d]"
                 size={48}
               />
             </Link>
             <Link target="_blank" href={personalData.linkedIn}>
               <BiLogoLinkedin
-                className="bg-[#8b98a5] p-3 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
+                className="cursor-pointer rounded-full bg-[#262626] p-3 text-[#d8e0e8] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#07101d]"
                 size={48}
               />
             </Link>
             <Link target="_blank" href={personalData.instagram}>
               <FaInstagram
-                className="bg-[#8b98a5] p-3 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
+                className="cursor-pointer rounded-full bg-[#262626] p-3 text-[#d8e0e8] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#07101d]"
                 size={48}
               />
             </Link>

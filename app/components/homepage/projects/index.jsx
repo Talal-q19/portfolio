@@ -36,12 +36,12 @@ const Projects = () => {
   return (
     <SectionVisualFrame id='projects' variant="projects" accent="pink" className={`relative z-30 my-12 transition-[padding-bottom] duration-500 ease-out lg:my-24 ${hasActiveProject ? 'pb-20 lg:pb-28' : 'pb-0'}`}>
       <div className="sticky top-[var(--nav-safe-top)]">
-        <div className="w-[80px] h-[80px] bg-violet-100 rounded-full absolute -top-3 left-0 translate-x-1/2 filter blur-3xl  opacity-30"></div>
+        <div className="absolute -top-3 left-0 h-20 w-20 translate-x-1/2 rounded-full bg-[#D4AF37] opacity-10 blur-3xl"></div>
         <div className="flex items-center justify-start relative">
-          <span className="bg-[#1a1443] absolute left-0  w-fit text-white px-5 py-3 text-xl rounded-md">
+          <span className="absolute left-0 w-fit rounded-md bg-[#151515] px-5 py-3 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
             PROJECTS
           </span>
-          <span className="w-full h-[2px] bg-[#1a1443]"></span>
+          <span className="h-px w-full bg-[#262626]"></span>
         </div>
       </div>
 
