@@ -12,7 +12,7 @@ const projectImages = {
 };
 
 const genericToolBadge =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2316f2b3'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='none' stroke='url(%23g)' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='12' fill='url(%23g)' fill-opacity='.88'/%3E%3Cpath d='M20 32h8M36 32h8M32 20v8M32 36v8' stroke='%23fff' stroke-opacity='.85' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23D4AF37'/%3E%3Cstop offset='100%25' stop-color='%23F59E0B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='none' stroke='url(%23g)' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='12' fill='url(%23g)' fill-opacity='.88'/%3E%3Cpath d='M20 32h8M36 32h8M32 20v8M32 36v8' stroke='%23fff' stroke-opacity='.85' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E";
 
 function WindowControl({ label, color, children, onClick, pressed }) {
   const fallbackIcon = label.startsWith('Expand') ? <FiMaximize2 size={9} /> : null;
