@@ -11,11 +11,14 @@ export default function Preloader() {
   useEffect(() => {
     if (isVisible) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
     }
     return () => {
       document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
     };
   }, [isVisible]);
 
@@ -49,7 +52,7 @@ export default function Preloader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#03060d] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${
+      className={`fixed inset-0 overflow-hidden z-[9999] bg-[#03060d] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${
         isFading ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
       }`}
     >
