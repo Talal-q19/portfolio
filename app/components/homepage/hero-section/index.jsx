@@ -244,13 +244,12 @@ function HeroSection() {
             <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-[#F59E0B]/50"></div>
             <div className="h-[1px] w-full bg-gradient-to-r from-[#F59E0B]/50 to-transparent"></div>
           </div>
-          <div className="px-4 lg:px-8 py-4 flex items-center justify-between border-b border-[#ffffff]/5">
+          <div className="px-4 lg:px-8 py-4 flex items-center border-b border-[#ffffff]/5">
             <div className="flex flex-row space-x-2">
               <div className="h-3 w-3 rounded-full bg-[#ff5f56] shadow-[0_0_10px_rgba(255,95,86,0.5)]"></div>
               <div className="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-[0_0_10px_rgba(255,189,46,0.5)]"></div>
               <div className="h-3 w-3 rounded-full bg-[#27c93f] shadow-[0_0_10px_rgba(39,201,63,0.5)]"></div>
             </div>
-            <div className="text-[#a8b4c3] font-mono text-[10px] opacity-50">dev.jsx</div>
           </div>
           <div className="overflow-hidden px-4 py-6 lg:px-8 lg:py-8 bg-[#07101d]/20">
             <code className="font-mono text-xs md:text-sm lg:text-[15px] leading-relaxed" aria-label="Animated code introduction">
