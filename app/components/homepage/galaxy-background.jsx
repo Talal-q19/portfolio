@@ -11,7 +11,14 @@ const Starfield = (props) => {
   // Generate random points in a sphere for the galaxy
   const sphere = useMemo(() => {
     // 5000 points * 3 values per point (x, y, z) = 15000
-    return random.inSphere(new Float32Array(15000), { radius: 1.5 });
+    const arr = random.inSphere(new Float32Array(15000), { radius: 1.5 });
+    // Sanitize any NaN values to prevent Three.js rendering / validation errors
+    for (let i = 0; i < arr.length; i++) {
+      if (isNaN(arr[i])) {
+        arr[i] = 0;
+      }
+    }
+    return arr;
   }, []);
 
   useFrame((state, delta) => {
@@ -27,7 +34,8 @@ const Starfield = (props) => {
         <PointMaterial
           transparent
           color="#D4AF37" // Cinematic gold
-          size={0.005}
+          size={0.003}
+          opacity={0.45}
           sizeAttenuation={true}
           depthWrite={false}
         />

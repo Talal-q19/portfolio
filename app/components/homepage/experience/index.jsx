@@ -66,11 +66,11 @@ function Experience() {
                   `}</style>
                 </defs>
                 
-                {/* Terminal/IDE Window Frame */}
-                <rect x="20" y="50" width="360" height="300" rx="12" fill="#07101d" stroke="#D4AF37" stroke-width="2.5" />
+                 {/* Terminal/IDE Window Frame */}
+                <rect x="20" y="50" width="360" height="300" rx="12" fill="#07101d" stroke="#D4AF37" strokeWidth="2.5" />
                 
                 {/* Window Title Bar */}
-                <path d="M 20,90 L 380,90" stroke="#D4AF37" stroke-width="1.5" />
+                <path d="M 20,90 L 380,90" stroke="#D4AF37" strokeWidth="1.5" />
                 
                 {/* Window Control Buttons */}
                 <circle cx="45" cy="70" r="6" fill="#F59E0B" />
@@ -78,15 +78,15 @@ function Experience() {
                 <circle cx="85" cy="70" r="6" fill="#262626" />
                 
                 {/* File path text */}
-                <text x="120" y="74" font-family="monospace" font-size="12" fill="#a8b4c3" opacity="0.8">main.py - experience</text>
+                <text x="120" y="74" fontFamily="monospace" fontSize="12" fill="#a8b4c3" opacity="0.8">main.py - experience</text>
                 
                 {/* Mock Code Lines */}
-                <path d="M 45,130 L 220,130" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" className="code-line c-1" />
-                <path d="M 75,165 L 260,165" stroke="#D4AF37" stroke-width="6" stroke-linecap="round" className="code-line c-2" />
-                <path d="M 75,200 L 210,200" stroke="#D4AF37" stroke-width="6" stroke-linecap="round" className="code-line c-3" />
-                <path d="M 75,235 L 230,235" stroke="#D4AF37" stroke-width="6" stroke-linecap="round" className="code-line c-4" />
-                <path d="M 75,270 L 320,270" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" className="code-line c-5" />
-                <path d="M 75,305 L 180,305" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" className="code-line c-6" />
+                <path d="M 45,130 L 220,130" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" className="code-line c-1" />
+                <path d="M 75,165 L 260,165" stroke="#D4AF37" strokeWidth="6" strokeLinecap="round" className="code-line c-2" />
+                <path d="M 75,200 L 210,200" stroke="#D4AF37" strokeWidth="6" strokeLinecap="round" className="code-line c-3" />
+                <path d="M 75,235 L 230,235" stroke="#D4AF37" strokeWidth="6" strokeLinecap="round" className="code-line c-4" />
+                <path d="M 75,270 L 320,270" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" className="code-line c-5" />
+                <path d="M 75,305 L 180,305" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" className="code-line c-6" />
                 
                 {/* Blinking Cursor */}
                 <rect x="187" y="296" width="8" height="14" fill="#D4AF37" className="cursor" />

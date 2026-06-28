@@ -53,15 +53,15 @@ function Education() {
                 <defs>
                   {/* Radial glow with gold & amber highlights */}
                   <radialGradient id="vibrantGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.25" />
-                    <stop offset="50%" stop-color="#D4AF37" stop-opacity="0.1" />
-                    <stop offset="100%" stop-color="#050505" stop-opacity="0" />
+                    <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.25" />
+                    <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.1" />
+                    <stop offset="100%" stopColor="#050505" stopOpacity="0" />
                   </radialGradient>
                   {/* Metallic gold gradient for paths */}
                   <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#FFF" />
-                    <stop offset="40%" stop-color="#D4AF37" />
-                    <stop offset="100%" stop-color="#F59E0B" />
+                    <stop offset="0%" stopColor="#FFF" />
+                    <stop offset="40%" stopColor="#D4AF37" />
+                    <stop offset="100%" stopColor="#F59E0B" />
                   </linearGradient>
                   <style>{`
                     @keyframes float-more {
@@ -82,64 +82,64 @@ function Education() {
                   `}</style>
                 </defs>
 
-                {/* Vibrant Background Ambient Pulse */}
+                 {/* Vibrant Background Ambient Pulse */}
                 <circle cx="200" cy="200" r="160" fill="url(#vibrantGlow)" />
-                <circle cx="200" cy="200" r="120" fill="none" stroke="#D4AF37" stroke-opacity="0.08" stroke-width="4" className="ambient-pulse" />
+                <circle cx="200" cy="200" r="120" fill="none" stroke="#D4AF37" strokeOpacity="0.08" strokeWidth="4" className="ambient-pulse" />
                 
                 {/* Constellation Knowledge Nodes Orbiting */}
                 <g className="orbiting-nodes">
                   {/* Dashed orbit circle */}
-                  <circle cx="200" cy="200" r="140" fill="none" stroke="#D4AF37" stroke-opacity="0.12" stroke-width="1.5" stroke-dasharray="6,4" />
+                  <circle cx="200" cy="200" r="140" fill="none" stroke="#D4AF37" strokeOpacity="0.12" strokeWidth="1.5" strokeDasharray="6,4" />
                   {/* Floating circles/stars representing knowledge disciplines */}
                   <circle cx="200" cy="60" r="7" fill="#F59E0B" opacity="0.8" />
-                  <line x1="200" y1="60" x2="200" y2="90" stroke="#D4AF37" stroke-opacity="0.2" stroke-width="1" />
+                  <line x1="200" y1="60" x2="200" y2="90" stroke="#D4AF37" strokeOpacity="0.2" strokeWidth="1" />
                   
                   <circle cx="340" cy="200" r="6" fill="#D4AF37" opacity="0.8" />
                   <circle cx="60" cy="200" r="8" fill="#FFF" opacity="0.9" />
                   <circle cx="200" cy="340" r="5" fill="#F59E0B" opacity="0.8" />
                 </g>
-
+ 
                 {/* Floating Main Group */}
                 <g className="floating-main">
                   {/* Glowing Base Platform */}
-                  <ellipse cx="200" cy="290" rx="90" ry="24" fill="#07101d" stroke="url(#goldGrad)" stroke-width="2.5" />
-                  <ellipse cx="200" cy="290" rx="70" ry="18" fill="none" stroke="#F59E0B" stroke-opacity="0.3" stroke-width="1.5" />
+                  <ellipse cx="200" cy="290" rx="90" ry="24" fill="#07101d" stroke="url(#goldGrad)" strokeWidth="2.5" />
+                  <ellipse cx="200" cy="290" rx="70" ry="18" fill="none" stroke="#F59E0B" strokeOpacity="0.3" strokeWidth="1.5" />
                   
                   {/* Stacked Book base */}
-                  <path d="M 120,245 L 280,245 L 290,265 L 110,265 Z" fill="#07101d" stroke="url(#goldGrad)" stroke-width="2.5" />
-                  <path d="M 280,245 L 280,265" stroke="url(#goldGrad)" stroke-width="2" />
-                  <path d="M 130,255 L 270,255" stroke="#F59E0B" stroke-opacity="0.5" stroke-width="3" />
-
+                  <path d="M 120,245 L 280,245 L 290,265 L 110,265 Z" fill="#07101d" stroke="url(#goldGrad)" strokeWidth="2.5" />
+                  <path d="M 280,245 L 280,265" stroke="url(#goldGrad)" strokeWidth="2" />
+                  <path d="M 130,255 L 270,255" stroke="#F59E0B" strokeOpacity="0.5" strokeWidth="3" />
+ 
                   {/* Glowing Open Book */}
                   <g transform="translate(0, -10)">
                     {/* Left Page */}
-                    <path d="M 200,210 C 170,195 130,195 100,205 L 100,165 C 130,155 170,155 200,170 Z" fill="#07101d" stroke="url(#goldGrad)" stroke-width="2.5" />
+                    <path d="M 200,210 C 170,195 130,195 100,205 L 100,165 C 130,155 170,155 200,170 Z" fill="#07101d" stroke="url(#goldGrad)" strokeWidth="2.5" />
                     {/* Right Page */}
-                    <path d="M 200,210 C 230,195 270,195 300,205 L 300,165 C 270,155 230,155 200,170 Z" fill="#07101d" stroke="url(#goldGrad)" stroke-width="2.5" />
+                    <path d="M 200,210 C 230,195 270,195 300,205 L 300,165 C 270,155 230,155 200,170 Z" fill="#07101d" stroke="url(#goldGrad)" strokeWidth="2.5" />
                     {/* Spine */}
-                    <line x1="200" y1="170" x2="200" y2="210" stroke="#FFF" stroke-width="2.5" />
+                    <line x1="200" y1="170" x2="200" y2="210" stroke="#FFF" strokeWidth="2.5" />
                     
                     {/* Sparkling gold notes/lines on pages */}
-                    <line x1="120" y1="178" x2="180" y2="178" stroke="#D4AF37" stroke-width="2" />
-                    <line x1="120" y1="188" x2="170" y2="188" stroke="#D4AF37" stroke-width="2" />
-                    <line x1="120" y1="198" x2="160" y2="198" stroke="#D4AF37" stroke-opacity="0.6" stroke-width="2" />
+                    <line x1="120" y1="178" x2="180" y2="178" stroke="#D4AF37" strokeWidth="2" />
+                    <line x1="120" y1="188" x2="170" y2="188" stroke="#D4AF37" strokeWidth="2" />
+                    <line x1="120" y1="198" x2="160" y2="198" stroke="#D4AF37" strokeOpacity="0.6" strokeWidth="2" />
                     
-                    <line x1="220" y1="178" x2="280" y2="178" stroke="#D4AF37" stroke-width="2" />
-                    <line x1="220" y1="188" x2="270" y2="188" stroke="#D4AF37" stroke-width="2" />
-                    <line x1="220" y1="198" x2="260" y2="198" stroke="#D4AF37" stroke-opacity="0.6" stroke-width="2" />
+                    <line x1="220" y1="178" x2="280" y2="178" stroke="#D4AF37" strokeWidth="2" />
+                    <line x1="220" y1="188" x2="270" y2="188" stroke="#D4AF37" strokeWidth="2" />
+                    <line x1="220" y1="198" x2="260" y2="198" stroke="#D4AF37" strokeOpacity="0.6" strokeWidth="2" />
                   </g>
-
+ 
                   {/* Elegant Glowing Graduation Cap floating above */}
                   <g transform="translate(0, -35)">
                     {/* Golden Cap Top Diamond */}
-                    <polygon points="200,90 265,112 200,134 135,112" fill="#07101d" stroke="url(#goldGrad)" stroke-width="3" />
-                    <polygon points="200,96 250,112 200,128 150,112" fill="none" stroke="#F59E0B" stroke-opacity="0.4" stroke-width="1.5" />
+                    <polygon points="200,90 265,112 200,134 135,112" fill="#07101d" stroke="url(#goldGrad)" strokeWidth="3" />
+                    <polygon points="200,96 250,112 200,128 150,112" fill="none" stroke="#F59E0B" strokeOpacity="0.4" strokeWidth="1.5" />
                     
                     {/* Cap base skull */}
-                    <path d="M 170,123 L 170,143 C 170,152 230,152 230,143 L 230,123" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" />
+                    <path d="M 170,123 L 170,143 C 170,152 230,152 230,143 L 230,123" fill="none" stroke="url(#goldGrad)" strokeWidth="2.5" />
                     
                     {/* Gold Tassel with moving effect */}
-                    <path d="M 200,112 L 252,128 L 252,148" fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" />
+                    <path d="M 200,112 L 252,128 L 252,148" fill="none" stroke="#FFF" strokeWidth="2" strokeLinecap="round" />
                     <circle cx="252" cy="151" r="4.5" fill="#FFF" className="ambient-pulse" />
                   </g>
                   
