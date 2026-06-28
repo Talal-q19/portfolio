@@ -34,8 +34,8 @@ const Starfield = (props) => {
         <PointMaterial
           transparent
           color="#D4AF37" // Cinematic gold
-          size={0.003}
-          opacity={0.40}
+          size={0.004}
+          opacity={0.55}
           sizeAttenuation={true}
           depthWrite={false}
         />
@@ -48,7 +48,7 @@ export default function GalaxyBackground({ onLoaded }) {
   return (
     <div 
       className="absolute -top-[var(--nav-safe-top)] bottom-0 left-1/2 -translate-x-1/2 z-0 w-[100vw] bg-[#050505]"
-      style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 45%, rgba(0,0,0,0.4) 75%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 45%, rgba(0,0,0,0.4) 75%, transparent 100%)' }}
+      style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 50%, rgba(0,0,0,0.5) 80%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 50%, rgba(0,0,0,0.5) 80%, transparent 100%)' }}
     >
       <Canvas camera={{ position: [0, 0, 1] }} onCreated={() => onLoaded && onLoaded()}>
         <Starfield />

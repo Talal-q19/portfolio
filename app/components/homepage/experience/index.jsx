@@ -101,14 +101,14 @@ function Experience() {
                 experiences.map(experience => (
                   <GlowCard key={experience.id} identifier={`experience-${experience.id}`}>
                     <div className="p-3 relative overflow-hidden">
-                      <span aria-hidden="true" className="absolute left-1 top-9 z-20 h-3 w-3 rounded-full border border-[#D4AF37]/70 bg-[#07101d] shadow-[0_0_16px_rgba(100,216,255,0.65)]" />
+                      <span aria-hidden="true" className="absolute left-1 top-9 z-20 h-3 w-3 rounded-full border border-[#D4AF37]/70 bg-[#07101d] shadow-[0_0_16px_rgba(212,175,55,0.65)]" />
                       <svg aria-hidden="true" className="absolute inset-0 z-0 h-full w-full pointer-events-none" viewBox="0 0 520 180" preserveAspectRatio="none">
                         <path
                           className="timeline-card-trace"
                           data-active={expandedExperiences[experience.id] ? "true" : "false"}
                           d="M18 42 H138 C196 42 200 132 268 132 H502"
                           fill="none"
-                          stroke="rgba(100,216,255,0.5)"
+                          stroke="rgba(212,175,55,0.5)"
                           strokeWidth="1.2"
                         />
                       </svg>
@@ -172,7 +172,7 @@ function Experience() {
                             <ul className="space-y-3 text-sm leading-6 text-gray-300 sm:text-[15px]">
                               {experience.highlights.map((highlight) => (
                                 <li key={highlight} className="flex gap-3">
-                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(100,216,255,0.7)]" />
+                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.7)]" />
                                   <span>{highlight}</span>
                                 </li>
                               ))}

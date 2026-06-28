@@ -261,7 +261,7 @@ function Education() {
                                 <ul className="space-y-3 text-sm leading-6 text-gray-300 sm:text-[15px]">
                                   {education.details.map((detail) => (
                                     <li key={detail} className="flex gap-3">
-                                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(100,216,255,0.7)]" />
+                                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.7)]" />
                                       <span>{detail}</span>
                                     </li>
                                   ))}
