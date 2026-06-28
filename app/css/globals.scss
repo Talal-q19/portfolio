@@ -46,9 +46,9 @@ code, kbd, pre, .font-mono {
   color: var(--starlight);
 }
 
-html, body {
+html, body, main {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   scrollbar-color: var(--signal) var(--space-950);
   scrollbar-width: thin;
 }
