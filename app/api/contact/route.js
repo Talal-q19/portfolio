@@ -59,82 +59,93 @@ function createEmailTemplate({ name, email, message }) {
     <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
       New message from ${safeName} via your portfolio contact form.
     </div>
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0;padding:0;background:#080b18;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0;padding:0;background-color:#050505;">
       <tr>
-        <td align="center" style="padding:32px 16px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:680px;margin:0 auto;border-collapse:collapse;">
+        <td align="center" style="padding:40px 16px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:600px;margin:0 auto;border-collapse:collapse;">
+            <!-- Outer Card -->
             <tr>
-              <td style="padding:0 0 16px 0;">
-                <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#16f2b3;">
-                  Portfolio Contact
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="background:#0d1224;border:1px solid #1f2947;border-radius:18px;overflow:hidden;">
-                <div style="padding:0;margin:0;">
-                  <div style="background:linear-gradient(135deg,#16f2b3 0%,#14b8a6 45%,#0f172a 100%);padding:22px 28px;">
-                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.4;color:#06211d;text-transform:uppercase;letter-spacing:0.18em;font-weight:bold;">
-                      New portfolio message
-                    </div>
-                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:28px;line-height:1.2;color:#ffffff;font-weight:bold;margin-top:8px;">
-                      ${safeName}
-                    </div>
-                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.88);margin-top:8px;">
-                      Someone reached out from your website contact form.
-                    </div>
+              <td style="background-color:#0a0a0a;border:1px solid #262626;border-radius:16px;overflow:hidden;">
+                
+                <!-- Glowing Top Border Bar -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                    <td height="4" style="background:linear-gradient(to right, #D4AF37, #F59E0B);line-height:4px;font-size:0px;">&nbsp;</td>
+                  </tr>
+                </table>
+
+                <!-- Header Info -->
+                <div style="padding:32px 32px 24px 32px;border-bottom:1px solid #262626;">
+                  <div style="font-family:'Courier New',Courier,monospace,sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.25em;text-transform:uppercase;color:#D4AF37;margin-bottom:8px;">
+                    // PORTFOLIO CONTACT SYSTEM
                   </div>
+                  <h1 style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:1.3;font-weight:bold;color:#f4f1e8;margin:0 0 8px 0;letter-spacing:-0.02em;">
+                    Inquiry from ${safeName}
+                  </h1>
+                  <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#a8b4c3;margin:0;">
+                    A visitor left a message on your personal portfolio website.
+                  </p>
                 </div>
 
-                <div style="padding:28px;">
+                <!-- Form Fields -->
+                <div style="padding:32px;">
                   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                    <!-- Sender Row -->
                     <tr>
-                      <td style="padding:0 0 18px 0;font-family:Arial,Helvetica,sans-serif;">
-                        <div style="font-size:12px;line-height:1.4;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;">
-                          Sender
+                      <td style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;">
+                        <div style="font-size:11px;font-weight:bold;color:#a8b4c3;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;">
+                          Sender Name
                         </div>
-                        <div style="font-size:16px;line-height:1.6;color:#e2e8f0;font-weight:bold;">
+                        <div style="font-size:16px;line-height:1.5;color:#ffffff;font-weight:bold;">
                           ${safeName}
                         </div>
                       </td>
                     </tr>
+
+                    <!-- Email Row -->
                     <tr>
-                      <td style="padding:0 0 18px 0;font-family:Arial,Helvetica,sans-serif;">
-                        <div style="font-size:12px;line-height:1.4;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;">
-                          Reply to
+                      <td style="padding:0 0 24px 0;font-family:Arial,Helvetica,sans-serif;">
+                        <div style="font-size:11px;font-weight:bold;color:#a8b4c3;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;">
+                          Email Address
                         </div>
-                        <a href="mailto:${safeEmail}" style="font-size:16px;line-height:1.6;color:#16f2b3;text-decoration:none;font-weight:bold;word-break:break-word;">
-                          ${safeEmail}
-                        </a>
+                        <div>
+                          <a href="mailto:${safeEmail}" style="font-size:16px;line-height:1.5;color:#D4AF37;text-decoration:none;font-weight:bold;word-break:break-all;border-bottom:1px dashed rgba(212,175,55,0.4);padding-bottom:1px;">
+                            ${safeEmail}
+                          </a>
+                        </div>
                       </td>
                     </tr>
+
+                    <!-- Message Row -->
                     <tr>
-                      <td style="padding:0;font-family:Arial,Helvetica,sans-serif;">
-                        <div style="font-size:12px;line-height:1.4;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">
-                          Message
+                      <td style="padding:0 0 28px 0;font-family:Arial,Helvetica,sans-serif;">
+                        <div style="font-size:11px;font-weight:bold;color:#a8b4c3;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;">
+                          Message Content
                         </div>
-                        <div style="background:#080b18;border:1px solid #24304f;border-left:4px solid #16f2b3;border-radius:14px;padding:18px 18px 18px 16px;font-size:15px;line-height:1.8;color:#e5e7eb;white-space:normal;">
+                        <div style="background-color:#101010;border:1px solid #262626;border-left:4px solid #D4AF37;border-radius:8px;padding:20px;font-size:15px;line-height:1.7;color:#e5e7eb;font-family:Arial,Helvetica,sans-serif;white-space:normal;">
                           ${safeMessage}
                         </div>
                       </td>
                     </tr>
-                  </table>
 
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:24px;border-collapse:collapse;">
+                    <!-- Reply Action Button -->
                     <tr>
-                      <td align="left">
-                        <a href="mailto:${safeEmail}" style="display:inline-block;background:#16f2b3;color:#08111f;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;letter-spacing:0.04em;padding:12px 18px;border-radius:999px;">
-                          Reply to ${safeName}
+                      <td align="left" style="font-family:Arial,Helvetica,sans-serif;">
+                        <a href="mailto:${safeEmail}" style="display:inline-block;background:linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);color:#050505;text-decoration:none;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;padding:14px 28px;border-radius:999px;box-shadow:0 4px 12px rgba(212,175,55,0.15);">
+                          Quick Reply
                         </a>
                       </td>
                     </tr>
                   </table>
                 </div>
+
               </td>
             </tr>
+
+            <!-- Footer Note -->
             <tr>
-              <td style="padding:14px 4px 0 4px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#64748b;">
-                Delivered from your portfolio contact form. Keep this email for your records.
+              <td style="padding:24px 8px 0 8px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;color:#555555;letter-spacing:0.02em;">
+                This email was auto-generated and securely delivered via the contact form on your portfolio website.
               </td>
             </tr>
           </table>

@@ -46,9 +46,9 @@ code, kbd, pre, .font-mono {
   color: var(--starlight);
 }
 
-html, body {
+html, body, main {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   scrollbar-color: var(--signal) var(--space-950);
   scrollbar-width: thin;
 }
@@ -75,8 +75,10 @@ body::-webkit-scrollbar-thumb:hover {
 
 /* Floating Neumorphism UFO Panels */
 .ufo-panel {
-  background: var(--space-900);
-  border: 1px solid var(--space-border);
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(var(--signal-rgb), 0.2);
   border-radius: 1rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
@@ -85,9 +87,9 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .ufo-panel:hover {
-  border-color: rgba(var(--neon-cyan-rgb), 0.5);
-  box-shadow: 0 10px 40px -10px rgba(var(--neon-cyan-rgb), 0.4), 
-              0 0 20px rgba(var(--neon-cyan-rgb), 0.2);
+  border-color: rgba(var(--signal-rgb), 0.6);
+  box-shadow: 0 10px 40px -10px rgba(var(--signal-rgb), 0.35), 
+              0 0 20px rgba(var(--signal-rgb), 0.15);
   transform: translateY(-8px);
 }
 

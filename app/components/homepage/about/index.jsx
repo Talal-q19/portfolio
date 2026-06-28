@@ -25,7 +25,7 @@ function AboutSection() {
         </div>
         <div className="flex justify-center order-1 lg:order-2">
           <div className="profile-command-frame group relative aspect-square w-[min(72vw,280px)] sm:w-[280px]">
-            <div className="relative h-full overflow-hidden rounded-lg border border-[#262626] bg-[#07101d] shadow-[0_24px_80px_rgba(0,0,0,0.36)] transition-all duration-500 lg:group-hover:border-[#D4AF37]/55 lg:group-hover:shadow-[0_28px_90px_rgba(100,216,255,0.14)]">
+            <div className="relative h-full overflow-hidden rounded-lg border border-[#262626] bg-[#07101d] shadow-[0_24px_80px_rgba(0,0,0,0.36)] transition-all duration-500 lg:group-hover:border-[#D4AF37]/55 lg:group-hover:shadow-[0_28px_90px_rgba(212,175,55,0.14)]">
               <Image
                 src={personalData.profile}
                 fill

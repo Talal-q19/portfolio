@@ -13,72 +13,80 @@ export default function ParticlesBackground() {
   }, []);
 
   return (
-    <Particles
-      id="tsparticles"
-      init={particlesInit}
-      className="absolute inset-0 -z-50 h-full w-full"
-      options={{
-        background: {
-          color: {
-            value: "transparent",
-          },
-        },
-        fpsLimit: prefersReducedMotion ? 30 : 60,
-        interactivity: {
-          events: {
-            onHover: {
-              enable: !prefersReducedMotion,
-              mode: "repulse",
-            },
-            resize: true,
-          },
-          modes: {
-            repulse: {
-              distance: 100,
-              duration: 0.4,
-            },
-          },
-        },
-        particles: {
-          color: {
-            value: "#64d8ff",
-          },
-          links: {
-            color: "#64d8ff",
-            distance: 150,
-            enable: true,
-            opacity: 0.2,
-            width: 1,
-          },
-          move: {
-            direction: "none",
-            enable: !prefersReducedMotion,
-            outModes: {
-              default: "bounce",
-            },
-            random: false,
-            speed: 1,
-            straight: false,
-          },
-          number: {
-            density: {
-              enable: true,
-              area: 800,
-            },
-            value: 80,
-          },
-          opacity: {
-            value: 0.5,
-          },
-          shape: {
-            type: "circle",
-          },
-          size: {
-            value: { min: 1, max: 3 },
-          },
-        },
-        detectRetina: true,
+    <div
+      className="fixed inset-0 -z-50 h-full w-full pointer-events-none"
+      style={{
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0px, transparent 100px, rgba(0, 0, 0, 0.12) 280px, black 600px)",
+        maskImage: "linear-gradient(to bottom, transparent 0px, transparent 100px, rgba(0, 0, 0, 0.12) 280px, black 600px)"
       }}
-    />
+    >
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="h-full w-full"
+        options={{
+          background: {
+            color: {
+              value: "transparent",
+            },
+          },
+          fpsLimit: prefersReducedMotion ? 30 : 60,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: !prefersReducedMotion,
+                mode: "repulse",
+              },
+              resize: true,
+            },
+            modes: {
+              repulse: {
+                distance: 100,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: ["#f4f1e8", "#D4AF37", "#ffffff"],
+            },
+            links: {
+              color: "#D4AF37",
+              distance: 150,
+              enable: true,
+              opacity: 0.12,
+              width: 1,
+            },
+            move: {
+              direction: "none",
+              enable: !prefersReducedMotion,
+              outModes: {
+                default: "bounce",
+              },
+              random: false,
+              speed: 0.8,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 55,
+            },
+            opacity: {
+              value: 0.3,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 3 },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
+    </div>
   );
 }
