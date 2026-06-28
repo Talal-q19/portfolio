@@ -47,10 +47,50 @@ function Experience() {
       </div>
 
       <div className="py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          <div className="flex justify-center items-start">
-            <div className="w-full h-full">
-              <AnimationLottie animationPath={experience} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="flex justify-center items-center">
+            <div className="w-full max-w-[340px] aspect-square flex items-center justify-center relative bg-[#07101d]/20 rounded-2xl border border-[#262626] p-6 shadow-[0_0_50px_rgba(212,175,55,0.03)]">
+              <svg viewBox="0 0 400 400" className="w-full h-full text-[#D4AF37]" aria-hidden="true">
+                <defs>
+                  <style>{`
+                    @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+                    @keyframes line-draw { to { stroke-dashoffset: 0; } }
+                    .cursor { animation: blink 1s infinite; }
+                    .code-line { stroke-dasharray: 200; stroke-dashoffset: 200; animation: line-draw 2.5s ease-out forwards; }
+                    .c-1 { animation-delay: 0.1s; }
+                    .c-2 { animation-delay: 0.4s; }
+                    .c-3 { animation-delay: 0.7s; }
+                    .c-4 { animation-delay: 1.0s; }
+                    .c-5 { animation-delay: 1.3s; }
+                    .c-6 { animation-delay: 1.6s; }
+                  `}</style>
+                </defs>
+                
+                {/* Terminal/IDE Window Frame */}
+                <rect x="20" y="50" width="360" height="300" rx="12" fill="#07101d" stroke="#D4AF37" stroke-width="2.5" />
+                
+                {/* Window Title Bar */}
+                <path d="M 20,90 L 380,90" stroke="#D4AF37" stroke-width="1.5" />
+                
+                {/* Window Control Buttons */}
+                <circle cx="45" cy="70" r="6" fill="#F59E0B" />
+                <circle cx="65" cy="70" r="6" fill="#D4AF37" />
+                <circle cx="85" cy="70" r="6" fill="#262626" />
+                
+                {/* File path text */}
+                <text x="120" y="74" font-family="monospace" font-size="12" fill="#a8b4c3" opacity="0.8">main.py - experience</text>
+                
+                {/* Mock Code Lines */}
+                <path d="M 45,130 L 220,130" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" className="code-line c-1" />
+                <path d="M 75,165 L 260,165" stroke="#D4AF37" stroke-width="6" stroke-linecap="round" className="code-line c-2" />
+                <path d="M 75,200 L 210,200" stroke="#D4AF37" stroke-width="6" stroke-linecap="round" className="code-line c-3" />
+                <path d="M 75,235 L 230,235" stroke="#D4AF37" stroke-width="6" stroke-linecap="round" className="code-line c-4" />
+                <path d="M 75,270 L 320,270" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" className="code-line c-5" />
+                <path d="M 75,305 L 180,305" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" className="code-line c-6" />
+                
+                {/* Blinking Cursor */}
+                <rect x="187" y="296" width="8" height="14" fill="#D4AF37" className="cursor" />
+              </svg>
             </div>
           </div>
 
