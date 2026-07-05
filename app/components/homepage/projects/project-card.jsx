@@ -166,42 +166,51 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
             <div className="overflow-hidden">
               <div className="mx-3 mb-3 overflow-hidden rounded-lg border border-[#262626] bg-[#03060d]/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] lg:mx-4 lg:mb-4">
                 <div className="grid grid-cols-1 gap-4 p-3 md:grid-cols-2 lg:p-5 lg:gap-6">
-                  <div 
-                    className="project-media-reveal relative aspect-video w-full overflow-hidden rounded-md border border-white/10 bg-[#06091d] flex items-center justify-center cursor-ew-resize sm:cursor-default"
-                    onTouchStart={onTouchStart}
-                    onTouchMove={onTouchMove}
-                    onTouchEnd={onTouchEnd}
-                  >
-                    <div className="project-window-scan absolute inset-0 z-10 pointer-events-none"></div>
-                    {previewImage && (
-                      <Image
-                        key={`${project.id}-${currentSlide}`}
-                        src={previewImage}
-                        alt={`${project.name} preview ${currentSlide + 1}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 58vw"
-                        className={`project-slide-image w-full h-full ${project.imageKind === 'logo' ? 'project-logo-float object-contain p-10 sm:p-14' : 'object-cover object-center'} transition-transform duration-700 ease-out ${isExpanded ? 'scale-100' : 'scale-95'}`}
-                        priority={project.id === 1}
-                      />
-                    )}
-                    {slides.length > 1 && (
-                      <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 gap-1.5 rounded-full border border-white/10 bg-[#050816]/80 px-2 py-1 backdrop-blur">
-                        {slides.map((slide, index) => (
-                          <button
-                            key={slide}
-                            type="button"
-                            aria-label={`Show ${project.name} image ${index + 1}`}
-                            onClick={() => setCurrentSlide(index)}
-                            className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === index ? 'w-5 bg-[#D4AF37]' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
-                          />
-                        ))}
+                  <div className="flex flex-col gap-2">
+                    {project.status && (
+                      <div className="md:hidden flex justify-start">
+                        <span className="rounded-full border border-[#D4AF37]/40 bg-[#07101d]/85 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+                          {project.status}
+                        </span>
                       </div>
                     )}
-                    {project.status && (
-                      <span className="absolute left-3 top-3 z-20 rounded-full border border-[#D4AF37]/40 bg-[#07101d]/85 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
-                        {project.status}
-                      </span>
-                    )}
+                    <div 
+                      className="project-media-reveal relative aspect-video w-full overflow-hidden rounded-md border border-white/10 bg-[#06091d] flex items-center justify-center cursor-ew-resize sm:cursor-default"
+                      onTouchStart={onTouchStart}
+                      onTouchMove={onTouchMove}
+                      onTouchEnd={onTouchEnd}
+                    >
+                      <div className="project-window-scan absolute inset-0 z-10 pointer-events-none"></div>
+                      {previewImage && (
+                        <Image
+                          key={`${project.id}-${currentSlide}`}
+                          src={previewImage}
+                          alt={`${project.name} preview ${currentSlide + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 58vw"
+                          className={`project-slide-image w-full h-full ${project.imageKind === 'logo' ? 'project-logo-float object-contain p-10 sm:p-14' : 'object-cover object-center'} transition-transform duration-700 ease-out ${isExpanded ? 'scale-100' : 'scale-95'}`}
+                          priority={project.id === 1}
+                        />
+                      )}
+                      {slides.length > 1 && (
+                        <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 gap-1.5 rounded-full border border-white/10 bg-[#050816]/80 px-2 py-1 backdrop-blur">
+                          {slides.map((slide, index) => (
+                            <button
+                              key={slide}
+                              type="button"
+                              aria-label={`Show ${project.name} image ${index + 1}`}
+                              onClick={() => setCurrentSlide(index)}
+                              className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === index ? 'w-5 bg-[#D4AF37]' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+                      {project.status && (
+                        <span className="hidden md:inline-block absolute left-3 top-3 z-20 rounded-full border border-[#D4AF37]/40 bg-[#07101d]/85 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+                          {project.status}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex flex-col justify-between gap-3 lg:gap-4 md:aspect-video overflow-y-auto pr-2 custom-scrollbar">
