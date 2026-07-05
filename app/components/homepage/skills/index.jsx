@@ -7,7 +7,7 @@ import { skillsImage } from "@/utils/skill-image";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiPlay, FiPause, FiMaximize2, FiMinimize2 } from "react-icons/fi";
+import { FiMaximize2, FiMinimize2 } from "react-icons/fi";
 
 const accentStyles = {
   emerald: {
@@ -33,30 +33,26 @@ const accentStyles = {
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04
-    }
+    opacity: 1
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 15, scale: 0.95 },
-  visible: {
+  hidden: { opacity: 0, y: 4 },
+  visible: (delay) => ({
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      type: "spring",
-      stiffness: 110,
-      damping: 14
+      type: "tween",
+      ease: "easeOut",
+      duration: 0.25,
+      delay: delay
     }
-  }
+  })
 };
 
 function Skills() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const activeCategory = skillCategories[activeSlide];
@@ -69,6 +65,28 @@ function Skills() {
   const marqueeSkills = useMemo(() => {
     return [...visibleSkills, ...visibleSkills, ...visibleSkills];
   }, [visibleSkills]);
+
+  // Generate randomized delays for the grid layout cards
+  const randomizedDelays = useMemo(() => {
+    const count = visibleSkills.length;
+    const delays = Array.from({ length: count }, (_, i) => i * 0.035);
+    for (let i = delays.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [delays[i], delays[j]] = [delays[j], delays[i]];
+    }
+    return delays;
+  }, [visibleSkills]);
+
+  // Generate randomized delays for the marquee slideshow cards
+  const randomizedDelaysMarquee = useMemo(() => {
+    const count = marqueeSkills.length;
+    const delays = Array.from({ length: count }, (_, i) => i * 0.015);
+    for (let i = delays.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [delays[i], delays[j]] = [delays[j], delays[i]];
+    }
+    return delays;
+  }, [marqueeSkills]);
 
   return (
     <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#262626]">
@@ -132,19 +150,8 @@ function Skills() {
               })}
             </div>
 
-            {/* Animation Controls (Play/Pause, Expand) */}
+            {/* Animation Controls (Expand Only) */}
             <div className="flex h-fit items-center gap-1 rounded-lg border border-[#262626] bg-[#07101d] p-1 shadow-md">
-              <button
-                type="button"
-                onClick={() => setIsPaused(!isPaused)}
-                disabled={isExpanded}
-                className="rounded-md p-2 text-xs font-semibold uppercase transition-all duration-300 text-[#a8b4c3] hover:bg-[#151515] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[#a8b4c3] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[#D4AF37]"
-                title={isPaused ? "Resume Slideshow" : "Pause Slideshow"}
-                aria-label={isPaused ? "Resume Slideshow" : "Pause Slideshow"}
-              >
-                {isPaused ? <FiPlay size={16} /> : <FiPause size={16} />}
-              </button>
-              <span className="h-4 w-px bg-[#262626]" />
               <button
                 type="button"
                 onClick={() => setIsExpanded(!isExpanded)}
@@ -158,108 +165,120 @@ function Skills() {
           </div>
         </div>
 
-        <div className="relative border-t border-[#262626]/85 pt-6 min-h-[160px]">
-          <AnimatePresence mode="wait">
-            {isExpanded ? (
-              <motion.div
-                key="grid-layout"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
-              >
+        <div className="relative border-t border-[#262626]/85 pt-6">
+          <motion.div
+            animate={{ height: "auto" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <AnimatePresence mode="wait">
+              {isExpanded ? (
                 <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5"
+                  key="grid-layout"
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.25 }}
                 >
-                  {visibleSkills.map((skill) => (
-                    <motion.div
-                      key={skill}
-                      variants={itemVariants}
-                      className="skill-card h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
-                    >
-                      <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
-                        <div className="flex -translate-y-[1px] justify-center">
-                          <div className="w-3/4">
-                            <div className={`h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent`} />
+                  <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5"
+                  >
+                    {visibleSkills.map((skill, index) => {
+                      const delay = randomizedDelays[index] || 0;
+
+                      return (
+                        <motion.div
+                          key={skill}
+                          variants={itemVariants}
+                          custom={delay}
+                          className="skill-card h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
+                        >
+                          <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
+                            <div className="flex -translate-y-[1px] justify-center">
+                              <div className="w-3/4">
+                                <div className={`h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent`} />
+                              </div>
+                            </div>
+                            <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
+                              <div className="h-8 sm:h-10">
+                                <Image
+                                  src={skillsImage(skill)?.src}
+                                  alt={skill}
+                                  width={40}
+                                  height={40}
+                                  className="h-full w-auto rounded-lg"
+                                />
+                              </div>
+                              <p className="max-w-full truncate px-1 text-center text-sm text-white sm:text-base">
+                                {skill}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
-                          <div className="h-8 sm:h-10">
-                            <Image
-                              src={skillsImage(skill)?.src}
-                              alt={skill}
-                              width={40}
-                              height={40}
-                              className="h-full w-auto rounded-lg"
-                            />
-                          </div>
-                          <p className="max-w-full truncate px-1 text-center text-sm text-white sm:text-base">
-                            {skill}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                        </motion.div>
+                      );
+                    })}
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="slideshow-layout"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
-                className="skill-slide-panel h-[128px] overflow-hidden sm:h-[152px] flex items-center w-full"
-              >
-                <div
-                  className="skill-marquee"
-                  data-direction="left"
-                  style={{
-                    "--skill-marquee-duration": activeCategory.title === "Backend" ? "32s" : "30s"
-                  }}
+              ) : (
+                <motion.div
+                  key="slideshow-layout"
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.25 }}
+                  className="skill-slide-panel h-[128px] overflow-hidden sm:h-[152px] flex items-center w-full"
                 >
                   <div
-                    className="skill-marquee-track"
+                    className="skill-marquee"
+                    data-direction="left"
                     style={{
-                      animationPlayState: isPaused ? "paused" : "running"
+                      "--skill-marquee-duration": activeCategory.title === "Backend" ? "32s" : "30s"
                     }}
                   >
-                    {marqueeSkills.map((skill, id) => (
-                      <div
-                        className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 m-2 sm:m-3 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
-                        key={`${skill}-${id}`}
-                      >
-                        <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
-                          <div className="flex -translate-y-[1px] justify-center">
-                            <div className="w-3/4">
-                              <div className={`h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent`} />
+                    <div className="skill-marquee-track">
+                      {marqueeSkills.map((skill, id) => {
+                        const delay = randomizedDelaysMarquee[id] || 0;
+
+                        return (
+                          <motion.div
+                            className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 m-2 sm:m-3 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
+                            key={`${skill}-${id}`}
+                            variants={itemVariants}
+                            custom={delay}
+                          >
+                            <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
+                              <div className="flex -translate-y-[1px] justify-center">
+                                <div className="w-3/4">
+                                  <div className={`h-[1px] w-full bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent`} />
+                                </div>
+                              </div>
+                              <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
+                                <div className="h-8 sm:h-10">
+                                  <Image
+                                    src={skillsImage(skill)?.src}
+                                    alt={skill}
+                                    width={40}
+                                    height={40}
+                                    className="h-full w-auto rounded-lg"
+                                  />
+                                </div>
+                                <p className="max-w-full truncate px-1 text-center text-sm text-white sm:text-base">
+                                  {skill}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
-                            <div className="h-8 sm:h-10">
-                              <Image
-                                src={skillsImage(skill)?.src}
-                                alt={skill}
-                                width={40}
-                                height={40}
-                                className="h-full w-auto rounded-lg"
-                              />
-                            </div>
-                            <p className="max-w-full truncate px-1 text-center text-sm text-white sm:text-base">
-                              {skill}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                          </motion.div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
     </div>
