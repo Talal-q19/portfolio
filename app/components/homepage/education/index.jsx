@@ -18,7 +18,7 @@ function Education() {
   };
 
   return (
-    <SectionVisualFrame id="education" variant="timeline" accent="amber" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
+    <SectionVisualFrame id="education" variant="timeline" accent="amber" sectionTitle="Education" sectionIndex="05" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
       <Image
         src="/section.svg"
         alt="Hero"

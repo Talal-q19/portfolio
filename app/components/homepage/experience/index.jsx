@@ -17,7 +17,7 @@ function Experience() {
   const [activeId, setActiveId] = useState(experiences[0]?.id || 1);
 
   return (
-    <SectionVisualFrame id="experience" variant="timeline" accent="cyan" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
+    <SectionVisualFrame id="experience" variant="timeline" accent="cyan" sectionTitle="Experience" sectionIndex="02" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
       <Image
         src="/section.svg"
         alt="Hero"

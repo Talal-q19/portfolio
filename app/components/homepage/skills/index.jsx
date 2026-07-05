@@ -6,6 +6,7 @@ import { skillCategories } from "@/utils/data/skills";
 import { skillsImage } from "@/utils/skill-image";
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import SectionVisualFrame from "../../helper/section-visual-frame";
 
 const accentStyles = {
   emerald: {
@@ -41,8 +42,10 @@ function Skills() {
     return [...visibleSkills, ...visibleSkills, ...visibleSkills];
   }, [visibleSkills]);
 
+  const currentAccent = activeCategory.accent === "sky" ? "cyan" : activeCategory.accent;
+
   return (
-    <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#262626]">
+    <SectionVisualFrame id="skills" variant="skills" accent={currentAccent} sectionTitle="Skills" sectionIndex="03" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#262626]">
       <div className={`absolute left-1/2 top-10 h-28 w-2/3 -translate-x-1/2 bg-gradient-to-r ${activeAccent.glow} blur-3xl opacity-70`} />
 
       <div className="flex justify-center -translate-y-[1px]">
@@ -144,7 +147,7 @@ function Skills() {
           </div>
         </div>
       </div>
-    </div>
+    </SectionVisualFrame>
   );
 };
 

@@ -34,7 +34,7 @@ const Projects = () => {
   };
 
   return (
-    <SectionVisualFrame id='projects' variant="projects" accent="cyan" className={`relative z-30 my-12 transition-[padding-bottom] duration-500 ease-out lg:my-24 ${hasActiveProject ? 'pb-20 lg:pb-28' : 'pb-0'}`}>
+    <SectionVisualFrame id='projects' variant="projects" accent="cyan" sectionTitle="Projects" sectionIndex="04" className={`relative z-30 my-12 transition-[padding-bottom] duration-500 ease-out lg:my-24 ${hasActiveProject ? 'pb-20 lg:pb-28' : 'pb-0'}`}>
       <div className="sticky top-[var(--nav-safe-top)]">
         <div className="absolute -top-3 left-0 h-20 w-20 translate-x-1/2 rounded-full bg-[#D4AF37] opacity-10 blur-3xl"></div>
         <div className="flex items-center justify-start relative">

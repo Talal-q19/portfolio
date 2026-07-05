@@ -7,7 +7,7 @@ import SectionVisualFrame from "../../helper/section-visual-frame";
 
 function AboutSection() {
   return (
-    <SectionVisualFrame id="about" variant="about" accent="cyan" className="my-12 lg:my-16 relative rounded-lg py-2">
+    <SectionVisualFrame id="about" variant="about" accent="cyan" sectionTitle="About" sectionIndex="01" className="my-12 lg:my-16 relative rounded-lg py-2">
       <div className="hidden lg:flex flex-col items-center absolute top-16 -right-8">
         <span className="bg-[#151515] w-fit text-[#f4f1e8] rotate-90 p-2 px-5 font-mono text-sm uppercase tracking-[0.14em] rounded-md">
           ABOUT ME
