@@ -2,7 +2,7 @@
 
 import { experiences } from "@/utils/data/experience";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiChevronDown, FiCalendar } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
@@ -15,6 +15,16 @@ const companyLogos = {
 
 function Experience() {
   const [activeId, setActiveId] = useState(experiences[0]?.id || 1);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [activeId]);
 
   return (
     <SectionVisualFrame id="experience" variant="timeline" accent="cyan" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
@@ -90,50 +100,118 @@ function Experience() {
                     className="ufo-panel w-full min-h-[460px] md:min-h-[480px] p-6 sm:p-8 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-xl relative overflow-hidden flex flex-col justify-between hover:transform-none"
                     style={{ transition: "none" }}
                   >
-                    <div className="relative z-10 flex-1">
-                      {/* Header */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-zinc-800/80">
-                        <div className="flex items-center gap-4">
-                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 flex items-center justify-center p-2.5 shadow-md">
-                            <Image
-                              src={companyLogos[exp.company] || "/company-logos/default.jpg"}
-                              alt={exp.company}
-                              width={54}
-                              height={54}
-                              className="h-full w-full object-contain rounded-lg"
-                            />
+                    <div className="relative z-10 flex-1 flex flex-col h-full justify-between">
+                      <div>
+                        {/* Header */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-zinc-800/80">
+                          <div className="flex items-center gap-4">
+                            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 flex items-center justify-center p-2.5 shadow-md">
+                              <Image
+                                src={companyLogos[exp.company] || "/company-logos/default.jpg"}
+                                alt={exp.company}
+                                width={54}
+                                height={54}
+                                className="h-full w-full object-contain rounded-lg"
+                              />
+                            </div>
+                            <div>
+                              <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white uppercase">
+                                {exp.title}
+                              </h3>
+                              <p className="text-base font-semibold text-[#D4AF37] mt-0.5">
+                                {exp.company}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white uppercase">
-                              {exp.title}
-                            </h3>
-                            <p className="text-base font-semibold text-[#D4AF37] mt-0.5">
-                              {exp.company}
-                            </p>
+                          
+                          <div className="self-start sm:self-center">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/25 bg-[#D4AF37]/5 px-3 py-1 font-mono text-xs font-semibold text-[#D4AF37]">
+                              <FiCalendar className="w-3.5 h-3.5" />
+                              {exp.duration}
+                            </span>
                           </div>
                         </div>
-                        
-                        <div className="self-start sm:self-center">
-                          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/25 bg-[#D4AF37]/5 px-3 py-1 font-mono text-xs font-semibold text-[#D4AF37]">
-                            <FiCalendar className="w-3.5 h-3.5" />
-                            {exp.duration}
-                          </span>
-                        </div>
-                      </div>
 
-                      {/* Detailed Highlights */}
-                      <div className="mt-6">
-                        <p className="text-xs font-mono font-bold uppercase tracking-[0.16em] text-zinc-500 mb-4">
-                          Key Contributions & Highlights
-                        </p>
-                        <ul className="space-y-4 text-zinc-300 text-sm sm:text-[15px] leading-relaxed">
-                          {exp.highlights.map((highlight, index) => (
-                            <li key={index} className="flex gap-4">
-                              <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
-                              <span>{highlight}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        {/* Detailed Highlights or Loader */}
+                        <div className="mt-6 flex-1 flex flex-col min-h-[260px]">
+                          <p className="text-xs font-mono font-bold uppercase tracking-[0.16em] text-zinc-500 mb-4">
+                            Key Contributions & Highlights
+                          </p>
+                          <AnimatePresence mode="wait">
+                            {isLoading ? (
+                              <motion.div
+                                key="loader"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.15 }}
+                                className="flex-1 flex flex-col items-center justify-center py-6 min-h-[220px]"
+                              >
+                                <style>{`
+                                  @keyframes miniFadeIn {
+                                    0% { opacity: 0; filter: blur(4px); transform: translateY(4px); }
+                                    100% { opacity: 1; filter: blur(0px); transform: translateY(0); }
+                                  }
+                                  @keyframes pulseGlow {
+                                    0%, 100% { opacity: 0.2; }
+                                    50% { opacity: 0.6; }
+                                  }
+                                  .loader-t {
+                                    animation: miniFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                                  }
+                                  .loader-q {
+                                    animation: miniFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                                    animation-delay: 0.15s;
+                                    opacity: 0;
+                                  }
+                                  .scan-line {
+                                    animation: pulseGlow 1.5s ease-in-out infinite;
+                                  }
+                                `}</style>
+                                
+                                <div className="relative flex flex-col items-center justify-center">
+                                  <div className="absolute w-24 h-24 bg-[#D4AF37]/5 rounded-full blur-[30px] scan-line"></div>
+                                  
+                                  <div className="flex items-center -space-x-2">
+                                    <span className="loader-t text-5xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-[#D4AF37] z-20">
+                                      T
+                                    </span>
+                                    <span className="loader-q z-10 bg-gradient-to-r from-[#D4AF37] via-[#f4f1e8] to-[#F59E0B] bg-clip-text font-mono text-5xl font-light text-transparent opacity-90 mix-blend-screen">
+                                      Q
+                                    </span>
+                                  </div>
+
+                                  <div className="mt-5 flex flex-col items-center">
+                                    <span className="text-[10px] font-mono tracking-[0.3em] text-[#D4AF37] uppercase animate-pulse">
+                                      Accessing Credentials...
+                                    </span>
+                                    <div className="mt-3 flex gap-1.5">
+                                      <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-bounce" style={{ animationDelay: '0ms' }} />
+                                      <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-bounce" style={{ animationDelay: '150ms' }} />
+                                      <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ) : (
+                              <motion.ul
+                                key="highlights"
+                                initial={{ opacity: 0, y: 4 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -4 }}
+                                transition={{ duration: 0.22 }}
+                                className="space-y-4 text-zinc-300 text-sm sm:text-[15px] leading-relaxed"
+                              >
+                                {exp.highlights.map((highlight, index) => (
+                                  <li key={index} className="flex gap-4">
+                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
+                                    <span>{highlight}</span>
+                                  </li>
+                                ))}
+                              </motion.ul>
+                            )}
+                          </AnimatePresence>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
