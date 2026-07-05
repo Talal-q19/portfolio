@@ -94,8 +94,8 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
   return (
     <div data-expanded={isExpanded ? 'true' : 'false'} className={`window-card group/window w-full transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(0,0,0,0.85)] !border-[#363636]' : ''}`}>
-      <div className="window-header px-4 lg:px-6 py-2.5 lg:py-3.5 relative z-20">
-        <div className="absolute top-1/2 flex -translate-y-1/2 flex-row items-center space-x-1.5 lg:space-x-2">
+      <div className="window-header flex items-center justify-between px-3 py-2.5 lg:px-6 lg:py-3 relative z-20">
+        <div className="flex flex-row items-center space-x-1.5 lg:space-x-2 shrink-0">
           <WindowControl label={`Close ${project.name} preview`} color="bg-[#FF5F56] text-[#4C0002]" onClick={onClose} pressed={false}>
             <FiX size={8} />
           </WindowControl>
@@ -104,12 +104,14 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
           </WindowControl>
           <WindowControl label={`Expand ${project.name}`} color="bg-[#27C93F] text-[#004D0B]" onClick={onExpand} pressed={isExpanded} />
         </div>
-        <div className="flex items-center justify-center gap-2 px-12">
-          <span className={`status-dot ${project.status ? 'progress' : 'active'} shrink-0`} title={project.status || 'Active'} />
+        <div className="flex-1 flex items-center justify-center gap-1.5 px-3 min-w-0">
+          <span className="status-dot active shrink-0" title={project.status || 'Active'} />
           <p className="truncate text-center text-xs sm:text-sm font-semibold tracking-wide text-slate-300 transition-colors duration-300 group-hover/window:text-[#D4AF37] lg:text-base">
             {project.name}
           </p>
         </div>
+        {/* Balanced spacer so text is centered and doesn't overlap */}
+        <div className="w-12 lg:w-16 shrink-0 pointer-events-none" aria-hidden="true" />
       </div>
 
       <div className={`window-body relative z-10 grid border-t border-[#262626]/40 transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>

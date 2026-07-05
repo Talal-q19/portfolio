@@ -231,6 +231,7 @@ html {
   width: 7.5px;
   height: 7.5px;
   border-radius: 50%;
+  transition: background-color 0.3s ease;
 }
 
 .status-dot.active {
@@ -239,4 +240,12 @@ html {
 
 .status-dot.progress {
   background-color: #F59E0B; /* Flat Amber */
+}
+
+.window-card:hover .status-dot.active {
+  background-color: #D4AF37; /* Transitions to gold on card hover */
+}
+
+.window-card:hover .status-dot.progress {
+  background-color: #64d8ff; /* Transitions to cyan on card hover */
 }
