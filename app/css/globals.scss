@@ -192,3 +192,51 @@ html {
 .animate-fadeIn {
   animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Premium OS Window-Card Styles */
+.window-card {
+  position: relative;
+  width: 100%;
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid #262626;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s ease;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.window-card:hover {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: #363636;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+}
+
+.window-header {
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid #262626;
+  position: relative;
+  z-index: 20;
+}
+
+.window-body {
+  background: transparent;
+  position: relative;
+  z-index: 10;
+}
+
+/* Flat Status Indicator Dot (No Glow or Pulse) */
+.status-dot {
+  display: inline-block;
+  width: 7.5px;
+  height: 7.5px;
+  border-radius: 50%;
+}
+
+.status-dot.active {
+  background-color: #10B981; /* Flat Green */
+}
+
+.status-dot.progress {
+  background-color: #F59E0B; /* Flat Amber */
+}

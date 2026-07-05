@@ -9,6 +9,7 @@ import ProjectCard from './project-card';
 const Projects = () => {
   const [expandedProjectId, setExpandedProjectId] = useState(null);
   const [minimizedProjects, setMinimizedProjects] = useState({});
+  const [closedProjects, setClosedProjects] = useState({});
   const hasExpandedProject = expandedProjectId !== null;
   const hasActiveProject = hasExpandedProject || Object.values(minimizedProjects).some(Boolean);
 
@@ -29,8 +30,15 @@ const Projects = () => {
   };
 
   const handleClose = (projectId) => {
-    setExpandedProjectId((currentId) => currentId === projectId ? null : currentId);
+    setClosedProjects((current) => ({ ...current, [projectId]: true }));
+    if (expandedProjectId === projectId) {
+      setExpandedProjectId(null);
+    }
     setMinimizedProjects((current) => ({ ...current, [projectId]: false }));
+  };
+
+  const handleRestore = (projectId) => {
+    setClosedProjects((current) => ({ ...current, [projectId]: false }));
   };
 
   return (
@@ -47,28 +55,46 @@ const Projects = () => {
 
       <div className="pt-24">
         <div className={`flex flex-col transition-[gap] duration-500 ease-out ${hasActiveProject ? 'gap-6' : 'gap-4'}`}>
-          {projectsData.map((project, index) => (
-            <motion.div
-              initial={{ opacity: 0, y: 60, scale: 0.98 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: false, amount: 0.1 }}
-              transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-              id={`sticky-card-${index + 1}`}
-              key={index}
-              className={`w-full mx-auto transition-[max-width,transform] duration-500 ease-out ${hasActiveProject ? 'relative' : 'sticky-card sticky'} ${expandedProjectId === project.id ? 'max-w-6xl scale-[1.005]' : 'max-w-5xl scale-100'}`}
-            >
-              <div className="box-border flex items-center justify-center rounded shadow-[0_0_30px_0_rgba(0,0,0,0.3)] transition-all duration-[0.5s]">
-                <ProjectCard
-                  project={project}
-                  isExpanded={expandedProjectId === project.id}
-                  isMinimized={!!minimizedProjects[project.id]}
-                  onClose={() => handleClose(project.id)}
-                  onExpand={() => handleExpand(project.id)}
-                  onMinimize={() => handleMinimize(project.id)}
-                />
-              </div>
-            </motion.div>
-          ))}
+          {projectsData.map((project, index) => {
+            const isClosed = !!closedProjects[project.id];
+
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: 60, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+                id={`sticky-card-${index + 1}`}
+                key={index}
+                className={`w-full mx-auto transition-[max-width,transform] duration-500 ease-out ${hasActiveProject ? 'relative' : 'sticky-card sticky'} ${expandedProjectId === project.id ? 'max-w-6xl scale-[1.005]' : 'max-w-5xl scale-100'}`}
+              >
+                {isClosed ? (
+                  <div 
+                    onClick={() => handleRestore(project.id)}
+                    className="w-full max-w-5xl mx-auto border border-[#262626]/70 bg-black/45 hover:bg-black/60 hover:border-[#D4AF37]/50 rounded-lg p-3.5 px-6 flex items-center justify-between font-mono text-[11px] md:text-xs text-slate-500 cursor-pointer transition-all duration-300 shadow-md"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[#D4AF37] font-bold animate-pulse">&gt;</span>
+                      <span>run restore-{project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.sh</span>
+                      <span className="text-[9px] text-red-500/70 border border-red-500/30 rounded px-1.5 py-0.5 ml-2 font-sans font-semibold uppercase tracking-wider">Closed</span>
+                    </div>
+                    <span className="text-slate-600 hover:text-[#D4AF37] text-[10px] uppercase tracking-wider font-semibold transition-colors duration-200">Relaunch Window</span>
+                  </div>
+                ) : (
+                  <div className="box-border w-full flex items-center justify-center transition-all duration-500">
+                    <ProjectCard
+                      project={project}
+                      isExpanded={expandedProjectId === project.id}
+                      isMinimized={!!minimizedProjects[project.id]}
+                      onClose={() => handleClose(project.id)}
+                      onExpand={() => handleExpand(project.id)}
+                      onMinimize={() => handleMinimize(project.id)}
+                    />
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </SectionVisualFrame>
