@@ -90,7 +90,7 @@ function Skills() {
 
   return (
     <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#262626]">
-      <div className={`absolute left-1/2 top-10 h-28 w-2/3 -translate-x-1/2 bg-gradient-to-r ${activeAccent.glow} blur-3xl opacity-70`} />
+      <div className={`absolute left-1/2 top-10 h-28 w-2/3 -translate-x-1/2 bg-gradient-to-r ${activeAccent.glow} blur-3xl opacity-70 pointer-events-none`} />
 
       <div className="flex justify-center -translate-y-[1px]">
         <div className="w-3/4">
@@ -174,7 +174,7 @@ function Skills() {
             <AnimatePresence mode="wait">
               {isExpanded ? (
                 <motion.div
-                  key="grid-layout"
+                  key={`grid-layout-${activeSlide}`}
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -194,7 +194,8 @@ function Skills() {
                           key={skill}
                           variants={itemVariants}
                           custom={delay}
-                          className="skill-card h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
+                          whileHover={{ scale: 1.08 }}
+                          className="skill-card h-28 sm:h-32 flex flex-col items-center justify-center rounded-lg group relative cursor-pointer"
                         >
                           <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
                             <div className="flex -translate-y-[1px] justify-center">
@@ -224,7 +225,7 @@ function Skills() {
                 </motion.div>
               ) : (
                 <motion.div
-                  key="slideshow-layout"
+                  key={`slideshow-layout-${activeSlide}`}
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -244,10 +245,11 @@ function Skills() {
 
                         return (
                           <motion.div
-                            className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center transition-all duration-500 m-2 sm:m-3 rounded-lg group relative hover:scale-[1.08] cursor-pointer"
+                            className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center m-2 sm:m-3 rounded-lg group relative cursor-pointer"
                             key={`${skill}-${id}`}
                             variants={itemVariants}
                             custom={delay}
+                            whileHover={{ scale: 1.08 }}
                           >
                             <div className="ufo-panel skill-card-inner h-full w-full transition-all duration-500">
                               <div className="flex -translate-y-[1px] justify-center">

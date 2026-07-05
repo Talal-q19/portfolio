@@ -40,7 +40,7 @@ function Experience() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-10">
           
           {/* Sidebar Tabs - Left Column */}
-          <div className="col-span-1 md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0 scrollbar-none snap-x">
+          <div className="col-span-1 md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0 horizontal-scrollbar snap-x">
             {experiences.map((exp) => {
               const isActive = activeId === exp.id;
               return (
@@ -87,7 +87,8 @@ function Experience() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.22, ease: "easeInOut" }}
-                    className="ufo-panel w-full min-h-[460px] md:min-h-[480px] p-6 sm:p-8 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-xl relative overflow-hidden flex flex-col justify-between"
+                    className="ufo-panel w-full min-h-[460px] md:min-h-[480px] p-6 sm:p-8 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-xl relative overflow-hidden flex flex-col justify-between hover:transform-none"
+                    style={{ transition: "none" }}
                   >
                     <div className="relative z-10 flex-1">
                       {/* Header */}

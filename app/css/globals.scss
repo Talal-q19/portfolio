@@ -192,3 +192,84 @@ html {
 .animate-fadeIn {
   animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Premium OS Window-Card Styles */
+.window-card {
+  position: relative;
+  width: 100%;
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid #262626;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s ease;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.window-card:hover {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: #363636;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+}
+
+.window-header {
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid #262626;
+  position: relative;
+  z-index: 20;
+}
+
+.window-body {
+  background: transparent;
+  position: relative;
+  z-index: 10;
+}
+
+/* Flat Status Indicator Dot (No Glow or Pulse) */
+.status-dot {
+  display: inline-block;
+  width: 7.5px;
+  height: 7.5px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.status-dot.active {
+  background-color: #10B981; /* Flat Green */
+}
+
+.status-dot.progress {
+  background-color: #F59E0B; /* Flat Amber */
+}
+
+.window-card:hover .status-dot.active {
+  background-color: #D4AF37; /* Transitions to gold on card hover */
+}
+
+.window-card:hover .status-dot.progress {
+  background-color: #64d8ff; /* Transitions to cyan on card hover */
+}
+
+/* Custom horizontal scrollbar for mobile experience tabs */
+@media (max-width: 767px) {
+  .horizontal-scrollbar {
+    overflow-x: auto !important;
+    scrollbar-width: auto !important;
+    -ms-overflow-style: auto !important;
+  }
+  
+  .horizontal-scrollbar::-webkit-scrollbar {
+    height: 5px !important;
+    display: block !important;
+  }
+
+  .horizontal-scrollbar::-webkit-scrollbar-track {
+    background: rgba(21, 21, 21, 0.4) !important;
+    border-radius: 999px;
+  }
+
+  .horizontal-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--signal), var(--solar)) !important;
+    border-radius: 999px;
+  }
+}
