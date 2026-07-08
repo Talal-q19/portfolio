@@ -89,9 +89,19 @@ function Navbar() {
         <div className="flex flex-shrink-0 items-center">
           <Link
             href="/"
-            className="text-xl font-semibold tracking-[-0.04em] text-[#f4f1e8] no-underline transition-colors duration-300 hover:text-[#64d8ff] sm:text-2xl"
+            className="flex items-center gap-3 group no-underline"
           >
-            Talal Qasim
+            <div className="flex items-center -space-x-1.5 transition-transform duration-300 group-hover:scale-105 select-none">
+              <span className="font-serif font-light text-2xl text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-[#D4AF37] z-20">
+                T
+              </span>
+              <span className="font-mono font-light text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#f4f1e8] to-[#F59E0B] opacity-90 mix-blend-screen z-10">
+                Q
+              </span>
+            </div>
+            <span className="text-xl font-semibold tracking-[-0.04em] text-[#f4f1e8] transition-colors duration-300 group-hover:text-[#64d8ff] sm:text-2xl">
+              Talal Qasim
+            </span>
           </Link>
         </div>
 

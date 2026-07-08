@@ -25,8 +25,8 @@ export const metadata = {
   description:
     "This is the portfolio of Talal Qasim, a software engineer focused on backend engineering for fintech, crypto trading platforms, secure services, and scalable system development.",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/profilePic.jpeg",
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
   },
   openGraph: {
     title: "Portfolio of Talal Qasim - Software Engineer",
