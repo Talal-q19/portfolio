@@ -10,7 +10,7 @@ function Footer() {
         </div>
         <div className="flex items-center justify-center text-center">
           <p className="text-sm">
-            &copy; Portfolio by <Link target="_blank" href="https://www.linkedin.com/in/talal-qasim-b8622b203" className="text-[#D4AF37] hover:text-[#F59E0B] transition-colors duration-300 font-medium">Talal Qasim</Link>
+            &copy; Portfolio by <Link target="_blank" href="https://www.linkedin.com/in/talal-q-b8622b203" className="text-[#D4AF37] hover:text-[#F59E0B] transition-colors duration-300 font-medium">Talal Qasim</Link>
           </p>
         </div>
       </div>

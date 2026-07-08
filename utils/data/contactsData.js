@@ -5,7 +5,7 @@ export const contactsData = {
     github: 'https://github.com/Talal-q19',
     facebook: '',
     instagram: 'https://www.instagram.com/talal.q19/',
-    linkedIn: 'https://www.linkedin.com/in/talal-qasim-b8622b203',
+    linkedIn: 'https://www.linkedin.com/in/talal-q-b8622b203',
     twitter: '',
     stackOverflow: '',
     devUsername: "Talal-q19"

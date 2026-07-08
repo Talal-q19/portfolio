@@ -93,6 +93,17 @@ body::-webkit-scrollbar-thumb:hover {
   transform: translateY(-8px);
 }
 
+.ufo-panel.no-hover-glow:hover {
+  border-color: rgba(var(--signal-rgb), 0.2) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.ufo-panel.no-hover-glow:hover::before {
+  left: -100% !important;
+}
+
+
 .ufo-panel::before {
   content: "";
   position: absolute;
