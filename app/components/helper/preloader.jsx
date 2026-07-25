@@ -67,6 +67,7 @@ export default function Preloader() {
           speed={0.35} 
           size={0.0035} 
           opacity={0.45} 
+          shootingStars={false}
         />
       </div>
       <style>{`
