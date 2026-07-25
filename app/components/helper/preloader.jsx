@@ -61,7 +61,13 @@ export default function Preloader() {
       }`}
     >
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <GalaxyBackground onLoaded={() => setBgLoaded(true)} />
+        <GalaxyBackground 
+          onLoaded={() => setBgLoaded(true)} 
+          count={1800} 
+          speed={0.35} 
+          size={0.0035} 
+          opacity={0.45} 
+        />
       </div>
       <style>{`
         @keyframes elegantShimmer {
