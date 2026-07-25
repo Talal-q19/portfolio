@@ -79,7 +79,7 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-[100] border-b border-[#64d8ff]/10 bg-[#03060d]/90 backdrop-blur-xl transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-[100] border-b border-[#64d8ff]/15 bg-[#03060d]/90 backdrop-blur-xl transition-all duration-500 ${
         isScrolled
           ? "shadow-[0_10px_34px_rgba(13,18,36,0.82)]"
           : "shadow-[0_10px_40px_rgba(3,7,18,0.35)]"

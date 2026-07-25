@@ -18,24 +18,32 @@ import GalaxyBackground from "../galaxy-background";
 const codeLines = [
   [
     { text: "const ", className: "text-[#D4AF37]" },
-    { text: "coder ", className: "text-[#f4f1e8]" },
+    { text: "softwareEngineer ", className: "text-[#f4f1e8]" },
     { text: "= ", className: "text-[#D4AF37]" },
     { text: "{", className: "text-[#718297]" },
   ],
   [
     { text: "  name: ", className: "text-white" },
     { text: "'", className: "text-gray-400" },
-    { text: "Talal Qasim", className: "text-amber-300" },
+    { text: "Talal Qasim", className: "text-amber-300 font-semibold" },
+    { text: "',", className: "text-gray-400" },
+  ],
+  [
+    { text: "  role: ", className: "text-white" },
+    { text: "'", className: "text-gray-400" },
+    { text: "Software Engineer / Full Stack Developer", className: "text-emerald-300 font-semibold" },
     { text: "',", className: "text-gray-400" },
   ],
   [
     { text: "  skills: ", className: "text-white" },
     { text: "['", className: "text-gray-400" },
-    { text: "Java", className: "text-amber-300" },
+    { text: "Java", className: "text-amber-300 font-bold" },
     { text: "', '", className: "text-gray-400" },
-    { text: "Spring Boot", className: "text-amber-300" },
+    { text: "Spring Boot", className: "text-amber-300 font-bold" },
     { text: "', '", className: "text-gray-400" },
-    { text: "Python", className: "text-amber-300" },
+    { text: "React", className: "text-amber-300" },
+    { text: "', '", className: "text-gray-400" },
+    { text: "Next.js", className: "text-amber-300" },
     { text: "', '", className: "text-gray-400" },
     { text: "PostgreSQL", className: "text-amber-300" },
     { text: "', '", className: "text-gray-400" },
@@ -44,10 +52,6 @@ const codeLines = [
     { text: "Docker", className: "text-amber-300" },
     { text: "', '", className: "text-gray-400" },
     { text: "AWS", className: "text-amber-300" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "Redis", className: "text-amber-300" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "WebSockets", className: "text-amber-300" },
     { text: "'],", className: "text-gray-400" },
   ],
   [
@@ -77,15 +81,11 @@ const codeLines = [
   [
     { text: "      this.", className: "text-cyan-400" },
     { text: "hardWorker ", className: "text-white" },
-    { text: "&&", className: "text-amber-300" },
-  ],
-  [
-    { text: "      this.", className: "text-cyan-400" },
+    { text: "&& ", className: "text-amber-300" },
+    { text: "this.", className: "text-cyan-400" },
     { text: "problemSolver ", className: "text-white" },
-    { text: "&&", className: "text-amber-300" },
-  ],
-  [
-    { text: "      this.", className: "text-cyan-400" },
+    { text: "&& ", className: "text-amber-300" },
+    { text: "this.", className: "text-cyan-400" },
     { text: "skills.length ", className: "text-white" },
     { text: ">= ", className: "text-amber-300" },
     { text: "5", className: "text-orange-400" },
@@ -93,6 +93,58 @@ const codeLines = [
   [{ text: "    );", className: "text-gray-400" }],
   [{ text: "  };", className: "text-gray-400" }],
   [{ text: "};", className: "text-gray-400" }],
+];
+
+const skillsTabLines = [
+  [{ text: "{", className: "text-gray-400" }],
+  [
+    { text: '  "developer": ', className: "text-cyan-400 font-semibold" },
+    { text: '"Talal Qasim"', className: "text-emerald-400" },
+    { text: ",", className: "text-gray-400" }
+  ],
+  [
+    { text: '  "role": ', className: "text-cyan-400 font-semibold" },
+    { text: '"Software Engineer / Full Stack Developer"', className: "text-amber-300 font-bold" },
+    { text: ",", className: "text-gray-400" }
+  ],
+  [
+    { text: '  "stack": {', className: "text-amber-300 font-semibold" }
+  ],
+  [
+    { text: '    "backend": ', className: "text-cyan-400" },
+    { text: '["Java", "Spring Boot", "Node.js", "Python", "PostgreSQL", "Kafka", "Redis"]', className: "text-emerald-300 font-medium" },
+    { text: ",", className: "text-gray-400" }
+  ],
+  [
+    { text: '    "frontend": ', className: "text-cyan-400" },
+    { text: '["React.js", "Next.js", "TypeScript", "TailwindCSS"]', className: "text-emerald-300" },
+    { text: ",", className: "text-gray-400" }
+  ],
+  [
+    { text: '    "devops": ', className: "text-cyan-400" },
+    { text: '["Docker", "AWS (EC2, RDS)", "Kubernetes", "Linux", "Git"]', className: "text-emerald-300" }
+  ],
+  [{ text: "  },", className: "text-gray-400" }],
+  [
+    { text: '  "status": ', className: "text-cyan-400 font-semibold" },
+    { text: '"Available for Hire & Projects"', className: "text-amber-300 font-bold" }
+  ],
+  [{ text: "}", className: "text-gray-400" }],
+];
+
+const readmeTabLines = [
+  [{ text: "# Talal Qasim — Software Engineer", className: "text-[#D4AF37] font-bold text-base" }],
+  [{ text: "", className: "text-gray-400" }],
+  [{ text: "> Full-Stack Software Engineer building scalable backend systems & modern web applications.", className: "text-slate-200 font-medium italic" }],
+  [{ text: "", className: "text-gray-400" }],
+  [{ text: "## Technical Overview", className: "text-[#64D8FF] font-bold" }],
+  [{ text: "- ☕ Backend: Java, Spring Boot, Node.js, Python, PostgreSQL, Kafka, Redis", className: "text-slate-100" }],
+  [{ text: "- 🌐 Frontend: React.js, Next.js 15, TypeScript, TailwindCSS, Micro-animations", className: "text-slate-100" }],
+  [{ text: "- ☁️ Cloud & DevOps: Docker, AWS (EC2/RDS), CI/CD pipelines, Linux", className: "text-slate-100" }],
+  [{ text: "", className: "text-gray-400" }],
+  [{ text: "```bash", className: "text-slate-500" }],
+  [{ text: "$ npm run dev -- --mode=fullstack", className: "text-emerald-400 font-bold" }],
+  [{ text: "```", className: "text-slate-500" }],
 ];
 
 function WindowControl({ label, color, children, onClick, pressed }) {
@@ -115,16 +167,24 @@ function WindowControl({ label, color, children, onClick, pressed }) {
 }
 
 function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }) {
+  const [activeTab, setActiveTab] = useState("coder.js");
   const [typedCharacters, setTypedCharacters] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
+  const currentLines = useMemo(() => {
+    if (activeTab === "skills.json") return skillsTabLines;
+    if (activeTab === "README.md") return readmeTabLines;
+    return codeLines;
+  }, [activeTab]);
+
   const totalCharacters = useMemo(() => {
-    return codeLines.reduce((total, line) => (
+    return currentLines.reduce((total, line) => (
       total + line.reduce((lineTotal, token) => lineTotal + token.text.length, 0)
     ), 0);
-  }, []);
+  }, [currentLines]);
 
   useEffect(() => {
+    setTypedCharacters(0);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reduceMotion) {
@@ -141,13 +201,13 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
 
         return current + 1;
       });
-    }, 28);
+    }, 22);
 
     return () => window.clearInterval(interval);
-  }, [totalCharacters]);
+  }, [totalCharacters, activeTab]);
 
   const renderTypedLine = (line, lineIndex) => {
-    const charactersBeforeLine = codeLines
+    const charactersBeforeLine = currentLines
       .slice(0, lineIndex)
       .reduce((total, currentLine) => (
         total + currentLine.reduce((lineTotal, token) => lineTotal + token.text.length, 0)
@@ -160,17 +220,17 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
 
     return (
       <div
-        key={`code-line-${lineIndex}`}
-        className={`code-type-line flex items-start px-4 lg:px-8 py-0.5 border-l-2 transition-colors duration-150 ${
+        key={`code-line-${activeTab}-${lineIndex}`}
+        className={`code-type-line flex items-start px-2.5 sm:px-4 lg:px-8 py-0.5 border-l-2 transition-colors duration-150 ${
           isCursorLine
-            ? "bg-[#D4AF37]/5 border-[#D4AF37]/60"
+            ? "bg-[#D4AF37]/10 border-[#D4AF37]/70"
             : "border-transparent hover:bg-white/[0.02]"
         }`}
       >
-        <span className="font-mono text-xs md:text-sm lg:text-[14px] select-none text-right mr-4 md:mr-6 w-8 text-[#718297]/40 shrink-0 font-medium whitespace-nowrap">
+        <span className="font-mono text-[11px] sm:text-xs md:text-sm lg:text-[14px] select-none text-right mr-2 sm:mr-4 md:mr-6 w-6 sm:w-8 text-[#718297]/50 shrink-0 font-medium whitespace-nowrap">
           {lineIndex + 1}
         </span>
-        <div className="flex-grow font-mono text-xs md:text-sm lg:text-[14px] leading-relaxed whitespace-pre-wrap">
+        <div className="flex-grow font-mono text-[11px] sm:text-xs md:text-sm lg:text-[14px] leading-relaxed whitespace-pre-wrap">
           {line.map((token, tokenIndex) => {
             const visibleText = token.text.slice(0, remainingCharacters);
             remainingCharacters = Math.max(0, remainingCharacters - token.text.length);
@@ -180,7 +240,7 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
             }
 
             return (
-              <span key={`code-token-${lineIndex}-${tokenIndex}`} className={token.className}>
+              <span key={`code-token-${activeTab}-${lineIndex}-${tokenIndex}`} className={token.className}>
                 {visibleText}
               </span>
             );
@@ -192,20 +252,20 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
   };
 
   return (
-    <div className={`ufo-panel order-1 lg:order-2 relative overflow-hidden rounded-2xl bg-[#07101d]/40 backdrop-blur-xl border transition-all duration-500 ${
+    <div className={`ufo-panel order-1 lg:order-2 relative overflow-hidden rounded-2xl bg-[#07101d]/50 backdrop-blur-xl border transition-all duration-500 ${
       isExpanded 
-        ? 'border-[#D4AF37]/60 shadow-[0_16px_48px_rgba(212,175,55,0.25)] lg:scale-105 z-20' 
-        : 'border-[#ffffff]/5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:border-[#D4AF37]/30 hover:shadow-[0_16px_48px_rgba(212,175,55,0.1)]'
+        ? 'border-[#D4AF37]/70 shadow-[0_16px_50px_rgba(212,175,55,0.25)] lg:scale-105 z-20' 
+        : 'border-[#ffffff]/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#D4AF37]/40 hover:shadow-[0_16px_48px_rgba(212,175,55,0.15)]'
     }`}>
       {/* Top border decoration */}
       <div className="flex flex-row">
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-[#F59E0B]/50"></div>
-        <div className="h-[1px] w-full bg-gradient-to-r from-[#F59E0B]/50 to-transparent"></div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-[#64D8FF]/60"></div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-[#64D8FF]/60 to-transparent"></div>
       </div>
       
       {/* Window Header */}
-      <div className="flex items-center justify-between border-b border-[#ffffff]/5 bg-[#07101d]/60 px-4 py-3 relative">
-        <div className="flex items-center space-x-4">
+      <div className="flex items-center justify-between border-b border-[#ffffff]/10 bg-[#07101d]/80 px-3 sm:px-4 py-2.5 sm:py-3 relative gap-2">
+        <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1 overflow-hidden">
           {/* Windows control dots */}
           <div className="flex flex-row space-x-1.5 lg:space-x-2 shrink-0">
             <WindowControl 
@@ -232,76 +292,111 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
             />
           </div>
           
-          {/* File Tabs */}
-          <div className="flex items-center space-x-2 pl-4 border-l border-[#ffffff]/5">
-            {/* Active Tab */}
-            <div className="flex items-center space-x-2 rounded-md bg-[#07101d]/85 px-3 py-1 text-xs font-mono text-[#D4AF37] border border-[#ffffff]/5 shadow-[0_2px_4px_rgba(0,0,0,0.2)]">
-              <span className="text-[#f4f1e8]/90 font-semibold flex items-center gap-1.5">
-                <span className="text-xs text-[#F59E0B] font-bold">JS</span>
-                coder.js
-              </span>
-              <span className="text-[#718297]/60 hover:text-white cursor-pointer ml-1" onClick={onClose}>×</span>
-            </div>
+          {/* Interactive File Tabs - Horizontally scrollable on mobile */}
+          <div className="flex items-center space-x-1 sm:space-x-2 pl-2 sm:pl-4 border-l border-[#ffffff]/10 overflow-x-auto no-scrollbar py-0.5 flex-nowrap shrink max-w-full">
+            {/* Tab 1: coder.js */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("coder.js")}
+              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
+                activeTab === "coder.js"
+                  ? "bg-[#07101d] text-[#D4AF37] border border-[#D4AF37]/40 shadow-[0_2px_8px_rgba(212,175,55,0.15)] font-semibold"
+                  : "text-[#718297]/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              <span className="text-[10px] text-[#F59E0B] font-bold">JS</span>
+              <span>coder.js</span>
+            </button>
             
-            {/* Inactive Tab 1 */}
-            <div className="hidden md:flex items-center space-x-2 rounded-md px-3 py-1 text-xs font-mono text-[#718297]/60 hover:text-[#718297]/90 transition-all cursor-pointer">
-              <span className="text-blue-400 font-bold">{}</span>
+            {/* Tab 2: skills.json */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("skills.json")}
+              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
+                activeTab === "skills.json"
+                  ? "bg-[#07101d] text-[#64D8FF] border border-[#64D8FF]/40 shadow-[0_2px_8px_rgba(100,216,255,0.15)] font-semibold"
+                  : "text-[#718297]/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              <span className="text-[10px] text-[#64D8FF] font-bold">{}</span>
               <span>skills.json</span>
-            </div>
+            </button>
 
-            {/* Inactive Tab 2 */}
-            <div className="hidden sm:flex items-center space-x-2 rounded-md px-3 py-1 text-xs font-mono text-[#718297]/60 hover:text-[#718297]/90 transition-all cursor-pointer">
-              <span className="text-[#F59E0B] font-bold">M↓</span>
+            {/* Tab 3: README.md */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("README.md")}
+              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
+                activeTab === "README.md"
+                  ? "bg-[#07101d] text-[#F59E0B] border border-[#F59E0B]/40 shadow-[0_2px_8px_rgba(245,158,11,0.15)] font-semibold"
+                  : "text-[#718297]/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              <span className="text-[10px] text-[#F59E0B] font-bold">M↓</span>
               <span>README.md</span>
-            </div>
+            </button>
           </div>
         </div>
         
-        {/* Online indicator */}
-        <div aria-hidden="true" className="flex items-center gap-1.5 rounded-full border border-[#D4AF37]/25 bg-[#07101d]/80 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#D4AF37] shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-          <span className="h-2 w-2 rounded-full bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.8)] animate-pulse" />
-          Signal online
+        {/* Orbital Online Indicator */}
+        <div aria-hidden="true" className="relative flex items-center gap-1.5 rounded-full border border-[#D4AF37]/35 bg-[#07101d]/90 px-2 sm:px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.2)] select-none shrink-0">
+          <span className="relative flex h-2 w-2 items-center justify-center">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D4AF37] opacity-75"></span>
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#D4AF37]"></span>
+          </span>
+          <span className="hidden sm:inline">Signal online</span>
         </div>
       </div>
 
-      {/* Editor Content Area (collapsible on minimize) */}
+      {/* Editor Content Area */}
       <div className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${
         isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'
       }`}>
         <div className="overflow-hidden">
-          {/* Breadcrumbs bar */}
-          <div className="flex items-center space-x-2 border-b border-[#ffffff]/5 bg-[#07101d]/20 px-4 py-1.5 text-xs font-mono text-[#718297]/60">
-            <span>src</span>
+          {/* Dynamic Breadcrumbs bar */}
+          <div className="flex items-center space-x-2 border-b border-[#ffffff]/5 bg-[#07101d]/30 px-4 py-1.5 text-xs font-mono text-[#718297]/70">
+            <span>{activeTab === "skills.json" ? "config" : activeTab === "README.md" ? "root" : "src"}</span>
             <span>&gt;</span>
-            <span>components</span>
+            <span>{activeTab === "skills.json" ? "env" : activeTab === "README.md" ? "docs" : "components"}</span>
             <span>&gt;</span>
-            <span>homepage</span>
-            <span>&gt;</span>
-            <span className="text-[#a8b4c3]/80 flex items-center gap-1">
-              <span className="text-[10px] text-[#F59E0B] font-bold">JS</span>
-              coder.js
+            <span className="text-[#f4f1e8] font-medium flex items-center gap-1">
+              {activeTab}
             </span>
           </div>
 
           {/* Editor Body */}
-          <div className="overflow-hidden py-4 lg:py-6 bg-[#07101d]/20">
+          <div className="overflow-hidden py-4 lg:py-6 bg-[#07101d]/30 min-h-[280px]">
             <code className="block font-mono leading-relaxed" aria-label="Animated code introduction">
-              {codeLines.map(renderTypedLine)}
+              {currentLines.map(renderTypedLine)}
             </code>
           </div>
 
+          {/* Interactive Simulated Terminal Prompt Bar */}
+          <div className="border-t border-[#ffffff]/10 bg-[#040812]/95 px-4 py-2 font-mono text-xs flex items-center justify-between text-[#94A3B8] select-none">
+            <div className="flex items-center space-x-2 overflow-x-auto no-scrollbar">
+              <span className="text-[#34D399] font-bold">❯</span>
+              <span className="text-[#64D8FF]">Talal.getAvailability()</span>
+              <span className="text-slate-400">=&gt;</span>
+              <span className="text-[#D4AF37] font-semibold whitespace-nowrap">"Open for New Opportunities"</span>
+            </div>
+            <div className="hidden sm:flex items-center gap-1.5 text-[10px] text-[#34D399] bg-[#34D399]/10 px-2 py-0.5 rounded border border-[#34D399]/25 font-bold uppercase tracking-wider shrink-0 ml-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]"></span>
+              200 OK
+            </div>
+          </div>
+
           {/* Status Bar */}
-          <div className="flex items-center justify-between border-t border-[#ffffff]/5 bg-[#07101d]/80 px-4 py-1.5 text-[11px] font-mono text-[#718297]/60 select-none">
+          <div className="flex items-center justify-between border-t border-[#ffffff]/5 bg-[#07101d]/85 px-4 py-1.5 text-[11px] font-mono text-[#718297]/70 select-none">
             {/* Left side: Git branch & status */}
             <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-1 text-[#D4AF37]/80 hover:text-[#D4AF37] cursor-pointer transition-colors">
+              <div className="flex items-center space-x-1 text-[#D4AF37]/90 hover:text-[#D4AF37] cursor-pointer transition-colors">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 16 16">
                   <path fillRule="evenodd" d="M11.5 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-9-11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-3 1.25a2.75 2.75 0 0 1 2.75 2.75V11h-.75V8a2 2 0 0 0-2-2H4.25v1.25H2.5v-3.5h1.75V5h.25zm5 4.75a2.75 2.75 0 0 1 2.75-2.75H11.5V5h1.75v3.5H11.5V7.25h-.25a2 2 0 0 0-2 2v2a1.5 1.5 0 0 0 1.5 1.5h.75v.75h-.75A2.75 2.75 0 0 1 7.25 10v-3h.75v3z"/>
                 </svg>
                 <span className="font-semibold">main</span>
               </div>
               
-              <div className="flex items-center space-x-1 text-emerald-400/80">
+              <div className="flex items-center space-x-1 text-emerald-400">
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -311,11 +406,11 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
 
             {/* Right side: Line/Col info, Encoding, Lang */}
             <div className="flex items-center space-x-4">
-              <span className="hidden sm:inline">Ln 14, Col 2</span>
+              <span className="hidden sm:inline">Ln {currentLines.length}, Col 2</span>
               <span className="hidden sm:inline">UTF-8</span>
-              <span className="flex items-center gap-1">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                JavaScript React
+              <span className="flex items-center gap-1 text-[#64D8FF]">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#64D8FF] animate-pulse"></span>
+                {activeTab === "skills.json" ? "JSON" : activeTab === "README.md" ? "Markdown" : "JavaScript React"}
               </span>
             </div>
           </div>

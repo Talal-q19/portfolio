@@ -93,7 +93,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
   }, [isExpanded, isMinimized, slides.length]);
 
   return (
-    <div data-expanded={isExpanded ? 'true' : 'false'} className={`window-card group/window w-full transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(0,0,0,0.85)] !border-[#363636]' : ''}`}>
+    <div data-expanded={isExpanded ? 'true' : 'false'} className={`window-card group/window w-full border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#D4AF37]/40 transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(0,0,0,0.85)] !border-[#D4AF37]/70' : ''}`}>
       <div className="window-header flex items-center justify-between px-3 py-2.5 lg:px-6 lg:py-3 relative z-20">
         <div className="flex flex-row items-center space-x-1.5 lg:space-x-2 shrink-0">
           <WindowControl label={`Close ${project.name} preview`} color="bg-[#FF5F56] text-[#4C0002]" onClick={onClose} pressed={false}>

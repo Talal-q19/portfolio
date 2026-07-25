@@ -261,26 +261,18 @@ html {
   background-color: #64d8ff; /* Transitions to cyan on card hover */
 }
 
-/* Custom horizontal scrollbar for mobile experience tabs */
-@media (max-width: 767px) {
-  .horizontal-scrollbar {
-    overflow-x: auto !important;
-    scrollbar-width: auto !important;
-    -ms-overflow-style: auto !important;
-  }
-  
-  .horizontal-scrollbar::-webkit-scrollbar {
-    height: 5px !important;
-    display: block !important;
-  }
+/* Completely hide horizontal scrollbars globally while preserving touch/trackpad scrolling */
+.no-scrollbar,
+.horizontal-scrollbar,
+[class*="overflow-x-auto"] {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
 
-  .horizontal-scrollbar::-webkit-scrollbar-track {
-    background: rgba(21, 21, 21, 0.4) !important;
-    border-radius: 999px;
-  }
-
-  .horizontal-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, var(--signal), var(--solar)) !important;
-    border-radius: 999px;
-  }
+.no-scrollbar::-webkit-scrollbar,
+.horizontal-scrollbar::-webkit-scrollbar,
+[class*="overflow-x-auto"]::-webkit-scrollbar {
+  display: none !important;  /* Chrome, Safari, Opera */
+  width: 0 !important;
+  height: 0 !important;
 }
