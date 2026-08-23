@@ -20,8 +20,11 @@ module.exports = {
           800: '#0e1a2b',
         },
         cinematic: {
-          gold: '#D4AF37',
-          amber: '#F59E0B',
+          gold: '#E2E8F0',
+          amber: '#94A3B8',
+          platinum: '#E2E8F0',
+          slate: '#94A3B8',
+          mint: '#34D399',
           muted: '#151515',
         }
       },

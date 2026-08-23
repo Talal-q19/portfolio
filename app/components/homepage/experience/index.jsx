@@ -57,9 +57,9 @@ function Experience() {
                 <button
                   key={exp.id}
                   onClick={() => setActiveId(exp.id)}
-                  className={`snap-center shrink-0 flex items-center gap-3 px-4 py-3.5 rounded-xl border text-left transition-all duration-300 w-[260px] md:w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${
+                  className={`snap-center shrink-0 flex items-center gap-3 px-4 py-3.5 rounded-xl border text-left transition-all duration-300 w-[260px] md:w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E2E8F0] ${
                     isActive
-                      ? "bg-[#D4AF37]/5 border-[#D4AF37]/45 shadow-[0_0_20px_rgba(212,175,55,0.06)]"
+                      ? "bg-[#E2E8F0]/5 border-[#E2E8F0]/45 shadow-[0_0_20px_rgba(226,232,240,0.06)]"
                       : "bg-zinc-950/40 border-zinc-800/80 hover:border-zinc-700/80 hover:bg-zinc-900/20"
                   }`}
                 >
@@ -73,7 +73,7 @@ function Experience() {
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className={`text-[10px] font-bold font-mono tracking-wider uppercase ${isActive ? "text-[#D4AF37]" : "text-zinc-500"}`}>
+                    <p className={`text-[10px] font-bold font-mono tracking-wider uppercase ${isActive ? "text-[#34D399]" : "text-zinc-500"}`}>
                       {exp.company}
                     </p>
                     <p className="text-sm font-semibold text-white truncate mt-0.5">
@@ -118,14 +118,14 @@ function Experience() {
                               <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white uppercase">
                                 {exp.title}
                               </h3>
-                              <p className="text-base font-semibold text-[#D4AF37] mt-0.5">
+                              <p className="text-base font-semibold text-[#E2E8F0] mt-0.5">
                                 {exp.company}
                               </p>
                             </div>
                           </div>
                           
                           <div className="self-start sm:self-center">
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/25 bg-[#D4AF37]/5 px-3 py-1 font-mono text-xs font-semibold text-[#D4AF37]">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#34D399]/30 bg-[#34D399]/10 px-3 py-1 font-mono text-xs font-semibold text-[#34D399]">
                               <FiCalendar className="w-3.5 h-3.5" />
                               {exp.duration}
                             </span>
@@ -170,25 +170,25 @@ function Experience() {
                                 `}</style>
                                 
                                 <div className="relative flex flex-col items-center justify-center">
-                                  <div className="absolute w-24 h-24 bg-[#D4AF37]/5 rounded-full blur-[30px] scan-line"></div>
+                                  <div className="absolute w-24 h-24 bg-[#E2E8F0]/5 rounded-full blur-[30px] scan-line"></div>
                                   
                                   <div className="flex items-center -space-x-2">
-                                    <span className="loader-t text-5xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-[#D4AF37] z-20">
+                                    <span className="loader-t text-5xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-[#E2E8F0] z-20">
                                       T
                                     </span>
-                                    <span className="loader-q z-10 bg-gradient-to-r from-[#D4AF37] via-[#f4f1e8] to-[#F59E0B] bg-clip-text font-mono text-5xl font-light text-transparent opacity-90 mix-blend-screen">
+                                    <span className="loader-q z-10 bg-gradient-to-r from-[#E2E8F0] via-[#f8fafc] to-[#94A3B8] bg-clip-text font-mono text-5xl font-light text-transparent opacity-90 mix-blend-screen">
                                       Q
                                     </span>
                                   </div>
 
                                   <div className="mt-5 flex flex-col items-center">
-                                    <span className="text-[10px] font-mono tracking-[0.3em] text-[#D4AF37] uppercase animate-pulse">
+                                    <span className="text-[10px] font-mono tracking-[0.3em] text-[#34D399] uppercase animate-pulse">
                                       Accessing Credentials...
                                     </span>
                                     <div className="mt-3 flex gap-1.5">
-                                      <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-bounce" style={{ animationDelay: '0ms' }} />
-                                      <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-bounce" style={{ animationDelay: '150ms' }} />
-                                      <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-bounce" style={{ animationDelay: '300ms' }} />
+                                      <span className="h-1.5 w-1.5 rounded-full bg-[#34D399] animate-bounce" style={{ animationDelay: '0ms' }} />
+                                      <span className="h-1.5 w-1.5 rounded-full bg-[#34D399] animate-bounce" style={{ animationDelay: '150ms' }} />
+                                      <span className="h-1.5 w-1.5 rounded-full bg-[#34D399] animate-bounce" style={{ animationDelay: '300ms' }} />
                                     </div>
                                   </div>
                                 </div>
@@ -204,7 +204,7 @@ function Experience() {
                               >
                                 {exp.highlights.map((highlight, index) => (
                                   <li key={index} className="flex gap-4">
-                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
+                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399] shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
                                     <span>{highlight}</span>
                                   </li>
                                 ))}

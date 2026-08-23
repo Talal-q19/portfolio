@@ -92,7 +92,7 @@ export default function Preloader() {
           opacity: 0; /* initial state for animation */
         }
         .progress-glow {
-          box-shadow: 0 0 15px rgba(212, 175, 55, 0.28), 0 0 30px rgba(245, 158, 11, 0.16);
+          box-shadow: 0 0 15px rgba(52, 211, 153, 0.4), 0 0 30px rgba(52, 211, 153, 0.2);
         }
       `}</style>
 
@@ -100,36 +100,36 @@ export default function Preloader() {
         {/* Elegant Initials */}
         <div className="relative flex items-center justify-center mb-16">
           {/* Subtle ambient glow */}
-          <div className="absolute w-32 h-32 bg-white/5 rounded-full blur-[50px]"></div>
+          <div className="absolute w-32 h-32 bg-white/5 rounded-full blur-[50px] pointer-events-none"></div>
 
           <div className="flex items-center -space-x-4">
-            <span className="letter-t text-8xl sm:text-9xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-[#D4AF37] z-20">
+            <span className="letter-t text-8xl sm:text-9xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-[#E2E8F0] z-20">
               T
             </span>
-            <span className="letter-q z-10 bg-gradient-to-r from-[#D4AF37] via-[#f4f1e8] to-[#F59E0B] bg-clip-text font-mono text-8xl font-light text-transparent opacity-90 mix-blend-screen sm:text-9xl">
+            <span className="letter-q z-10 bg-gradient-to-r from-[#E2E8F0] via-[#f8fafc] to-[#CBD5E1] bg-clip-text font-mono text-8xl font-light text-transparent opacity-95 mix-blend-screen sm:text-9xl">
               Q
             </span>
           </div>
         </div>
 
         {/* Progress Bar Container */}
-        <div className="w-full sm:w-80 h-[2px] bg-[#0a1422] rounded-full overflow-hidden relative">
+        <div className="w-full sm:w-80 h-[2px] bg-[#151515] rounded-full overflow-hidden relative">
           {/* Progress Bar Fill */}
           <div
-            className="relative h-full bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] transition-all duration-[20ms] ease-linear progress-glow"
+            className="relative h-full bg-gradient-to-r from-white via-[#A7F3D0] to-[#34D399] transition-all duration-[20ms] ease-linear progress-glow"
             style={{ width: `${progress}%` }}
           >
             {/* Highlight tip at the end of the bar */}
-            <div className="absolute top-0 right-0 h-full w-10 bg-white/60 blur-[1px]"></div>
+            <div className="absolute top-0 right-0 h-full w-10 bg-[#34D399]/80 blur-[2px]"></div>
           </div>
         </div>
 
         {/* Loading Text */}
         <div className="mt-8 flex flex-col items-center drop-shadow-md z-10">
-          <div className="text-[#f4f1e8] text-xs sm:text-sm tracking-[0.4em] font-light uppercase opacity-90">
+          <div className="text-[#f8fafc] text-xs sm:text-sm tracking-[0.4em] font-light uppercase opacity-90">
             Loading Experience
           </div>
-          <div className="text-[#D4AF37] text-[11px] mt-2 font-mono tracking-widest">
+          <div className="text-[#34D399] text-[11px] mt-2 font-mono tracking-widest font-semibold">
             {Math.min(100, Math.round(progress))}%
           </div>
         </div>

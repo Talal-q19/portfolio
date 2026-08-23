@@ -28,7 +28,7 @@ function Education() {
       />
       <div className="flex justify-center -translate-y-[1px]">
         <div className="w-3/4">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-[#F59E0B]/60 to-transparent" />
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E2E8F0]/60 to-transparent" />
         </div>
       </div>
 
@@ -47,15 +47,15 @@ function Education() {
           {educations.map((edu) => (
             <div
               key={edu.id}
-              className="ufo-panel p-5 sm:p-6 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-lg relative overflow-hidden transition-all duration-300 hover:border-[#D4AF37]/35"
+              className="ufo-panel p-5 sm:p-6 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-lg relative overflow-hidden transition-all duration-300 hover:border-[#E2E8F0]/35"
             >
               {/* Card Header */}
               <div className="flex items-start gap-4">
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-zinc-800 bg-[#D4AF37]/5 text-[#D4AF37] flex items-center justify-center p-2 shadow-sm">
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-zinc-800 bg-[#34D399]/5 text-[#34D399] flex items-center justify-center p-2 shadow-sm">
                   <IoSchoolOutline size={24} aria-hidden="true" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="inline-block rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-[#D4AF37] mb-1.5">
+                  <span className="inline-block rounded-full border border-[#34D399]/25 bg-[#34D399]/5 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-[#34D399] mb-1.5">
                     {edu.credential}
                   </span>
                   <h4 className="text-base sm:text-lg font-bold tracking-tight text-white uppercase truncate">
@@ -70,7 +70,7 @@ function Education() {
                   type="button"
                   aria-expanded={!!expandedIds[edu.id]}
                   onClick={() => toggleEducation(edu.id)}
-                  className="group flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900/60 text-[#D4AF37] outline-none transition-all duration-300 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 focus-visible:border-[#D4AF37] cursor-pointer"
+                  className="group flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900/60 text-[#E2E8F0] outline-none transition-all duration-300 hover:border-[#E2E8F0] hover:bg-[#E2E8F0]/10 focus-visible:border-[#E2E8F0] cursor-pointer"
                 >
                   <FiChevronDown
                     size={18}
@@ -83,12 +83,12 @@ function Education() {
               {/* Metadata details row */}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-[10.5px] text-zinc-400 mt-4 border-t border-zinc-900/60 pt-3">
                 <span className="flex items-center gap-1.5">
-                  <FiCalendar className="w-3.5 h-3.5 text-[#D4AF37]/75" />
+                  <FiCalendar className="w-3.5 h-3.5 text-[#34D399]/85" />
                   {edu.duration}
                 </span>
                 {edu.location && (
                   <span className="flex items-center gap-1.5">
-                    <FiMapPin className="w-3.5 h-3.5 text-[#D4AF37]/75" />
+                    <FiMapPin className="w-3.5 h-3.5 text-zinc-400" />
                     {edu.location}
                   </span>
                 )}
@@ -111,7 +111,7 @@ function Education() {
                         <ul className="space-y-2.5 text-zinc-300 text-sm leading-relaxed">
                           {edu.details.map((detail, idx) => (
                             <li key={idx} className="flex gap-2.5 items-start">
-                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
+                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399] shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
                               <span>{detail}</span>
                             </li>
                           ))}

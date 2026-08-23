@@ -25,14 +25,14 @@ const SingleProject = ({ project }) => {
           <Link
             href={demo}
             target='_blank'
-            className="flex justify-center items-center w-10 h-10 rounded-full border-2 border-[#EFF3F4] text-[#EFF3F4] transition-all duration-300 hover:bg-[#151515] hover:text-[#D4AF37] hover:border-[#D4AF37] hover:scale-110 decoration-clone cursor-pointer no-underline delay-[0.3s]">
+            className="flex justify-center items-center w-10 h-10 rounded-full border-2 border-[#EFF3F4] text-[#EFF3F4] transition-all duration-300 hover:bg-[#151515] hover:text-[#E2E8F0] hover:border-[#E2E8F0] hover:scale-110 decoration-clone cursor-pointer no-underline delay-[0.3s]">
             <FaPlay />
           </Link>
           
           <Link
             href={code}
             target='_blank'
-            className="flex justify-center items-center w-10 h-10 rounded-full border-2 border-[#EFF3F4] text-[#EFF3F4] transition-all duration-300 hover:bg-[#151515] hover:text-[#D4AF37] hover:border-[#D4AF37] hover:scale-110 cursor-pointer no-underline  delay-[0.3s] group-hover:translate-x-[-140px]">
+            className="flex justify-center items-center w-10 h-10 rounded-full border-2 border-[#EFF3F4] text-[#EFF3F4] transition-all duration-300 hover:bg-[#151515] hover:text-[#E2E8F0] hover:border-[#E2E8F0] hover:scale-110 cursor-pointer no-underline  delay-[0.3s] group-hover:translate-x-[-140px]">
             <FaCode />
           </Link>
         </div>

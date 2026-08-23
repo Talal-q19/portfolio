@@ -12,7 +12,7 @@ const projectImages = {
 };
 
 const genericToolBadge =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23D4AF37'/%3E%3Cstop offset='100%25' stop-color='%23F59E0B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='none' stroke='url(%23g)' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='12' fill='url(%23g)' fill-opacity='.88'/%3E%3Cpath d='M20 32h8M36 32h8M32 20v8M32 36v8' stroke='%23fff' stroke-opacity='.85' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23E2E8F0'/%3E%3Cstop offset='100%25' stop-color='%2394A3B8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='none' stroke='url(%23g)' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='12' fill='url(%23g)' fill-opacity='.88'/%3E%3Cpath d='M20 32h8M36 32h8M32 20v8M32 36v8' stroke='%23fff' stroke-opacity='.85' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E";
 
 function WindowControl({ label, color, children, onClick, pressed }) {
   const fallbackIcon = label.startsWith('Expand') ? <FiMaximize2 size={8} /> : null;
@@ -93,7 +93,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
   }, [isExpanded, isMinimized, slides.length]);
 
   return (
-    <div data-expanded={isExpanded ? 'true' : 'false'} className={`window-card group/window w-full border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#D4AF37]/40 transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(0,0,0,0.85)] !border-[#D4AF37]/70' : ''}`}>
+    <div data-expanded={isExpanded ? 'true' : 'false'} className={`window-card group/window w-full border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#E2E8F0]/40 transition-all duration-500 ease-out ${isExpanded ? '!shadow-[0_24px_80px_rgba(0,0,0,0.85)] !border-[#E2E8F0]/70' : ''}`}>
       <div className="window-header flex items-center justify-between px-3 py-2.5 lg:px-6 lg:py-3 relative z-20">
         <div className="flex flex-row items-center space-x-1.5 lg:space-x-2 shrink-0">
           <WindowControl label={`Close ${project.name} preview`} color="bg-[#FF5F56] text-[#4C0002]" onClick={onClose} pressed={false}>
@@ -106,7 +106,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
         </div>
         <div className="flex-1 flex items-center justify-center gap-1.5 px-3 min-w-0">
           <span className="status-dot active shrink-0" title={project.status || 'Active'} />
-          <p className="truncate text-center text-xs sm:text-sm font-semibold tracking-wide text-slate-300 transition-colors duration-300 group-hover/window:text-[#D4AF37] lg:text-base">
+          <p className="truncate text-center text-xs sm:text-sm font-semibold tracking-wide text-slate-300 transition-colors duration-300 group-hover/window:text-[#E2E8F0] lg:text-base">
             {project.name}
           </p>
         </div>
@@ -180,7 +180,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                   <div className="flex flex-col gap-2">
                     {project.status && (
                       <div className="md:hidden flex justify-start">
-                        <span className="rounded-full border border-[#D4AF37]/45 bg-[#07101d]/90 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+                        <span className="rounded-full border border-[#34D399]/45 bg-[#07101d]/90 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#34D399]">
                           {project.status}
                         </span>
                       </div>
@@ -211,13 +211,13 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                               type="button"
                               aria-label={`Show ${project.name} image ${index + 1}`}
                               onClick={() => setCurrentSlide(index)}
-                              className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === index ? 'w-5 bg-[#D4AF37]' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
+                              className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === index ? 'w-5 bg-[#E2E8F0]' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
                             />
                           ))}
                         </div>
                       )}
                       {project.status && (
-                        <span className="hidden md:inline-block absolute left-3 top-3 z-20 rounded-full border border-[#D4AF37]/45 bg-[#07101d]/90 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+                        <span className="hidden md:inline-block absolute left-3 top-3 z-20 rounded-full border border-[#34D399]/45 bg-[#07101d]/90 px-3 py-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#34D399]">
                           {project.status}
                         </span>
                       )}
@@ -226,7 +226,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
 
                   <div className="flex flex-col justify-between gap-4 md:aspect-video overflow-y-auto pr-2 custom-scrollbar">
                     <div className="flex flex-col gap-2">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F59E0B]/90">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#34D399]">
                         Project Notes
                       </p>
                       <h3 className="text-lg font-semibold leading-tight text-white md:text-xl lg:text-2xl">
@@ -240,7 +240,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                     <ul className="space-y-2 text-xs leading-5 text-slate-200 md:text-sm md:leading-6">
                       {details.map((detail, index) => (
                         <li key={index} className="flex gap-2.5 items-start">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]"></span>
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399]"></span>
                           <span>{detail}</span>
                         </li>
                       ))}
@@ -253,7 +253,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-[#050505] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[#D4AF37]/20 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]/50 cursor-pointer"
+                          className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-[#050505] shadow-[0_0_20px_rgba(241,245,249,0.15)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] focus:outline-none focus:ring-1 focus:ring-[#E2E8F0]/50 cursor-pointer"
                         >
                           <FiExternalLink size={13} />
                           <span>Live Demo</span>
@@ -264,7 +264,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                           href={project.code}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg border border-[#262626] bg-[#151515] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-[#EFF3F4] shadow-md transition-all duration-300 hover:scale-105 hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10 focus:outline-none focus:ring-1 focus:ring-white/20 cursor-pointer"
+                          className="inline-flex items-center gap-2 rounded-lg border border-[#262626] bg-[#151515] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-[#EFF3F4] shadow-md transition-all duration-300 hover:scale-105 hover:border-[#E2E8F0]/40 hover:bg-[#E2E8F0]/10 focus:outline-none focus:ring-1 focus:ring-white/20 cursor-pointer"
                         >
                           <FiGithub size={13} />
                           <span>View Source</span>
