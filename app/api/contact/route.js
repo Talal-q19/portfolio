@@ -70,13 +70,13 @@ function createEmailTemplate({ name, email, message }) {
                 <!-- Glowing Top Border Bar -->
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                   <tr>
-                    <td height="4" style="background:linear-gradient(to right, #D4AF37, #F59E0B);line-height:4px;font-size:0px;">&nbsp;</td>
+                    <td height="4" style="background:linear-gradient(to right, #E2E8F0, #94A3B8);line-height:4px;font-size:0px;">&nbsp;</td>
                   </tr>
                 </table>
 
                 <!-- Header Info -->
                 <div style="padding:32px 32px 24px 32px;border-bottom:1px solid #262626;">
-                  <div style="font-family:'Courier New',Courier,monospace,sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.25em;text-transform:uppercase;color:#D4AF37;margin-bottom:8px;">
+                  <div style="font-family:'Courier New',Courier,monospace,sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.25em;text-transform:uppercase;color:#E2E8F0;margin-bottom:8px;">
                     // PORTFOLIO CONTACT SYSTEM
                   </div>
                   <h1 style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:1.3;font-weight:bold;color:#f4f1e8;margin:0 0 8px 0;letter-spacing:-0.02em;">
@@ -109,7 +109,7 @@ function createEmailTemplate({ name, email, message }) {
                           Email Address
                         </div>
                         <div>
-                          <a href="mailto:${safeEmail}" style="font-size:16px;line-height:1.5;color:#D4AF37;text-decoration:none;font-weight:bold;word-break:break-all;border-bottom:1px dashed rgba(212,175,55,0.4);padding-bottom:1px;">
+                          <a href="mailto:${safeEmail}" style="font-size:16px;line-height:1.5;color:#E2E8F0;text-decoration:none;font-weight:bold;word-break:break-all;border-bottom:1px dashed rgba(226,232,240,0.4);padding-bottom:1px;">
                             ${safeEmail}
                           </a>
                         </div>
@@ -122,7 +122,7 @@ function createEmailTemplate({ name, email, message }) {
                         <div style="font-size:11px;font-weight:bold;color:#a8b4c3;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;">
                           Message Content
                         </div>
-                        <div style="background-color:#101010;border:1px solid #262626;border-left:4px solid #D4AF37;border-radius:8px;padding:20px;font-size:15px;line-height:1.7;color:#e5e7eb;font-family:Arial,Helvetica,sans-serif;white-space:normal;">
+                        <div style="background-color:#101010;border:1px solid #262626;border-left:4px solid #E2E8F0;border-radius:8px;padding:20px;font-size:15px;line-height:1.7;color:#e5e7eb;font-family:Arial,Helvetica,sans-serif;white-space:normal;">
                           ${safeMessage}
                         </div>
                       </td>
@@ -131,7 +131,7 @@ function createEmailTemplate({ name, email, message }) {
                     <!-- Reply Action Button -->
                     <tr>
                       <td align="left" style="font-family:Arial,Helvetica,sans-serif;">
-                        <a href="mailto:${safeEmail}" style="display:inline-block;background:linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);color:#050505;text-decoration:none;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;padding:14px 28px;border-radius:999px;box-shadow:0 4px 12px rgba(212,175,55,0.15);">
+                        <a href="mailto:${safeEmail}" style="display:inline-block;background:linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 50%, #CBD5E1 100%);color:#050505;text-decoration:none;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;padding:14px 28px;border-radius:999px;box-shadow:0 4px 12px rgba(226,232,240,0.15);">
                           Quick Reply
                         </a>
                       </td>

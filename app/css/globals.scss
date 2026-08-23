@@ -8,10 +8,12 @@
   --space-border: #262626;
   --starlight: #f4f1e8;
   --moon-dust: #a8b4c3;
-  --signal: #D4AF37;
-  --signal-rgb: 212, 175, 55;
-  --solar: #F59E0B;
-  --solar-rgb: 245, 158, 11;
+  --signal: #E2E8F0;
+  --signal-rgb: 226, 232, 240;
+  --solar: #94A3B8;
+  --solar-rgb: 148, 163, 184;
+  --mint: #34D399;
+  --mint-rgb: 52, 211, 153;
   --neon-cyan: #64d8ff;
   --neon-cyan-rgb: 100, 216, 255;
   --foreground-rgb: 244, 241, 232;
@@ -250,11 +252,11 @@ html {
 }
 
 .status-dot.progress {
-  background-color: #F59E0B; /* Flat Amber */
+  background-color: #94A3B8; /* Flat Titanium Slate */
 }
 
 .window-card:hover .status-dot.active {
-  background-color: #D4AF37; /* Transitions to gold on card hover */
+  background-color: #E2E8F0; /* Transitions to platinum on card hover */
 }
 
 .window-card:hover .status-dot.progress {

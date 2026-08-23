@@ -44,7 +44,7 @@ const Projects = () => {
   return (
     <SectionVisualFrame id='projects' variant="projects" accent="cyan" className={`relative z-30 my-12 transition-[padding-bottom] duration-500 ease-out lg:my-24 ${hasActiveProject ? 'pb-20 lg:pb-28' : 'pb-0'}`}>
       <div className="sticky top-[var(--nav-safe-top)]">
-        <div className="absolute -top-3 left-0 h-20 w-20 translate-x-1/2 rounded-full bg-[#D4AF37] opacity-10 blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-3 left-0 h-20 w-20 translate-x-1/2 rounded-full bg-[#E2E8F0] opacity-10 blur-3xl pointer-events-none"></div>
         <div className="flex items-center justify-start relative">
           <span className="absolute left-0 w-fit rounded-md bg-[#151515] px-5 py-3 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
             PROJECTS
@@ -71,14 +71,14 @@ const Projects = () => {
                 {isClosed ? (
                   <div 
                     onClick={() => handleRestore(project.id)}
-                    className="w-full max-w-5xl mx-auto border border-[#262626]/70 bg-black/45 hover:bg-black/60 hover:border-[#D4AF37]/50 rounded-lg p-3.5 px-5 sm:px-6 flex items-center justify-between font-mono text-[11px] md:text-xs text-slate-500 cursor-pointer transition-all duration-300 shadow-md min-w-0"
+                    className="w-full max-w-5xl mx-auto border border-[#262626]/70 bg-black/45 hover:bg-black/60 hover:border-[#E2E8F0]/50 rounded-lg p-3.5 px-5 sm:px-6 flex items-center justify-between font-mono text-[11px] md:text-xs text-slate-500 cursor-pointer transition-all duration-300 shadow-md min-w-0"
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-[#D4AF37] font-bold animate-pulse shrink-0">&gt;</span>
+                      <span className="text-[#E2E8F0] font-bold animate-pulse shrink-0">&gt;</span>
                       <span className="truncate">run restore-{project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.sh</span>
                       <span className="text-[9px] text-red-500/70 border border-red-500/30 rounded px-1.5 py-0.5 shrink-0 font-sans font-semibold uppercase tracking-wider">Closed</span>
                     </div>
-                    <span className="text-slate-600 hover:text-[#D4AF37] text-[10px] uppercase tracking-wider font-semibold transition-colors duration-200 shrink-0 ml-3">Relaunch Window</span>
+                    <span className="text-slate-600 hover:text-[#E2E8F0] text-[10px] uppercase tracking-wider font-semibold transition-colors duration-200 shrink-0 ml-3">Relaunch Window</span>
                   </div>
                 ) : (
                   <div className="box-border w-full flex items-center justify-center transition-all duration-500">

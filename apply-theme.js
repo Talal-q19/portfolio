@@ -12,12 +12,13 @@ function traverseAndReplace(currentDir) {
     } else if (fullPath.endsWith('.jsx') || fullPath.endsWith('.js')) {
       let content = fs.readFileSync(fullPath, 'utf8');
       
-      // Cinematic Gold
-      content = content.replace(/#64d8ff/gi, '#D4AF37');
-      content = content.replace(/#16f2b3/gi, '#D4AF37');
+      // Stealth Platinum Silver
+      content = content.replace(/#D4AF37/gi, '#E2E8F0');
+      content = content.replace(/#16f2b3/gi, '#E2E8F0');
       
-      // Cinematic Amber
-      content = content.replace(/#ffcf70/gi, '#F59E0B');
+      // Titanium Slate
+      content = content.replace(/#F59E0B/gi, '#94A3B8');
+      content = content.replace(/#ffcf70/gi, '#94A3B8');
       
       // Card Backgrounds
       content = content.replace(/#132538/gi, '#151515');

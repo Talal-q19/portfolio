@@ -155,7 +155,7 @@ function Skills() {
               <button
                 type="button"
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="rounded-md p-2 text-xs font-semibold uppercase transition-all duration-300 text-[#a8b4c3] hover:bg-[#151515] hover:text-white cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[#D4AF37]"
+                className="rounded-md p-2 text-xs font-semibold uppercase transition-all duration-300 text-[#a8b4c3] hover:bg-[#151515] hover:text-white cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[#E2E8F0]"
                 title={isExpanded ? "Collapse to Slideshow" : "Expand to Grid"}
                 aria-label={isExpanded ? "Collapse to Slideshow" : "Expand to Grid"}
               >

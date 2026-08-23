@@ -17,41 +17,41 @@ import GalaxyBackground from "../galaxy-background";
 
 const codeLines = [
   [
-    { text: "const ", className: "text-[#D4AF37]" },
+    { text: "const ", className: "text-[#E2E8F0]" },
     { text: "softwareEngineer ", className: "text-[#f4f1e8]" },
-    { text: "= ", className: "text-[#D4AF37]" },
+    { text: "= ", className: "text-[#E2E8F0]" },
     { text: "{", className: "text-[#718297]" },
   ],
   [
     { text: "  name: ", className: "text-white" },
     { text: "'", className: "text-gray-400" },
-    { text: "Talal Qasim", className: "text-amber-300 font-semibold" },
+    { text: "Talal Qasim", className: "text-slate-100 font-semibold" },
     { text: "',", className: "text-gray-400" },
   ],
   [
     { text: "  role: ", className: "text-white" },
     { text: "'", className: "text-gray-400" },
-    { text: "Software Engineer / Full Stack Developer", className: "text-emerald-300 font-semibold" },
+    { text: "Software Engineer / Full Stack Developer", className: "text-[#34D399] font-semibold" },
     { text: "',", className: "text-gray-400" },
   ],
   [
     { text: "  skills: ", className: "text-white" },
     { text: "['", className: "text-gray-400" },
-    { text: "Java", className: "text-amber-300 font-bold" },
+    { text: "Java", className: "text-slate-200 font-bold" },
     { text: "', '", className: "text-gray-400" },
-    { text: "Spring Boot", className: "text-amber-300 font-bold" },
+    { text: "Spring Boot", className: "text-slate-200 font-bold" },
     { text: "', '", className: "text-gray-400" },
-    { text: "React", className: "text-amber-300" },
+    { text: "React", className: "text-slate-200" },
     { text: "', '", className: "text-gray-400" },
-    { text: "Next.js", className: "text-amber-300" },
+    { text: "Next.js", className: "text-slate-200" },
     { text: "', '", className: "text-gray-400" },
-    { text: "PostgreSQL", className: "text-amber-300" },
+    { text: "PostgreSQL", className: "text-slate-200" },
     { text: "', '", className: "text-gray-400" },
-    { text: "Kafka", className: "text-amber-300" },
+    { text: "Kafka", className: "text-slate-200" },
     { text: "', '", className: "text-gray-400" },
-    { text: "Docker", className: "text-amber-300" },
+    { text: "Docker", className: "text-slate-200" },
     { text: "', '", className: "text-gray-400" },
-    { text: "AWS", className: "text-amber-300" },
+    { text: "AWS", className: "text-slate-200" },
     { text: "'],", className: "text-gray-400" },
   ],
   [
@@ -81,13 +81,13 @@ const codeLines = [
   [
     { text: "      this.", className: "text-cyan-400" },
     { text: "hardWorker ", className: "text-white" },
-    { text: "&& ", className: "text-amber-300" },
+    { text: "&& ", className: "text-slate-300" },
     { text: "this.", className: "text-cyan-400" },
     { text: "problemSolver ", className: "text-white" },
-    { text: "&& ", className: "text-amber-300" },
+    { text: "&& ", className: "text-slate-300" },
     { text: "this.", className: "text-cyan-400" },
     { text: "skills.length ", className: "text-white" },
-    { text: ">= ", className: "text-amber-300" },
+    { text: ">= ", className: "text-slate-300" },
     { text: "5", className: "text-orange-400" },
   ],
   [{ text: "    );", className: "text-gray-400" }],
@@ -104,11 +104,11 @@ const skillsTabLines = [
   ],
   [
     { text: '  "role": ', className: "text-cyan-400 font-semibold" },
-    { text: '"Software Engineer / Full Stack Developer"', className: "text-amber-300 font-bold" },
+    { text: '"Software Engineer / Full Stack Developer"', className: "text-[#34D399] font-bold" },
     { text: ",", className: "text-gray-400" }
   ],
   [
-    { text: '  "stack": {', className: "text-amber-300 font-semibold" }
+    { text: '  "stack": {', className: "text-slate-300 font-semibold" }
   ],
   [
     { text: '    "backend": ', className: "text-cyan-400" },
@@ -127,13 +127,13 @@ const skillsTabLines = [
   [{ text: "  },", className: "text-gray-400" }],
   [
     { text: '  "status": ', className: "text-cyan-400 font-semibold" },
-    { text: '"Available for Hire & Projects"', className: "text-amber-300 font-bold" }
+    { text: '"Available for Hire & Projects"', className: "text-[#34D399] font-bold" }
   ],
   [{ text: "}", className: "text-gray-400" }],
 ];
 
 const readmeTabLines = [
-  [{ text: "# Talal Qasim — Software Engineer", className: "text-[#D4AF37] font-bold text-base" }],
+  [{ text: "# Talal Qasim — Software Engineer", className: "text-[#E2E8F0] font-bold text-base" }],
   [{ text: "", className: "text-gray-400" }],
   [{ text: "> Full-Stack Software Engineer building scalable backend systems & modern web applications.", className: "text-slate-200 font-medium italic" }],
   [{ text: "", className: "text-gray-400" }],
@@ -223,7 +223,7 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
         key={`code-line-${activeTab}-${lineIndex}`}
         className={`code-type-line flex items-start px-2.5 sm:px-4 lg:px-8 py-0.5 border-l-2 transition-colors duration-150 ${
           isCursorLine
-            ? "bg-[#D4AF37]/10 border-[#D4AF37]/70"
+            ? "bg-[#E2E8F0]/10 border-[#E2E8F0]/70"
             : "border-transparent hover:bg-white/[0.02]"
         }`}
       >
@@ -254,13 +254,13 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
   return (
     <div className={`ufo-panel order-1 lg:order-2 relative overflow-hidden rounded-2xl bg-[#07101d]/50 backdrop-blur-xl border transition-all duration-500 ${
       isExpanded 
-        ? 'border-[#D4AF37]/70 shadow-[0_16px_50px_rgba(212,175,55,0.25)] lg:scale-105 z-20' 
-        : 'border-[#ffffff]/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#D4AF37]/40 hover:shadow-[0_16px_48px_rgba(212,175,55,0.15)]'
+        ? 'border-[#E2E8F0]/70 shadow-[0_16px_50px_rgba(226,232,240,0.2)] lg:scale-105 z-20' 
+        : 'border-[#ffffff]/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#E2E8F0]/40 hover:shadow-[0_16px_48px_rgba(226,232,240,0.12)]'
     }`}>
       {/* Top border decoration */}
       <div className="flex flex-row">
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-[#64D8FF]/60"></div>
-        <div className="h-[1px] w-full bg-gradient-to-r from-[#64D8FF]/60 to-transparent"></div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#E2E8F0]/60 to-[#94A3B8]/60"></div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-[#94A3B8]/60 to-transparent"></div>
       </div>
       
       {/* Window Header */}
@@ -300,11 +300,11 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
               onClick={() => setActiveTab("coder.js")}
               className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
                 activeTab === "coder.js"
-                  ? "bg-[#07101d] text-[#D4AF37] border border-[#D4AF37]/40 shadow-[0_2px_8px_rgba(212,175,55,0.15)] font-semibold"
+                  ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
                   : "text-[#718297]/70 hover:text-white hover:bg-white/5"
               }`}
             >
-              <span className="text-[10px] text-[#F59E0B] font-bold">JS</span>
+              <span className="text-[10px] text-[#94A3B8] font-bold">JS</span>
               <span>coder.js</span>
             </button>
             
@@ -328,21 +328,21 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
               onClick={() => setActiveTab("README.md")}
               className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
                 activeTab === "README.md"
-                  ? "bg-[#07101d] text-[#F59E0B] border border-[#F59E0B]/40 shadow-[0_2px_8px_rgba(245,158,11,0.15)] font-semibold"
+                  ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
                   : "text-[#718297]/70 hover:text-white hover:bg-white/5"
               }`}
             >
-              <span className="text-[10px] text-[#F59E0B] font-bold">M↓</span>
+              <span className="text-[10px] text-[#94A3B8] font-bold">M↓</span>
               <span>README.md</span>
             </button>
           </div>
         </div>
         
         {/* Orbital Online Indicator */}
-        <div aria-hidden="true" className="relative flex items-center gap-1.5 rounded-full border border-[#D4AF37]/35 bg-[#07101d]/90 px-2 sm:px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.2)] select-none shrink-0">
+        <div aria-hidden="true" className="relative flex items-center gap-1.5 rounded-full border border-[#E2E8F0]/35 bg-[#07101d]/90 px-2 sm:px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#E2E8F0] shadow-[0_0_15px_rgba(226,232,240,0.2)] select-none shrink-0">
           <span className="relative flex h-2 w-2 items-center justify-center">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D4AF37] opacity-75"></span>
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#D4AF37]"></span>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E2E8F0] opacity-75"></span>
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#E2E8F0]"></span>
           </span>
           <span className="hidden sm:inline">Signal online</span>
         </div>
@@ -377,7 +377,7 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
               <span className="text-[#34D399] font-bold">❯</span>
               <span className="text-[#64D8FF]">Talal.getAvailability()</span>
               <span className="text-slate-400">=&gt;</span>
-              <span className="text-[#D4AF37] font-semibold whitespace-nowrap">"Open for New Opportunities"</span>
+              <span className="text-[#E2E8F0] font-semibold whitespace-nowrap">"Open for New Opportunities"</span>
             </div>
             <div className="hidden sm:flex items-center gap-1.5 text-[10px] text-[#34D399] bg-[#34D399]/10 px-2 py-0.5 rounded border border-[#34D399]/25 font-bold uppercase tracking-wider shrink-0 ml-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]"></span>
@@ -389,7 +389,7 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
           <div className="flex items-center justify-between border-t border-[#ffffff]/5 bg-[#07101d]/85 px-4 py-1.5 text-[11px] font-mono text-[#718297]/70 select-none">
             {/* Left side: Git branch & status */}
             <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-1 text-[#D4AF37]/90 hover:text-[#D4AF37] cursor-pointer transition-colors">
+              <div className="flex items-center space-x-1 text-[#E2E8F0]/90 hover:text-[#E2E8F0] cursor-pointer transition-colors">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 16 16">
                   <path fillRule="evenodd" d="M11.5 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-9-11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-3 1.25a2.75 2.75 0 0 1 2.75 2.75V11h-.75V8a2 2 0 0 0-2-2H4.25v1.25H2.5v-3.5h1.75V5h.25zm5 4.75a2.75 2.75 0 0 1 2.75-2.75H11.5V5h1.75v3.5H11.5V7.25h-.25a2 2 0 0 0-2 2v2a1.5 1.5 0 0 0 1.5 1.5h.75v.75h-.75A2.75 2.75 0 0 1 7.25 10v-3h.75v3z"/>
                 </svg>
@@ -444,8 +444,8 @@ function HeroSection() {
         <div className="relative z-10 grid grid-cols-1 items-start gap-y-8 lg:grid-cols-2 lg:gap-12 w-full">
           <div className="order-2 lg:order-1 flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mb-6">
-              <div className="ufo-panel group relative aspect-square w-32 sm:w-44 shrink-0 rounded-full border border-[#D4AF37]/40 p-1.5 shadow-[0_0_30px_rgba(212,175,55,0.15)] transition-all duration-500 hover:shadow-[0_0_50px_rgba(212,175,55,0.3)] hover:border-[#D4AF37]/80">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#D4AF37]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              <div className="ufo-panel group relative aspect-square w-32 sm:w-44 shrink-0 rounded-full border border-[#E2E8F0]/40 p-1.5 shadow-[0_0_30px_rgba(226,232,240,0.15)] transition-all duration-500 hover:shadow-[0_0_50px_rgba(226,232,240,0.25)] hover:border-[#E2E8F0]/80">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#E2E8F0]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div className="relative h-full overflow-hidden rounded-full border border-[#ffffff]/10 bg-[#07101d] shadow-inner transition-all duration-500">
                   <Image
                     src={personalData.profile}
@@ -457,12 +457,12 @@ function HeroSection() {
                 </div>
               </div>
               <div>
-                <p className="mb-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.3em] text-[#D4AF37] sm:text-xs">
+                <p className="mb-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.3em] text-[#34D399] sm:text-xs">
                   Backend engineering · Dubai
                 </p>
                 <h1 className="text-4xl font-semibold leading-[1.1] text-[#f4f1e8] md:text-5xl lg:text-[3.6rem] tracking-tight max-w-3xl">
                   Software Engineer
-                  <span className="block text-2xl md:text-4xl lg:text-[2.8rem] bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] bg-clip-text text-transparent drop-shadow-sm mt-2 md:mt-3">
+                  <span className="block text-2xl md:text-4xl lg:text-[2.8rem] bg-gradient-to-r from-white via-[#E2E8F0] to-[#34D399] bg-clip-text text-transparent drop-shadow-sm mt-2 md:mt-3">
                     Fintech Backend Engineer
                   </span>
                 </h1>
@@ -477,7 +477,7 @@ function HeroSection() {
                 href={personalData.github}
                 target='_blank'
                 aria-label="GitHub profile"
-                className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#D4AF37]/60 hover:text-[#D4AF37] hover:scale-110 hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]"
+                className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#E2E8F0]/60 hover:text-[#E2E8F0] hover:scale-110 hover:shadow-[0_0_20px_rgba(226,232,240,0.2)]"
               >
                 <BsGithub size={24} className="transition-transform duration-300 group-hover:scale-110" />
               </Link>
@@ -485,7 +485,7 @@ function HeroSection() {
                 href={personalData.linkedIn}
                 target='_blank'
                 aria-label="LinkedIn profile"
-                className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#D4AF37]/60 hover:text-[#D4AF37] hover:scale-110 hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]"
+                className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#E2E8F0]/60 hover:text-[#E2E8F0] hover:scale-110 hover:shadow-[0_0_20px_rgba(226,232,240,0.2)]"
               >
                 <BsLinkedin size={24} className="transition-transform duration-300 group-hover:scale-110" />
               </Link>
@@ -493,19 +493,19 @@ function HeroSection() {
                 href={personalData.instagram}
                 target='_blank'
                 aria-label="Instagram profile"
-                className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#D4AF37]/60 hover:text-[#D4AF37] hover:scale-110 hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]"
+                className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#E2E8F0]/60 hover:text-[#E2E8F0] hover:scale-110 hover:shadow-[0_0_20px_rgba(226,232,240,0.2)]"
               >
                 <FaInstagram size={24} className="transition-transform duration-300 group-hover:scale-110" />
               </Link>
             </div>
 
             <div className="flex items-center gap-4">
-              <Link href="#contact" className="group flex min-h-[50px] items-center gap-2 rounded-full border border-[#D4AF37]/40 bg-[#07101d]/60 backdrop-blur-sm px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#f4f1e8] transition-all duration-300 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:shadow-[0_0_25px_rgba(212,175,55,0.15)] md:px-8">
+              <Link href="#contact" className="group flex min-h-[50px] items-center gap-2 rounded-full border border-[#E2E8F0]/40 bg-[#07101d]/60 backdrop-blur-sm px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#f4f1e8] transition-all duration-300 hover:border-[#E2E8F0] hover:bg-[#E2E8F0]/10 hover:shadow-[0_0_25px_rgba(226,232,240,0.15)] md:px-8">
                 <span>Contact me</span>
                 <RiContactsFill size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
 
-              <Link className="group flex min-h-[50px] items-center gap-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#07101d] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(245,158,11,0.3)] md:px-8" role="button" target="_blank" href={personalData.resume}
+              <Link className="group flex min-h-[50px] items-center gap-2 rounded-full bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#07101d] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:px-8" role="button" target="_blank" href={personalData.resume}
               >
                 <span>Get Resume</span>
                 <MdDownload size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -520,9 +520,9 @@ function HeroSection() {
               <button 
                 onClick={handleRestore}
                 type="button"
-                className="bg-transparent font-mono text-[11px] md:text-xs text-slate-500 hover:text-[#D4AF37] cursor-pointer transition-colors duration-300 focus:outline-none flex items-center gap-2"
+                className="bg-transparent font-mono text-[11px] md:text-xs text-slate-500 hover:text-[#E2E8F0] cursor-pointer transition-colors duration-300 focus:outline-none flex items-center gap-2"
               >
-                <span className="text-[#D4AF37] font-bold animate-pulse">&gt;</span>
+                <span className="text-[#E2E8F0] font-bold animate-pulse">&gt;</span>
                 <span>restore-coder.sh</span>
               </button>
             </div>

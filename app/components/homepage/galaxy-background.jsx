@@ -33,7 +33,7 @@ const Starfield = ({ count = 5000, speed = 1, size = 0.004, opacity = 0.55, ...p
       <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
         <PointMaterial
           transparent
-          color="#D4AF37" // Cinematic gold
+          color="#E2E8F0" // Platinum starlight
           size={size}
           opacity={opacity}
           sizeAttenuation={true}
@@ -80,7 +80,7 @@ const ShootingStarsCanvas = () => {
         maxOpacity: 0.85 + Math.random() * 0.15,
         life: 0,
         maxLife: 35 + Math.random() * 30,
-        color: Math.random() > 0.35 ? "#D4AF37" : "#64D8FF",
+        color: Math.random() > 0.35 ? "#E2E8F0" : "#94A3B8",
       });
     };
 
@@ -126,7 +126,7 @@ const ShootingStarsCanvas = () => {
 
         const gradient = ctx.createLinearGradient(star.x, star.y, tailX, tailY);
         gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
-        gradient.addColorStop(0.2, star.color === "#D4AF37" ? `rgba(212, 175, 55, ${star.opacity * 0.85})` : `rgba(100, 216, 255, ${star.opacity * 0.85})`);
+        gradient.addColorStop(0.2, star.color === "#E2E8F0" ? `rgba(226, 232, 240, ${star.opacity * 0.85})` : `rgba(148, 163, 184, ${star.opacity * 0.85})`);
         gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
 
         ctx.save();
@@ -184,7 +184,7 @@ export default function GalaxyBackground({
       style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 60%, rgba(0,0,0,0.5) 85%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 60%, rgba(0,0,0,0.5) 85%, transparent 100%)' }}
     >
       {/* Deep Space Ambient Glow / Nebulae */}
-      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-gradient-to-tr from-[#D4AF37]/10 via-[#07101d]/0 to-transparent rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-gradient-to-tr from-[#E2E8F0]/10 via-[#07101d]/0 to-transparent rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-10 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-[#64d8ff]/8 via-transparent to-transparent rounded-full blur-[100px] pointer-events-none" />
 
       {/* 3D Starfield Canvas */}
