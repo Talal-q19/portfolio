@@ -92,10 +92,10 @@ function Navbar() {
             className="flex items-center gap-3 group no-underline"
           >
             <div className="flex items-center -space-x-1.5 transition-transform duration-300 group-hover:scale-105 select-none">
-              <span className="font-serif font-light text-2xl text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-[#E2E8F0] z-20">
+              <span className="font-serif font-light text-2xl text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-[#E2E8F0] z-20">
                 T
               </span>
-              <span className="font-mono font-light text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#E2E8F0] via-[#f8fafc] to-[#94A3B8] opacity-90 mix-blend-screen z-10">
+              <span className="font-mono font-light text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#E2E8F0] via-[#f8fafc] to-[#CBD5E1] opacity-95 mix-blend-screen z-10">
                 Q
               </span>
             </div>

@@ -221,11 +221,10 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
     return (
       <div
         key={`code-line-${activeTab}-${lineIndex}`}
-        className={`code-type-line flex items-start px-2.5 sm:px-4 lg:px-8 py-0.5 border-l-2 transition-colors duration-150 ${
-          isCursorLine
-            ? "bg-[#E2E8F0]/10 border-[#E2E8F0]/70"
-            : "border-transparent hover:bg-white/[0.02]"
-        }`}
+        className={`code-type-line flex items-start px-2.5 sm:px-4 lg:px-8 py-0.5 border-l-2 transition-colors duration-150 ${isCursorLine
+          ? "bg-[#E2E8F0]/10 border-[#E2E8F0]/70"
+          : "border-transparent hover:bg-white/[0.02]"
+          }`}
       >
         <span className="font-mono text-[11px] sm:text-xs md:text-sm lg:text-[14px] select-none text-right mr-2 sm:mr-4 md:mr-6 w-6 sm:w-8 text-[#718297]/50 shrink-0 font-medium whitespace-nowrap">
           {lineIndex + 1}
@@ -252,73 +251,70 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
   };
 
   return (
-    <div className={`ufo-panel order-1 lg:order-2 relative overflow-hidden rounded-2xl bg-[#07101d]/50 backdrop-blur-xl border transition-all duration-500 ${
-      isExpanded 
-        ? 'border-[#E2E8F0]/70 shadow-[0_16px_50px_rgba(226,232,240,0.2)] lg:scale-105 z-20' 
-        : 'border-[#ffffff]/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#E2E8F0]/40 hover:shadow-[0_16px_48px_rgba(226,232,240,0.12)]'
-    }`}>
+    <div className={`ufo-panel order-1 lg:order-2 relative overflow-hidden rounded-2xl bg-[#07101d]/50 backdrop-blur-xl border transition-all duration-500 ${isExpanded
+      ? 'border-[#E2E8F0]/70 shadow-[0_16px_50px_rgba(226,232,240,0.2)] lg:scale-105 z-20'
+      : 'border-[#ffffff]/10 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-[#E2E8F0]/40 hover:shadow-[0_16px_48px_rgba(226,232,240,0.12)]'
+      }`}>
       {/* Top border decoration */}
       <div className="flex flex-row">
         <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#E2E8F0]/60 to-[#94A3B8]/60"></div>
         <div className="h-[1px] w-full bg-gradient-to-r from-[#94A3B8]/60 to-transparent"></div>
       </div>
-      
+
       {/* Window Header */}
       <div className="flex items-center justify-between border-b border-[#ffffff]/10 bg-[#07101d]/80 px-3 sm:px-4 py-2.5 sm:py-3 relative gap-2">
         <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1 overflow-hidden">
           {/* Windows control dots */}
           <div className="flex flex-row space-x-1.5 lg:space-x-2 shrink-0">
-            <WindowControl 
-              label="Close coder preview" 
-              color="bg-[#FF5F56] text-[#4C0002]" 
-              onClick={onClose} 
+            <WindowControl
+              label="Close coder preview"
+              color="bg-[#FF5F56] text-[#4C0002]"
+              onClick={onClose}
               pressed={false}
             >
               <FiX size={8} />
             </WindowControl>
-            <WindowControl 
-              label="Minimize coder preview" 
-              color="bg-[#FFBD2E] text-[#5C3E00]" 
-              onClick={onMinimize} 
+            <WindowControl
+              label="Minimize coder preview"
+              color="bg-[#FFBD2E] text-[#5C3E00]"
+              onClick={onMinimize}
               pressed={isMinimized}
             >
               <FiMinus size={8} />
             </WindowControl>
-            <WindowControl 
-              label="Expand coder preview" 
-              color="bg-[#27C93F] text-[#004D0B]" 
-              onClick={onExpand} 
-              pressed={isExpanded} 
+            <WindowControl
+              label="Expand coder preview"
+              color="bg-[#27C93F] text-[#004D0B]"
+              onClick={onExpand}
+              pressed={isExpanded}
             />
           </div>
-          
+
           {/* Interactive File Tabs - Horizontally scrollable on mobile */}
           <div className="flex items-center space-x-1 sm:space-x-2 pl-2 sm:pl-4 border-l border-[#ffffff]/10 overflow-x-auto no-scrollbar py-0.5 flex-nowrap shrink max-w-full">
             {/* Tab 1: coder.js */}
             <button
               type="button"
               onClick={() => setActiveTab("coder.js")}
-              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
-                activeTab === "coder.js"
-                  ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
-                  : "text-[#718297]/70 hover:text-white hover:bg-white/5"
-              }`}
+              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${activeTab === "coder.js"
+                ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
+                : "text-[#718297]/70 hover:text-white hover:bg-white/5"
+                }`}
             >
               <span className="text-[10px] text-[#94A3B8] font-bold">JS</span>
               <span>coder.js</span>
             </button>
-            
+
             {/* Tab 2: skills.json */}
             <button
               type="button"
               onClick={() => setActiveTab("skills.json")}
-              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
-                activeTab === "skills.json"
-                  ? "bg-[#07101d] text-[#64D8FF] border border-[#64D8FF]/40 shadow-[0_2px_8px_rgba(100,216,255,0.15)] font-semibold"
-                  : "text-[#718297]/70 hover:text-white hover:bg-white/5"
-              }`}
+              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${activeTab === "skills.json"
+                ? "bg-[#07101d] text-[#64D8FF] border border-[#64D8FF]/40 shadow-[0_2px_8px_rgba(100,216,255,0.15)] font-semibold"
+                : "text-[#718297]/70 hover:text-white hover:bg-white/5"
+                }`}
             >
-              <span className="text-[10px] text-[#64D8FF] font-bold">{}</span>
+              <span className="text-[10px] text-[#64D8FF] font-bold">{ }</span>
               <span>skills.json</span>
             </button>
 
@@ -326,18 +322,17 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
             <button
               type="button"
               onClick={() => setActiveTab("README.md")}
-              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${
-                activeTab === "README.md"
-                  ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
-                  : "text-[#718297]/70 hover:text-white hover:bg-white/5"
-              }`}
+              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${activeTab === "README.md"
+                ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
+                : "text-[#718297]/70 hover:text-white hover:bg-white/5"
+                }`}
             >
               <span className="text-[10px] text-[#94A3B8] font-bold">M↓</span>
               <span>README.md</span>
             </button>
           </div>
         </div>
-        
+
         {/* Orbital Online Indicator */}
         <div aria-hidden="true" className="relative flex items-center gap-1.5 rounded-full border border-[#E2E8F0]/35 bg-[#07101d]/90 px-2 sm:px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#E2E8F0] shadow-[0_0_15px_rgba(226,232,240,0.2)] select-none shrink-0">
           <span className="relative flex h-2 w-2 items-center justify-center">
@@ -349,9 +344,8 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
       </div>
 
       {/* Editor Content Area */}
-      <div className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${
-        isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'
-      }`}>
+      <div className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${isMinimized ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'
+        }`}>
         <div className="overflow-hidden">
           {/* Dynamic Breadcrumbs bar */}
           <div className="flex items-center space-x-2 border-b border-[#ffffff]/5 bg-[#07101d]/30 px-4 py-1.5 text-xs font-mono text-[#718297]/70">
@@ -391,11 +385,11 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-1 text-[#E2E8F0]/90 hover:text-[#E2E8F0] cursor-pointer transition-colors">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 16 16">
-                  <path fillRule="evenodd" d="M11.5 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-9-11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-3 1.25a2.75 2.75 0 0 1 2.75 2.75V11h-.75V8a2 2 0 0 0-2-2H4.25v1.25H2.5v-3.5h1.75V5h.25zm5 4.75a2.75 2.75 0 0 1 2.75-2.75H11.5V5h1.75v3.5H11.5V7.25h-.25a2 2 0 0 0-2 2v2a1.5 1.5 0 0 0 1.5 1.5h.75v.75h-.75A2.75 2.75 0 0 1 7.25 10v-3h.75v3z"/>
+                  <path fillRule="evenodd" d="M11.5 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-9-11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-3 1.25a2.75 2.75 0 0 1 2.75 2.75V11h-.75V8a2 2 0 0 0-2-2H4.25v1.25H2.5v-3.5h1.75V5h.25zm5 4.75a2.75 2.75 0 0 1 2.75-2.75H11.5V5h1.75v3.5H11.5V7.25h-.25a2 2 0 0 0-2 2v2a1.5 1.5 0 0 0 1.5 1.5h.75v.75h-.75A2.75 2.75 0 0 1 7.25 10v-3h.75v3z" />
                 </svg>
                 <span className="font-semibold">main</span>
               </div>
-              
+
               <div className="flex items-center space-x-1 text-emerald-400">
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -521,7 +515,7 @@ function HeroSection() {
           {/* Column 2: Code Window or Closed Placeholder */}
           {isClosed ? (
             <div className="order-1 lg:order-2 flex items-center justify-center py-8 w-full">
-              <button 
+              <button
                 onClick={handleRestore}
                 type="button"
                 className="bg-transparent font-mono text-[11px] md:text-xs text-slate-500 hover:text-[#E2E8F0] cursor-pointer transition-colors duration-300 focus:outline-none flex items-center gap-2"
@@ -531,7 +525,7 @@ function HeroSection() {
               </button>
             </div>
           ) : (
-            <CodingWindow 
+            <CodingWindow
               isMinimized={isMinimized}
               isExpanded={isExpanded}
               onClose={() => setIsClosed(true)}
