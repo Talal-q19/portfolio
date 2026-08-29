@@ -53,7 +53,9 @@ const ShootingStarsCanvas = () => {
     const ctx = canvas.getContext("2d");
     let animationFrameId;
     let stars = [];
-    let timeoutId;
+    let timeoutId = null;
+
+    const MAX_CONCURRENT_STARS = 2; // Strict limit to prevent bursts
 
     const resizeCanvas = () => {
       if (!canvas || !canvas.parentElement) return;
@@ -65,41 +67,66 @@ const ShootingStarsCanvas = () => {
     window.addEventListener("resize", resizeCanvas);
 
     const spawnStar = () => {
-      if (!canvas) return;
-      const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.3; // ~45 deg angle
+      if (!canvas || document.hidden) return;
+      if (stars.length >= MAX_CONCURRENT_STARS) return;
+
+      const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.25; // ~45 deg angle
       const startX = Math.random() * (canvas.width * 1.2) - canvas.width * 0.1;
-      const startY = Math.random() * (canvas.height * 0.5);
+      const startY = Math.random() * (canvas.height * 0.45);
 
       stars.push({
         x: startX,
         y: startY,
-        length: 120 + Math.random() * 180,
-        speed: 11 + Math.random() * 14,
+        length: 120 + Math.random() * 160,
+        speed: 10 + Math.random() * 12,
         angle: angle,
         opacity: 0,
         maxOpacity: 0.85 + Math.random() * 0.15,
         life: 0,
-        maxLife: 35 + Math.random() * 30,
+        maxLife: 35 + Math.random() * 25,
         color: Math.random() > 0.35 ? "#E2E8F0" : "#94A3B8",
       });
     };
 
-    const createShootingStar = () => {
-      spawnStar();
-      // Schedule next meteor spawn more frequently (~500ms to 1400ms)
-      const nextTime = 400 + Math.random() * 1000;
-      timeoutId = setTimeout(createShootingStar, nextTime);
+    const scheduleNextStar = (delay) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (!document.hidden) {
+          spawnStar();
+        }
+        // Graceful, paced interval between shooting stars (2.2s to 4.7s)
+        const nextTime = 2200 + Math.random() * 2500;
+        scheduleNextStar(nextTime);
+      }, delay);
     };
 
-    // Initial shooting star spawns
-    timeoutId = setTimeout(() => {
-      spawnStar();
-      setTimeout(spawnStar, 250);
-      createShootingStar();
-    }, 300);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab is hidden/inactive: clear star array and timer
+        stars = [];
+        if (timeoutId) clearTimeout(timeoutId);
+      } else {
+        // Tab resumed: reset stars and schedule next single star smoothly
+        stars = [];
+        scheduleNextStar(1200 + Math.random() * 1000);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Initial shooting star spawn after page loads
+    scheduleNextStar(1500);
 
     const render = () => {
       if (!canvas || !ctx) return;
+
+      // If document is hidden, reset stars and wait
+      if (document.hidden) {
+        stars = [];
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = stars.length - 1; i >= 0; i--) {
@@ -157,8 +184,9 @@ const ShootingStarsCanvas = () => {
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
-      clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
