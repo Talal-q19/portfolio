@@ -82,9 +82,10 @@ export const projectsData = [
         id: 5,
         name: 'Portfolio',
         images: [
-            '/project-images/portfolio-home.png',
-            '/project-images/portfolio-projects.png',
-            '/project-images/portfolio-contact.png'
+            '/project-images/portfolio-hero-preview.png',
+            '/project-images/portfolio-experience-preview.png',
+            '/project-images/portfolio-projects-preview.png',
+            '/project-images/portfolio-contact-preview.png'
         ],
         description: "Built a full-stack developer portfolio with a polished Next.js frontend, interactive project showcases, structured career sections, protected contact workflows, and server-side email delivery.",
         details: [
