@@ -16,6 +16,16 @@ const companyLogos = {
 function Experience() {
   const [activeId, setActiveId] = useState(experiences[0]?.id || 1);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,23 +36,87 @@ function Experience() {
     return () => clearTimeout(timer);
   }, [activeId]);
 
+  const leftVariants = {
+    hidden: {
+      opacity: 0,
+      x: isMobile ? 0 : -80,
+      y: isMobile ? 30 : 0,
+      scale: 0.98,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.85,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const rightVariants = {
+    hidden: {
+      opacity: 0,
+      x: isMobile ? 0 : 80,
+      y: isMobile ? 30 : 0,
+      scale: 0.98,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.85,
+        ease: [0.16, 1, 0.3, 1],
+        delay: isMobile ? 0.15 : 0,
+      },
+    },
+  };
+
   return (
     <SectionVisualFrame id="experience" variant="timeline" accent="cyan" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
-      <div className="flex justify-center my-5 lg:py-8">
+      {/* Animated Header Badge & Divider Lines */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="flex justify-center my-5 lg:py-8"
+      >
         <div className="flex items-center">
-          <span className="h-px w-24 bg-[#262626]"></span>
+          <motion.span
+            initial={{ scaleX: 0, opacity: 0 }}
+            whileInView={{ scaleX: 1, opacity: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-px w-24 bg-[#262626] origin-right"
+          />
           <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
             Experiences
           </span>
-          <span className="h-px w-24 bg-[#262626]"></span>
+          <motion.span
+            initial={{ scaleX: 0, opacity: 0 }}
+            whileInView={{ scaleX: 1, opacity: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-px w-24 bg-[#262626] origin-left"
+          />
         </div>
-      </div>
+      </motion.div>
 
       <div className="py-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-10">
           
-          {/* Sidebar Tabs - Left Column */}
-          <div className="col-span-1 md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0 horizontal-scrollbar snap-x">
+          {/* Sidebar Tabs - Left Column (Converging from Left) */}
+          <motion.div
+            variants={leftVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            className="col-span-1 md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0 horizontal-scrollbar snap-x"
+          >
             {experiences.map((exp) => {
               const isActive = activeId === exp.id;
               return (
@@ -75,10 +149,16 @@ function Experience() {
                 </button>
               );
             })}
-          </div>
+          </motion.div>
 
-          {/* Detailed Showcase Card - Right Column (Stable height container to avoid layout shift) */}
-          <div className="col-span-1 md:col-span-8 min-h-[460px] md:min-h-[480px]">
+          {/* Detailed Showcase Card - Right Column (Converging from Right) */}
+          <motion.div
+            variants={rightVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            className="col-span-1 md:col-span-8 min-h-[460px] md:min-h-[480px]"
+          >
             <AnimatePresence mode="wait">
               {experiences
                 .filter((exp) => exp.id === activeId)
@@ -199,7 +279,7 @@ function Experience() {
                   </motion.div>
                 ))}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
         </div>
       </div>
@@ -208,3 +288,4 @@ function Experience() {
 }
 
 export default Experience;
+

@@ -1,4 +1,5 @@
-// @flow strict
+"use client";
+
 import { personalData } from '@/utils/data/personal-data';
 import Link from 'next/link';
 import { BiLogoLinkedin } from "react-icons/bi";
@@ -6,19 +7,35 @@ import { CiLocationOn } from "react-icons/ci";
 import { FaInstagram } from "react-icons/fa";
 import { IoLogoGithub, IoMdCall } from "react-icons/io";
 import { MdAlternateEmail } from "react-icons/md";
+import { motion } from "framer-motion";
 import SectionVisualFrame from '../../helper/section-visual-frame';
 import ContactForm from './contact-form';
 
 function ContactSection() {
   return (
     <SectionVisualFrame id="contact" variant="contact" accent="emerald" className="my-12 lg:my-16 relative mt-24 text-white border-t border-[#262626]">
-      <div className="hidden lg:flex flex-col items-center absolute top-24 -right-8">
+      {/* Side Badge with subtle slide-in */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden lg:flex flex-col items-center absolute top-24 -right-8"
+      >
         <span className="w-fit rotate-90 rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
           CONTACT
         </span>
         <span className="h-36 w-px bg-[#262626]"></span>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      </motion.div>
+
+      {/* Grid with subtle fade & lift entrance */}
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+      >
         <ContactForm />
         <div className="lg:w-3/4 ">
           <div className="contact-radar relative mb-8 hidden h-44 w-full max-w-md items-center justify-center lg:flex">
@@ -84,9 +101,11 @@ function ContactSection() {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </SectionVisualFrame>
   );
-};
+}
 
 export default ContactSection;
+
+
