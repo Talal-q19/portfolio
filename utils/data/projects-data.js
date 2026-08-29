@@ -13,7 +13,7 @@ export const projectsData = [
             "Integrated Zand for fiat payment workflows and Sumsub for KYC verification, onboarding, compliance checks, and regulatory readiness.",
             "Built Admin Dashboard backend systems for user management, compliance workflows, wallet operations, audit visibility, permission controls, and operational tools."
         ],
-        tools: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'Kafka', 'WebSockets', 'Docker', 'AWS EC2', 'Amazon RDS', 'JWT', 'OAuth 2.0'],
+        techStack: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'Kafka', 'WebSockets', 'Docker', 'AWS EC2', 'Amazon RDS', 'JWT', 'OAuth 2.0'],
         role: 'Backend Engineer',
         code: '',
         demo: '',
@@ -34,7 +34,7 @@ export const projectsData = [
             "Designed a Python automation script for data fetching workflows.",
             "Built an HR admin dashboard for specific table access and a super admin panel for full table access and editing."
         ],
-        tools: ['Node.js', 'Express.js', "MySQL", "HTML", "CSS", "C++", "Python"],
+        techStack: ['Node.js', 'Express.js', "MySQL", "HTML", "CSS", "C++", "Python"],
         role: 'Software Engineer',
         code: '',
         demo: '',
@@ -53,7 +53,7 @@ export const projectsData = [
             "Built a content-based recommendation model in JavaScript for suggestions tailored to movie attributes.",
             "Supported the interactive streaming experience with Node.js, Express.js, MySQL, Python, HTML, CSS, and JavaScript."
         ],
-        tools: ['Node.js', 'Express.js', 'MySQL', 'Python', 'HTML', 'CSS', 'Javascript'],
+        techStack: ['Node.js', 'Express.js', 'MySQL', 'Python', 'HTML', 'CSS', 'Javascript'],
         code: '',
         role: 'Software Engineer',
         demo: '',
@@ -73,7 +73,7 @@ export const projectsData = [
             "Converted user-defined filters into SQL queries for efficient retrieval.",
             "Maintained smooth pagination for both filtered and unfiltered records."
         ],
-        tools: ['Python', 'React', 'MySQL', 'Pandas', "Scikit-learn", "Flask"],
+        techStack: ['Python', 'React', 'MySQL', 'Pandas', "Scikit-learn", "Flask"],
         code: '',
         demo: '',
         role: 'Software Engineer',
@@ -94,7 +94,7 @@ export const projectsData = [
             "Organized profile, skills, education, experience, company logos, CV assets, and project data into reusable data modules for easier updates.",
             "Configured the app for local development and deployment with Next.js metadata, Docker files, environment variables, and static assets served through the public folder."
         ],
-        tools: ['Next.js', 'React', 'JavaScript', 'Tailwind CSS', 'Sass', 'Node.js', 'Nodemailer', 'Axios', 'reCAPTCHA', 'Docker'],
+        techStack: ['Next.js', 'React', 'JavaScript', 'Tailwind CSS', 'Sass', 'Node.js', 'Nodemailer', 'Axios', 'reCAPTCHA', 'Docker'],
         code: '',
         demo: '',
         role: 'Full Stack Developer',
@@ -109,7 +109,7 @@ export const projectsData = [
 //     id: 1,
 //     name: '',
 //     description: "",
-//     tools: [],
+//     techStack: [],
 //     role: '',
 //     code: '',
 //     demo: '',

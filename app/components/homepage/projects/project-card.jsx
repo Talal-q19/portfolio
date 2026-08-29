@@ -142,14 +142,14 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                 )}
 
                 <div>
-                  <span className="text-[#EEFFFF] mr-1.5">tools:</span>
+                  <span className="text-[#EEFFFF] mr-1.5">techStack:</span>
                   <span className="text-[#89DDFF]">{`[`}</span>
-                  {project.tools.map((tag, i) => (
+                  {(project.techStack || project.tools || []).map((tag, i, arr) => (
                     <React.Fragment key={i}>
                       <span className="text-[#89DDFF]">{`'`}</span>
                       <span className="text-[#C3E88D]">{tag}</span>
                       <span className="text-[#89DDFF]">{`'`}</span>
-                      {project.tools?.length - 1 !== i && (
+                      {arr.length - 1 !== i && (
                         <span className="text-slate-500 mr-1.5">,</span>
                       )}
                     </React.Fragment>
@@ -278,7 +278,7 @@ function ProjectCard({ project, isExpanded, isMinimized, onClose, onExpand, onMi
                     </div>
 
                     <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/5">
-                      {project.tools.slice(0, 8).map((tool) => {
+                      {(project.techStack || project.tools || []).slice(0, 8).map((tool) => {
                         const toolIcon = skillsImage(tool);
 
                         return (
