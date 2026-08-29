@@ -457,10 +457,10 @@ function HeroSection() {
                   <span className="text-[#34D399]">Dubai</span>
                 </p>
                 <h1 className="text-4xl font-semibold leading-[1.1] md:text-5xl lg:text-[3.6rem] tracking-tight max-w-3xl flex flex-col items-start">
-                  <span className="inline-block w-fit bg-gradient-to-r from-white via-[#A7F3D0] via-45% to-[#34D399] bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(52,211,153,0.26)]">
+                  <span className="inline-block w-fit bg-gradient-to-r from-white via-[#A7F3D0] via-45% to-[#34D399] bg-clip-text text-transparent">
                     Software Engineer
                   </span>
-                  <span className="inline-block w-fit text-2xl md:text-4xl lg:text-[2.8rem] bg-gradient-to-r from-white via-[#6EE7B7] via-40% to-[#10B981] bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(52,211,153,0.26)] mt-2 md:mt-3">
+                  <span className="inline-block w-fit text-2xl md:text-4xl lg:text-[2.8rem] bg-gradient-to-r from-white via-[#6EE7B7] via-40% to-[#10B981] bg-clip-text text-transparent mt-2 md:mt-3">
                     Fintech Backend Engineer
                   </span>
                 </h1>

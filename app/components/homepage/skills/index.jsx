@@ -90,14 +90,6 @@ function Skills() {
 
   return (
     <div id="skills" className="relative z-40 isolate overflow-hidden border-t my-12 pb-8 lg:my-24 lg:pb-12 border-[#262626]">
-      <div className={`absolute left-1/2 top-10 h-28 w-2/3 -translate-x-1/2 bg-gradient-to-r ${activeAccent.glow} blur-3xl opacity-70 pointer-events-none`} />
-
-      <div className="flex justify-center -translate-y-[1px]">
-        <div className="w-3/4">
-          <div className={`h-[1px] bg-gradient-to-r from-transparent ${activeAccent.line} to-transparent w-full`} />
-        </div>
-      </div>
-
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex items-center">
           <span className="h-px w-24 bg-[#262626]"></span>

@@ -3,7 +3,7 @@
 import { experiences } from "@/utils/data/experience";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { FiChevronDown, FiCalendar } from "react-icons/fi";
+import { FiCalendar } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 
@@ -28,14 +28,6 @@ function Experience() {
 
   return (
     <SectionVisualFrame id="experience" variant="timeline" accent="cyan" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
-      <Image
-        src="/section.svg"
-        alt="Hero"
-        width={1572}
-        height={795}
-        className="absolute left-1/2 top-0 -z-10 w-full max-w-[1572px] -translate-x-1/2"
-      />
-
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex items-center">
           <span className="h-px w-24 bg-[#262626]"></span>
@@ -59,7 +51,7 @@ function Experience() {
                   onClick={() => setActiveId(exp.id)}
                   className={`snap-center shrink-0 flex items-center gap-3 px-4 py-3.5 rounded-xl border text-left transition-all duration-300 w-[260px] md:w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E2E8F0] ${
                     isActive
-                      ? "bg-[#E2E8F0]/5 border-[#E2E8F0]/45 shadow-[0_0_20px_rgba(226,232,240,0.06)]"
+                      ? "bg-[#E2E8F0]/5 border-[#E2E8F0]/45"
                       : "bg-zinc-950/40 border-zinc-800/80 hover:border-zinc-700/80 hover:bg-zinc-900/20"
                   }`}
                 >
@@ -97,8 +89,7 @@ function Experience() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.22, ease: "easeInOut" }}
-                    className="ufo-panel w-full min-h-[460px] md:min-h-[480px] p-6 sm:p-8 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-xl relative overflow-hidden flex flex-col justify-between hover:transform-none"
-                    style={{ transition: "none" }}
+                    className="w-full min-h-[460px] md:min-h-[480px] p-6 sm:p-8 rounded-2xl border border-zinc-800/80 bg-[#0a0a0a]/80 backdrop-blur-md shadow-xl relative overflow-hidden flex flex-col justify-between"
                   >
                     <div className="relative z-10 flex-1 flex flex-col h-full justify-between">
                       <div>
@@ -152,10 +143,6 @@ function Experience() {
                                     0% { opacity: 0; filter: blur(4px); transform: translateY(4px); }
                                     100% { opacity: 1; filter: blur(0px); transform: translateY(0); }
                                   }
-                                  @keyframes pulseGlow {
-                                    0%, 100% { opacity: 0.2; }
-                                    50% { opacity: 0.6; }
-                                  }
                                   .loader-t {
                                     animation: miniFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
                                   }
@@ -164,14 +151,9 @@ function Experience() {
                                     animation-delay: 0.15s;
                                     opacity: 0;
                                   }
-                                  .scan-line {
-                                    animation: pulseGlow 1.5s ease-in-out infinite;
-                                  }
                                 `}</style>
                                 
                                 <div className="relative flex flex-col items-center justify-center">
-                                  <div className="absolute w-24 h-24 bg-[#E2E8F0]/5 rounded-full blur-[30px] scan-line"></div>
-                                  
                                   <div className="flex items-center -space-x-2">
                                     <span className="loader-t text-5xl font-serif font-light text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-[#E2E8F0] z-20">
                                       T
@@ -204,7 +186,7 @@ function Experience() {
                               >
                                 {exp.highlights.map((highlight, index) => (
                                   <li key={index} className="flex gap-4">
-                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399] shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399]" />
                                     <span>{highlight}</span>
                                   </li>
                                 ))}
@@ -223,6 +205,6 @@ function Experience() {
       </div>
     </SectionVisualFrame>
   );
-};
+}
 
 export default Experience;

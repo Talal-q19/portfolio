@@ -92,7 +92,7 @@ export default function Preloader() {
           opacity: 0; /* initial state for animation */
         }
         .progress-glow {
-          box-shadow: 0 0 15px rgba(52, 211, 153, 0.4), 0 0 30px rgba(52, 211, 153, 0.2);
+          box-shadow: none;
         }
       `}</style>
 
@@ -116,12 +116,9 @@ export default function Preloader() {
         <div className="w-full sm:w-80 h-[2px] bg-[#151515] rounded-full overflow-hidden relative">
           {/* Progress Bar Fill */}
           <div
-            className="relative h-full bg-gradient-to-r from-white via-[#A7F3D0] to-[#34D399] transition-all duration-[20ms] ease-linear progress-glow"
+            className="relative h-full bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] transition-all duration-[20ms] ease-linear"
             style={{ width: `${progress}%` }}
-          >
-            {/* Highlight tip at the end of the bar */}
-            <div className="absolute top-0 right-0 h-full w-10 bg-[#34D399]/80 blur-[2px]"></div>
-          </div>
+          />
         </div>
 
         {/* Loading Text */}

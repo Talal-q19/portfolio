@@ -19,19 +19,6 @@ function Education() {
 
   return (
     <SectionVisualFrame id="education" variant="timeline" accent="amber" className="relative z-50 border-t my-12 lg:my-24 border-[#262626]">
-      <Image
-        src="/section.svg"
-        alt="Hero"
-        width={1572}
-        height={795}
-        className="absolute left-1/2 top-0 -z-10 w-full max-w-[1572px] -translate-x-1/2"
-      />
-      <div className="flex justify-center -translate-y-[1px]">
-        <div className="w-3/4">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E2E8F0]/60 to-transparent" />
-        </div>
-      </div>
-
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex items-center">
           <span className="h-px w-24 bg-[#262626]"></span>
@@ -47,7 +34,7 @@ function Education() {
           {educations.map((edu) => (
             <div
               key={edu.id}
-              className="ufo-panel p-5 sm:p-6 rounded-2xl border border-zinc-800/80 bg-zinc-950/20 shadow-lg relative overflow-hidden transition-all duration-300 hover:border-[#E2E8F0]/35"
+              className="p-5 sm:p-6 rounded-2xl border border-zinc-800/80 bg-[#0a0a0a]/80 backdrop-blur-md shadow-lg relative overflow-hidden transition-all duration-300 hover:border-[#E2E8F0]/35"
             >
               {/* Card Header */}
               <div className="flex items-start gap-4">
@@ -111,7 +98,7 @@ function Education() {
                         <ul className="space-y-2.5 text-zinc-300 text-sm leading-relaxed">
                           {edu.details.map((detail, idx) => (
                             <li key={idx} className="flex gap-2.5 items-start">
-                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399] shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34D399]" />
                               <span>{detail}</span>
                             </li>
                           ))}
