@@ -1,16 +1,16 @@
 export const experiences = [
   {
     id: 1,
-    title: 'Backend Engineer',
+    title: "Backend Engineer",
     company: "EUNX Investment LLC",
-    duration: "(Feb 2025 - Present)",
+    duration: "(Feb 2025 - Present | Dubai, UAE)",
     highlights: [
-      "Contributed to a production-grade crypto trading and fintech platform covering spot, P2P, OTC, fiat wallets, crypto wallets, market data, KYC, payments, and admin operations.",
-      "Built backend services for the customer platform and internal Admin Dashboard, including user management, compliance workflows, trading controls, wallet operations, audit visibility, and secure admin controls.",
-      "Helped design hot and cold wallet workflows, integrating Liminal for secure custody and crypto transaction operations.",
-      "Integrated Zand payment services for fiat payment workflows and Sumsub for KYC verification, onboarding automation, and compliance checks.",
-      "Developed a custom Market Data microservice with OKX and Binance APIs for real-time tickers, candlestick data, and normalized exchange feeds.",
-      "Worked with Spring Boot, Spring Security, JWT, OAuth 2.0, Redis, Kafka, WebSockets, PostgreSQL, Docker, AWS EC2, Amazon RDS, and CI/CD pipelines."
+      "Contribute to a production-grade fintech and crypto-trading platform operating across three regions, supporting spot trading, P2P, OTC, fiat and crypto wallets, KYC, payments, and internal operations.",
+      "Build and maintain Spring Boot services and secure REST APIs for customer applications and the Admin Dashboard, including trading controls, transaction monitoring, wallet operations, audit visibility, RBAC, and secure administrative actions.",
+      "Support regulatory and technical readiness for European, UAE, and UK expansion, contributing backend controls, compliance workflows, auditability, and licensing-related platform requirements including MiCA and VARA contexts.",
+      "Develop wallet, fiat-payment, and identity-verification flows; integrated Zand for payment processing and Sumsub for automated KYC onboarding, verification status handling, and jurisdiction-aware compliance workflows.",
+      "Created a Strapi-based legal-content service using backend APIs, AWS publish/subscribe messaging, and webhooks to synchronize multilingual regulatory content across platform services.",
+      "Use Kafka, WebSockets, Redis, PostgreSQL, Binance and OKX integrations, Jenkins CI/CD, SonarQube, unit/integration testing, and production release debugging to deliver reliable event-driven services."
     ]
   },
   {
@@ -36,4 +36,4 @@ export const experiences = [
       "Resolved backend issues, reviewed code, and supported higher quality standards for reliability and maintainability."
     ]
   }
-]
+];
