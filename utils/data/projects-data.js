@@ -2,7 +2,9 @@ export const projectsData = [
     {
         id: 1,
         name: 'EUNX Investment LLC Fintech Platform',
-        status: 'Under progress currently',
+        status: 'In progress',
+        statusType: 'in-progress',
+        outcome: 'Contributing to secure, real-time fintech services across trading, wallets, compliance, and operations.',
         images: ['/company-logos/eunx.svg'],
         imageKind: 'logo',
         description: "Built secure backend services for a production-grade crypto trading and fintech ecosystem, covering authentication, market data, wallets, payments, KYC, admin operations, audit logging, and real-time communication.",
@@ -21,6 +23,9 @@ export const projectsData = [
     {
         id: 2,
         name: 'Biometric Attendance System',
+        status: 'Completed',
+        statusType: 'completed',
+        outcome: 'Reduced reporting for up to 80,000 records from as long as two days to about 4–5 seconds.',
         images: [
             '/project-images/federal-dashboard.png',
             '/project-images/muster-roll.png',
@@ -42,6 +47,9 @@ export const projectsData = [
     {
         id: 3,
         name: 'Video Streaming and Social Interaction Application',
+        status: 'Completed',
+        statusType: 'completed',
+        outcome: 'Combined live social viewing with both user-based and content-based movie recommendations.',
         images: [
             '/project-images/stream-hub.png',
             '/project-images/stream-hub-feed.jpeg',
@@ -61,6 +69,9 @@ export const projectsData = [
     {
         id: 4,
         name: 'Data Visualization with AI Features',
+        status: 'Completed',
+        statusType: 'completed',
+        outcome: 'Turned uploaded spreadsheet schemas into dynamic SQL tables, filters, and paginated results.',
         images: [
             '/project-images/data-visualization.png',
             '/project-images/data-filters.png',
@@ -81,6 +92,9 @@ export const projectsData = [
     {
         id: 5,
         name: 'Portfolio',
+        status: 'Live',
+        statusType: 'live',
+        outcome: 'Created a responsive portfolio with protected contact workflows and reusable content modules.',
         images: [
             '/project-images/portfolio-hero-preview.png',
             '/project-images/portfolio-experience-preview.png',

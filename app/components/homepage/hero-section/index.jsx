@@ -10,7 +10,7 @@ import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
-import { FiMaximize2, FiMinus, FiX } from "react-icons/fi";
+import { FiArrowDownRight, FiMaximize2, FiMinus, FiX } from "react-icons/fi";
 import { useReducedMotion } from "../../../hooks/use-reduced-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 import GalaxyBackground from "../galaxy-background";
@@ -497,10 +497,15 @@ function HeroSection() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <Link href="#contact" className="group flex min-h-[50px] items-center gap-2 rounded-full border border-[#E2E8F0]/40 bg-[#07101d]/60 backdrop-blur-sm px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#f4f1e8] transition-all duration-300 hover:border-[#E2E8F0] hover:bg-[#E2E8F0]/10 hover:shadow-[0_0_25px_rgba(226,232,240,0.15)] md:px-8">
                 <span>Contact me</span>
                 <RiContactsFill size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+
+              <Link href="#projects" className="group flex min-h-[50px] items-center gap-2 rounded-full border border-[#64d8ff]/40 bg-[#64d8ff]/10 px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.13em] text-[#c6f1ff] transition-all duration-300 hover:border-[#64d8ff] hover:bg-[#64d8ff]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64d8ff] md:px-6">
+                <span>View selected work</span>
+                <FiArrowDownRight size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
               </Link>
 
               <Link className="group flex min-h-[50px] items-center gap-2 rounded-full bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#07101d] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:px-8" role="button" target="_blank" href={personalData.resume}

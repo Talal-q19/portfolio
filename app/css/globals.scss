@@ -18,6 +18,9 @@
   --neon-cyan-rgb: 100, 216, 255;
   --foreground-rgb: 244, 241, 232;
   --nav-safe-top: 6.5rem;
+  --surface-raised: rgba(7, 16, 29, 0.9);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --focus-ring: #64d8ff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -263,6 +266,27 @@ html {
   background-color: #64d8ff; /* Transitions to cyan on card hover */
 }
 
+
+.status-dot.live {
+  background-color: var(--neon-cyan);
+}
+
+.project-expand-halo {
+  animation: project-expand-halo 1.6s ease-in-out infinite;
+}
+
+.project-coach-pulse {
+  animation: project-coach-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes project-expand-halo {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(39, 201, 63, 0.55); }
+  55% { box-shadow: 0 0 0 8px rgba(39, 201, 63, 0); }
+}
+
+@keyframes project-coach-pulse {
+  50% { transform: scale(1.08); box-shadow: 0 0 18px rgba(39, 201, 63, 0.35); }
+}
 /* Completely hide horizontal scrollbars globally while preserving touch/trackpad scrolling */
 .no-scrollbar,
 .horizontal-scrollbar,
