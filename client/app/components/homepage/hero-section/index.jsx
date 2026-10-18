@@ -2,7 +2,6 @@
 
 // @flow strict
 
-import { personalData } from "@/utils/data/personal-data";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -14,138 +13,6 @@ import { FiArrowDownRight, FiMaximize2, FiMinus, FiX } from "react-icons/fi";
 import { useReducedMotion } from "../../../hooks/use-reduced-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 import GalaxyBackground from "../galaxy-background";
-
-const codeLines = [
-  [
-    { text: "const ", className: "text-[#E2E8F0]" },
-    { text: "softwareEngineer ", className: "text-[#f4f1e8]" },
-    { text: "= ", className: "text-[#E2E8F0]" },
-    { text: "{", className: "text-[#718297]" },
-  ],
-  [
-    { text: "  name: ", className: "text-white" },
-    { text: "'", className: "text-gray-400" },
-    { text: "Talal Qasim", className: "text-slate-100 font-semibold" },
-    { text: "',", className: "text-gray-400" },
-  ],
-  [
-    { text: "  role: ", className: "text-white" },
-    { text: "'", className: "text-gray-400" },
-    { text: "Software Engineer / Full Stack Developer", className: "text-[#34D399] font-semibold" },
-    { text: "',", className: "text-gray-400" },
-  ],
-  [
-    { text: "  skills: ", className: "text-white" },
-    { text: "['", className: "text-gray-400" },
-    { text: "Java", className: "text-slate-200 font-bold" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "Spring Boot", className: "text-slate-200 font-bold" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "React", className: "text-slate-200" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "Next.js", className: "text-slate-200" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "PostgreSQL", className: "text-slate-200" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "Kafka", className: "text-slate-200" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "Docker", className: "text-slate-200" },
-    { text: "', '", className: "text-gray-400" },
-    { text: "AWS", className: "text-slate-200" },
-    { text: "'],", className: "text-gray-400" },
-  ],
-  [
-    { text: "  hardWorker: ", className: "text-white" },
-    { text: "true", className: "text-orange-400" },
-    { text: ",", className: "text-gray-400" },
-  ],
-  [
-    { text: "  quickLearner: ", className: "text-white" },
-    { text: "true", className: "text-orange-400" },
-    { text: ",", className: "text-gray-400" },
-  ],
-  [
-    { text: "  problemSolver: ", className: "text-white" },
-    { text: "true", className: "text-orange-400" },
-    { text: ",", className: "text-gray-400" },
-  ],
-  [
-    { text: "  hireable: ", className: "text-green-400" },
-    { text: "function", className: "text-orange-400" },
-    { text: "() {", className: "text-gray-400" },
-  ],
-  [
-    { text: "    return", className: "text-orange-400" },
-    { text: "(", className: "text-gray-400" },
-  ],
-  [
-    { text: "      this.", className: "text-cyan-400" },
-    { text: "hardWorker ", className: "text-white" },
-    { text: "&& ", className: "text-slate-300" },
-    { text: "this.", className: "text-cyan-400" },
-    { text: "problemSolver ", className: "text-white" },
-    { text: "&& ", className: "text-slate-300" },
-    { text: "this.", className: "text-cyan-400" },
-    { text: "skills.length ", className: "text-white" },
-    { text: ">= ", className: "text-slate-300" },
-    { text: "5", className: "text-orange-400" },
-  ],
-  [{ text: "    );", className: "text-gray-400" }],
-  [{ text: "  };", className: "text-gray-400" }],
-  [{ text: "};", className: "text-gray-400" }],
-];
-
-const skillsTabLines = [
-  [{ text: "{", className: "text-gray-400" }],
-  [
-    { text: '  "developer": ', className: "text-cyan-400 font-semibold" },
-    { text: '"Talal Qasim"', className: "text-emerald-400" },
-    { text: ",", className: "text-gray-400" }
-  ],
-  [
-    { text: '  "role": ', className: "text-cyan-400 font-semibold" },
-    { text: '"Software Engineer / Full Stack Developer"', className: "text-[#34D399] font-bold" },
-    { text: ",", className: "text-gray-400" }
-  ],
-  [
-    { text: '  "stack": {', className: "text-slate-300 font-semibold" }
-  ],
-  [
-    { text: '    "backend": ', className: "text-cyan-400" },
-    { text: '["Java", "Spring Boot", "Node.js", "Python", "PostgreSQL", "Kafka", "Redis"]', className: "text-emerald-300 font-medium" },
-    { text: ",", className: "text-gray-400" }
-  ],
-  [
-    { text: '    "frontend": ', className: "text-cyan-400" },
-    { text: '["React.js", "Next.js", "TypeScript", "TailwindCSS"]', className: "text-emerald-300" },
-    { text: ",", className: "text-gray-400" }
-  ],
-  [
-    { text: '    "devops": ', className: "text-cyan-400" },
-    { text: '["Docker", "AWS (EC2, RDS)", "Kubernetes", "Linux", "Git"]', className: "text-emerald-300" }
-  ],
-  [{ text: "  },", className: "text-gray-400" }],
-  [
-    { text: '  "status": ', className: "text-cyan-400 font-semibold" },
-    { text: '"Available for Hire & Projects"', className: "text-[#34D399] font-bold" }
-  ],
-  [{ text: "}", className: "text-gray-400" }],
-];
-
-const readmeTabLines = [
-  [{ text: "# Talal Qasim — Software Engineer", className: "text-[#E2E8F0] font-bold text-base" }],
-  [{ text: "", className: "text-gray-400" }],
-  [{ text: "> Full-Stack Software Engineer building scalable backend systems & modern web applications.", className: "text-slate-200 font-medium italic" }],
-  [{ text: "", className: "text-gray-400" }],
-  [{ text: "## Technical Overview", className: "text-[#64D8FF] font-bold" }],
-  [{ text: "- ☕ Backend: Java, Spring Boot, Node.js, Python, PostgreSQL, Kafka, Redis", className: "text-slate-100" }],
-  [{ text: "- 🌐 Frontend: React.js, Next.js 15, TypeScript, TailwindCSS, Micro-animations", className: "text-slate-100" }],
-  [{ text: "- ☁️ Cloud & DevOps: Docker, AWS (EC2/RDS), CI/CD pipelines, Linux", className: "text-slate-100" }],
-  [{ text: "", className: "text-gray-400" }],
-  [{ text: "```bash", className: "text-slate-500" }],
-  [{ text: "$ npm run dev -- --mode=fullstack", className: "text-emerald-400 font-bold" }],
-  [{ text: "```", className: "text-slate-500" }],
-];
 
 function WindowControl({ label, color, children, onClick, pressed }) {
   const fallbackIcon = label.startsWith("Expand") ? <FiMaximize2 size={8} /> : null;
@@ -166,16 +33,16 @@ function WindowControl({ label, color, children, onClick, pressed }) {
   );
 }
 
-function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }) {
-  const [activeTab, setActiveTab] = useState("coder.js");
+function CodingWindow({ hero, isMinimized, isExpanded, onClose, onMinimize, onExpand }) {
+  const [activeTab, setActiveTab] = useState(hero.panels?.[0]?.title || "");
   const [typedCharacters, setTypedCharacters] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
   const currentLines = useMemo(() => {
-    if (activeTab === "skills.json") return skillsTabLines;
-    if (activeTab === "README.md") return readmeTabLines;
-    return codeLines;
-  }, [activeTab]);
+    const tones = { default: "text-slate-200", muted: "text-gray-400", green: "text-[#34D399]", cyan: "text-[#64D8FF]", orange: "text-orange-400", purple: "text-purple-400", white: "text-white" };
+    const panel = hero.panels?.find(p => p.title === activeTab) || hero.panels?.[0];
+    return (panel?.lines || []).map(line => line.tokens.map(token => ({ text: token.text || "", className: tones[token.tone] || tones.default })));
+  }, [activeTab, hero.panels]);
 
   const totalCharacters = useMemo(() => {
     return currentLines.reduce((total, line) => (
@@ -292,44 +159,11 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
 
           {/* Interactive File Tabs - Horizontally scrollable on mobile */}
           <div className="flex items-center space-x-1 sm:space-x-2 pl-2 sm:pl-4 border-l border-[#ffffff]/10 overflow-x-auto no-scrollbar py-0.5 flex-nowrap shrink max-w-full">
-            {/* Tab 1: coder.js */}
-            <button
-              type="button"
-              onClick={() => setActiveTab("coder.js")}
-              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${activeTab === "coder.js"
-                ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
-                : "text-[#718297]/70 hover:text-white hover:bg-white/5"
-                }`}
-            >
-              <span className="text-[10px] text-[#94A3B8] font-bold">JS</span>
-              <span>coder.js</span>
-            </button>
-
-            {/* Tab 2: skills.json */}
-            <button
-              type="button"
-              onClick={() => setActiveTab("skills.json")}
-              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${activeTab === "skills.json"
-                ? "bg-[#07101d] text-[#64D8FF] border border-[#64D8FF]/40 shadow-[0_2px_8px_rgba(100,216,255,0.15)] font-semibold"
-                : "text-[#718297]/70 hover:text-white hover:bg-white/5"
-                }`}
-            >
-              <span className="text-[10px] text-[#64D8FF] font-bold">{ }</span>
-              <span>skills.json</span>
-            </button>
-
-            {/* Tab 3: README.md */}
-            <button
-              type="button"
-              onClick={() => setActiveTab("README.md")}
-              className={`flex items-center space-x-1 sm:space-x-1.5 rounded-md px-2 py-1 sm:px-2.5 text-[11px] sm:text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 whitespace-nowrap ${activeTab === "README.md"
-                ? "bg-[#07101d] text-[#E2E8F0] border border-[#E2E8F0]/40 shadow-[0_2px_8px_rgba(226,232,240,0.15)] font-semibold"
-                : "text-[#718297]/70 hover:text-white hover:bg-white/5"
-                }`}
-            >
-              <span className="text-[10px] text-[#94A3B8] font-bold">M↓</span>
-              <span>README.md</span>
-            </button>
+            {(hero.panels || []).map((panel, index) => <button
+              key={`${panel.title}-${index}`} type="button" onClick={() => setActiveTab(panel.title)}
+              className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 font-mono text-xs transition-all ${activeTab === panel.title ? "border border-[#E2E8F0]/40 bg-[#07101d] text-[#E2E8F0]" : "text-[#718297] hover:text-white"}`}>
+              <span>{panel.title}</span>
+            </button>)}
           </div>
         </div>
 
@@ -371,7 +205,7 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
               <span className="text-[#34D399] font-bold">❯</span>
               <span className="text-[#64D8FF]">Talal.getAvailability()</span>
               <span className="text-slate-400">=&gt;</span>
-              <span className="text-[#E2E8F0] font-semibold whitespace-nowrap">"Open for New Opportunities"</span>
+              <span className="text-[#E2E8F0] font-semibold whitespace-nowrap">{hero.availability}</span>
             </div>
             <div className="hidden sm:flex items-center gap-1.5 text-[10px] text-[#34D399] bg-[#34D399]/10 px-2 py-0.5 rounded border border-[#34D399]/25 font-bold uppercase tracking-wider shrink-0 ml-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]"></span>
@@ -420,7 +254,7 @@ function CodingWindow({ isMinimized, isExpanded, onClose, onMinimize, onExpand }
   );
 }
 
-function HeroSection() {
+function HeroSection({ personalData, hero }) {
   const [isClosed, setIsClosed] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -445,23 +279,23 @@ function HeroSection() {
                     src={personalData.profile}
                     fill
                     sizes="(min-width: 640px) 176px, 128px"
-                    alt="Talal Qasim"
+                    alt={personalData.name}
                     className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
               </div>
               <div>
                 <p className="mb-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.3em] sm:text-xs">
-                  <span className="text-[#f4f1e8]">Backend engineering</span>
+                  <span className="text-[#f4f1e8]">{hero.eyebrow}</span>
                   <span className="text-zinc-500 mx-1.5">·</span>
-                  <span className="text-[#34D399]">Dubai</span>
+                  <span className="text-[#34D399]">{hero.location}</span>
                 </p>
                 <h1 className="text-4xl font-semibold leading-[1.1] md:text-5xl lg:text-[3.6rem] tracking-tight max-w-3xl flex flex-col items-start">
                   <span className="inline-block w-fit bg-gradient-to-r from-white via-[#A7F3D0] via-45% to-[#34D399] bg-clip-text text-transparent">
-                    Software Engineer
+                    {hero.heading}
                   </span>
                   <span className="inline-block w-fit text-2xl md:text-4xl lg:text-[2.8rem] bg-gradient-to-r from-white via-[#6EE7B7] via-40% to-[#10B981] bg-clip-text text-transparent mt-2 md:mt-3">
-                    Fintech Backend Engineer
+                    {hero.role}
                   </span>
                 </h1>
               </div>
@@ -472,7 +306,7 @@ function HeroSection() {
 
             <div className="my-12 flex items-center gap-6">
               <Link
-                href={personalData.github}
+                href={personalData.github || "#contact"}
                 target='_blank'
                 aria-label="GitHub profile"
                 className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#E2E8F0]/60 hover:text-[#E2E8F0] hover:scale-110 hover:shadow-[0_0_20px_rgba(226,232,240,0.2)]"
@@ -480,7 +314,7 @@ function HeroSection() {
                 <BsGithub size={24} className="transition-transform duration-300 group-hover:scale-110" />
               </Link>
               <Link
-                href={personalData.linkedIn}
+                href={personalData.linkedIn || "#contact"}
                 target='_blank'
                 aria-label="LinkedIn profile"
                 className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#E2E8F0]/60 hover:text-[#E2E8F0] hover:scale-110 hover:shadow-[0_0_20px_rgba(226,232,240,0.2)]"
@@ -488,7 +322,7 @@ function HeroSection() {
                 <BsLinkedin size={24} className="transition-transform duration-300 group-hover:scale-110" />
               </Link>
               <Link
-                href={personalData.instagram}
+                href={personalData.instagram || "#contact"}
                 target='_blank'
                 aria-label="Instagram profile"
                 className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#07101d]/50 backdrop-blur-sm text-[#a8b4c3] transition-all duration-300 hover:border-[#E2E8F0]/60 hover:text-[#E2E8F0] hover:scale-110 hover:shadow-[0_0_20px_rgba(226,232,240,0.2)]"
@@ -498,21 +332,11 @@ function HeroSection() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-              <Link href="#contact" className="group flex min-h-[50px] items-center gap-2 rounded-full border border-[#E2E8F0]/40 bg-[#07101d]/60 backdrop-blur-sm px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#f4f1e8] transition-all duration-300 hover:border-[#E2E8F0] hover:bg-[#E2E8F0]/10 hover:shadow-[0_0_25px_rgba(226,232,240,0.15)] md:px-8">
-                <span>Contact me</span>
-                <RiContactsFill size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-
-              <Link href="#projects" className="group flex min-h-[50px] items-center gap-2 rounded-full border border-[#64d8ff]/40 bg-[#64d8ff]/10 px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.13em] text-[#c6f1ff] transition-all duration-300 hover:border-[#64d8ff] hover:bg-[#64d8ff]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64d8ff] md:px-6">
-                <span>View selected work</span>
-                <FiArrowDownRight size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
-              </Link>
-
-              <Link className="group flex min-h-[50px] items-center gap-2 rounded-full bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#07101d] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:px-8" role="button" target="_blank" href={personalData.resume}
-              >
-                <span>Get Resume</span>
-                <MdDownload size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
-              </Link>
+              {(hero.buttons || []).map((button, index) => <Link key={`${button.label}-${index}`} href={button.url}
+                className={`group flex min-h-[50px] items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] transition-all duration-300 md:px-8 ${index === 2 ? "bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] text-[#07101d] hover:scale-105" : index === 1 ? "border border-[#64d8ff]/40 bg-[#64d8ff]/10 text-[#c6f1ff] hover:border-[#64d8ff]" : "border border-[#E2E8F0]/40 bg-[#07101d]/60 text-[#f4f1e8] hover:border-[#E2E8F0]"}`}>
+                <span>{button.label}</span>
+                {index === 0 ? <RiContactsFill size={16} /> : index === 1 ? <FiArrowDownRight size={16} /> : <MdDownload size={16} />}
+              </Link>)}
             </div>
 
           </div>
@@ -531,6 +355,7 @@ function HeroSection() {
             </div>
           ) : (
             <CodingWindow
+              hero={hero}
               isMinimized={isMinimized}
               isExpanded={isExpanded}
               onClose={() => setIsClosed(true)}

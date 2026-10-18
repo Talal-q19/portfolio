@@ -19,6 +19,9 @@ function loadConfig(env = process.env) {
   if (captchaEnabled && !env.RECAPTCHA_SECRET_KEY) throw new Error('Missing RECAPTCHA_SECRET_KEY');
   const smtpPort = integer('SMTP_PORT', 465);
   return {
+    cmsUrl: (env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337').replace(/\/$/, ''),
+    cmsReadToken: env.CMS_READ_TOKEN,
+    cmsTimeout: integer('CMS_TIMEOUT_MS', 10000, 60000),
     port: integer('PORT', 4000),
     // Set an exact hop count only behind a trusted, fixed reverse proxy.
     trustProxy: env.TRUST_PROXY_HOPS ? integer('TRUST_PROXY_HOPS', 1, 10) : false,

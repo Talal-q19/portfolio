@@ -1,20 +1,14 @@
 "use client";
 
-import { experiences } from "@/utils/data/experience";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FiCalendar } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 
-const companyLogos = {
-  "EUNX Investment LLC": "/company-logos/eunx.jpg",
-  "Federal Electrical": "/company-logos/federal_electric.jpg",
-  "Bacha Smart Solutions": "/company-logos/bacha_smart_solutions.jpg",
-};
 
-function Experience() {
-  const [activeId, setActiveId] = useState(experiences[0]?.id || 1);
+function Experience({ experiences, section = {} }) {
+  const [activeId, setActiveId] = useState(experiences[0]?.id || null);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -94,7 +88,7 @@ function Experience() {
             className="h-px w-24 bg-[#262626] origin-right"
           />
           <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
-            Experiences
+            {section.heading || "Experiences"}
           </span>
           <motion.span
             initial={{ scaleX: 0, opacity: 0 }}
@@ -131,7 +125,7 @@ function Experience() {
                 >
                   <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center p-1.5">
                     <Image
-                      src={companyLogos[exp.company] || "/company-logos/default.jpg"}
+                      src={exp.image}
                       alt={exp.company}
                       width={32}
                       height={32}
@@ -178,7 +172,7 @@ function Experience() {
                           <div className="flex items-center gap-4">
                             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 flex items-center justify-center p-2.5 shadow-md">
                               <Image
-                                src={companyLogos[exp.company] || "/company-logos/default.jpg"}
+                                src={exp.image}
                                 alt={exp.company}
                                 width={54}
                                 height={54}

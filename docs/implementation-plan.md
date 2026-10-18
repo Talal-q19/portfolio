@@ -48,7 +48,7 @@ portfolio/
 - Requests flow from the client to Express, then to Strapi. Strapi owns content, users, and its database schema. Express does not query or modify Strapi tables directly.
 - Use one Strapi-managed content database per environment. With Strapi Cloud, production uses its included PostgreSQL database. A local development database is separate from production, not another application database.
 - Use Strapi Cloud's included media storage if deploying there; otherwise configure persistent media storage such as S3 or Cloudinary. Database records contain media metadata and references, not image binaries.
-- Prefer same-origin browser requests routed from /api to Express. The Next.js server uses an internal Express URL for server-side fetching. Configure routing so future Next.js cache callbacks cannot be caught by the Express proxy.
+- Prefer same-origin browser requests routed from /api to Express. Next uses an internal Express URL only as the proxy destination. Configure routing so future Next.js cache callbacks cannot be caught by the Express proxy.
 - Express owns contact, portfolio, admin, and authentication business APIs. Next.js may retain a minimal internal handler solely for invalidating its own rendering cache.
 - Keep npm and lockfiles consistent. Initially retain independent package boundaries and add root commands that target each application; a workspace conversion is not required for this migration.
 - Authentication is delivered in phase 5. Admin handlers introduced earlier deny requests by default; service tests and local UI fixtures enable development without deploying an unauthenticated editor.
@@ -146,12 +146,14 @@ Implementation:
 - Admin saves explicitly target validated drafts. Implement publish/unpublish behind the shared content endpoint using authorized Strapi controllers backed by Document Service; do not depend on undocumented Content Manager internals. Forward the verified administrator's content-API identity for writes, rather than using an unrestricted master token.
 - Add deny-by-default admin authorization middleware now. Test services with injected test identities; do not introduce an environment flag that opens production admin routes. Real login and live custom-admin editing arrive in phase 5.
 - Validate media uploads, restrict response fields, and prevent accidental deletion of in-use assets.
-- Replace client local content imports with server-fetched category/content data passed into existing interactive components. Choose renderers from registered template keys, not arbitrary executable content. Preserve the current design and server-rendered content. Remove numeric-ID assumptions; use stable document identifiers for UI state.
+- Updated at the user's request: the browser fetches published category/content data from Express after load, through the same-origin `/api/content` proxy. Express and Strapi remain in `server/`; Next server components do not fetch content. Pass the response into existing interactive components using registered template keys. Preserve the current design and stable document identifiers. The initial HTML is a loading shell; CMS content and SEO tags require JavaScript.
 - Define content freshness explicitly. Configure authenticated publish/unpublish/delete/media notifications to invalidate Express/Next.js caches that are actually used. Add a bounded timed refresh fallback. Draft responses and authenticated admin responses are never publicly cached.
 - Existing open pages refresh on navigation/reload; live push updates are outside this plan. Content edits require no deployment. New section types or layout behavior still require code changes.
 - Document API schemas, validation errors, pagination, authentication requirements, and example requests in OpenAPI or a checked-in API collection.
 
 Completion checks: portfolio renders from the shared category API; public draft/field leakage tests pass; pagination/order/media mapping work; changes appear on the next fresh visit after publication; unauthenticated admin access fails; content-service CRUD and publishing tests pass. Test category omission, wrong payload/template, whitespace-only required text, missing/deleted/wrong-type images, invalid dates, clearing required fields, duplicate Hero creation, incomplete draft submission, and direct CMS validation bypass attempts.
+
+Phase 3 implementation and verification: [API contract, setup and results](phase-3-api.md), [OpenAPI schema](openapi.json). Verified 18 October 2026 with 24 passing tests, production build, lint and a disposable three-service production smoke test. Local drafts remain private; custom-admin authentication remains phase 5.
 
 ## Phase 4: Build the custom admin UI
 

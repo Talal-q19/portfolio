@@ -21,6 +21,7 @@ function createApp(config, dependencies = {}) {
     sendEmail: dependencies.sendEmail || createEmailService(config),
     verifyCaptcha: dependencies.verifyCaptcha || createCaptchaService(config),
   }));
+  app.use('/api', require('./controllers/content').contentRoutes(config, dependencies));
   app.use((req, res) => res.status(404).json({ success: false, message: 'Not found.' }));
   app.use(errorHandler);
   return app;

@@ -13,7 +13,7 @@ function errorHandler(error, req, res, next) {
     : error instanceof HttpError ? error.status : 500;
   const message = status === 413 ? 'Request body is too large.'
     : status === 400 ? 'Invalid request body.'
-    : error instanceof HttpError ? error.message : 'Failed to send message.';
+    : error instanceof HttpError ? error.message : (req.path === '/api/contact' ? 'Failed to send message.' : 'The request could not be completed.');
   res.status(status).json({ success: false, message, ...(error.fields ? { fields: error.fields } : {}) });
 }
 module.exports = { HttpError, errorHandler };

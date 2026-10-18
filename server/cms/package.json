@@ -2,7 +2,9 @@
   "name": "portfolio-cms",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": ">=22 <=26.x.x" },
+  "engines": {
+    "node": ">=22 <=26.x.x"
+  },
   "scripts": {
     "dev": "strapi develop",
     "build": "strapi build",
@@ -12,7 +14,11 @@
     "migrate:portfolio": "node scripts/migrate-portfolio.js",
     "test": "node --test --test-concurrency=1 tests/*.test.js",
     "lint": "node scripts/check-syntax.js",
-    "smoke:admin": "node scripts/smoke-admin.js"
+    "smoke:admin": "node scripts/smoke-admin.js",
+    "setup:read-token": "node scripts/setup-read-token.js",
+    "docs:api": "node scripts/generate-openapi.js",
+    "smoke:portfolio": "node scripts/smoke-portfolio.js",
+    "setup:portfolio": "node scripts/setup-read-token.js --publish-migrated"
   },
   "dependencies": {
     "@portfolio/content-contract": "file:../content-contract",

@@ -2,8 +2,6 @@
 
 // @flow strict
 
-import { skillCategories } from "@/utils/data/skills";
-import { skillsImage } from "@/utils/skill-image";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -51,15 +49,15 @@ const itemVariants = {
   })
 };
 
-function Skills() {
+function Skills({ skillCategories, section = {} }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const activeCategory = skillCategories[activeSlide];
-  const activeAccent = accentStyles[activeCategory.accent];
+  const activeAccent = accentStyles[activeCategory.accent || "emerald"];
 
   const visibleSkills = useMemo(() => {
-    return activeCategory.skills.filter((skill) => skillsImage(skill));
+    return activeCategory.skills.filter((skill) => skill.icon);
   }, [activeCategory]);
 
   const marqueeSkills = useMemo(() => {
@@ -94,7 +92,7 @@ function Skills() {
         <div className="flex items-center">
           <span className="h-px w-24 bg-[#262626]"></span>
           <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
-            Skills
+            {section.heading || "Skills"}
           </span>
           <span className="h-px w-24 bg-[#262626]"></span>
         </div>
@@ -131,7 +129,7 @@ function Skills() {
                     type="button"
                     onClick={() => setActiveSlide(index)}
                     className={`rounded-md px-3 py-2 text-xs font-semibold uppercase transition-all duration-300 sm:text-sm cursor-pointer ${isActive
-                      ? `${accentStyles[category.accent].badge} shadow-lg shadow-black/20`
+                      ? `${accentStyles[category.accent || "emerald"].badge} shadow-lg shadow-black/20`
                       : "text-[#a8b4c3] hover:bg-[#151515] hover:text-white"
                       }`}
                     aria-pressed={isActive}
@@ -183,7 +181,7 @@ function Skills() {
 
                       return (
                         <motion.div
-                          key={skill}
+                          key={skill.id}
                           variants={itemVariants}
                           custom={delay}
                           whileHover={{ scale: 1.08 }}
@@ -198,15 +196,15 @@ function Skills() {
                             <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
                               <div className="h-8 sm:h-10">
                                 <Image
-                                  src={skillsImage(skill)?.src}
-                                  alt={skill}
+                                  src={skill.icon}
+                                  alt={skill.name}
                                   width={40}
                                   height={40}
                                   className="h-full w-auto rounded-lg"
                                 />
                               </div>
                               <p className="max-w-full truncate px-1 text-center text-sm text-white sm:text-base">
-                                {skill}
+                                {skill.name}
                               </p>
                             </div>
                           </div>
@@ -238,7 +236,7 @@ function Skills() {
                         return (
                           <motion.div
                             className="skill-card w-32 min-w-[8rem] h-28 sm:h-32 flex flex-col items-center justify-center m-2 sm:m-3 rounded-lg group relative cursor-pointer"
-                            key={`${skill}-${id}`}
+                            key={`${skill.id}-${id}`}
                             variants={itemVariants}
                             custom={delay}
                             whileHover={{ scale: 1.08 }}
@@ -252,15 +250,15 @@ function Skills() {
                               <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
                                 <div className="h-8 sm:h-10">
                                   <Image
-                                    src={skillsImage(skill)?.src}
-                                    alt={skill}
+                                    src={skill.icon}
+                                    alt={skill.name}
                                     width={40}
                                     height={40}
                                     className="h-full w-auto rounded-lg"
                                   />
                                 </div>
                                 <p className="max-w-full truncate px-1 text-center text-sm text-white sm:text-base">
-                                  {skill}
+                                  {skill.name}
                                 </p>
                               </div>
                             </div>

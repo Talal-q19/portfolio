@@ -175,6 +175,98 @@ test('real Strapi persistence, CMS editor and migration invariants', { timeout: 
       await cms.documents(CONTENT).publish({ documentId: experience.documentId });
       assert.equal((await fetch(base + '/api/contents?status=draft')).status, 403);
     });
+
+    await t.test('phase 3 Express-to-CMS public projection and authenticated draft CRUD', async () => {
+      const { createApp } = require('../../api/src/app');
+      const request = require('../../api/node_modules/supertest');
+      const token = await cms.admin.services['api-token'].create({ name: 'phase3-read', type: 'custom', lifespan: null, permissions: ['api::portfolio.portfolio.read'] });
+      const role = await cms.db.query('plugin::users-permissions.role').findOne({ where: { type: 'portfolio-admin' } });
+      for (const action of ['categoriesList','categoriesRead','categoriesCreate','categoriesUpdate','categoriesDelete','contentList','contentRead','contentCreate','contentUpdate','contentDelete','mediaList','mediaRead','mediaCreate','mediaDelete']) {
+        await cms.db.query('plugin::users-permissions.permission').create({ data: { action: `api::portfolio.portfolio.${action}`, role: role.id } });
+      }
+      const user = await cms.db.query('plugin::users-permissions.user').create({ data: { username: 'phase3-editor', email: 'phase3@example.com', provider: 'local', confirmed: true, blocked: false, role: role.id } });
+      const jwt = cms.plugin('users-permissions').service('jwt').issue({ id: user.id });
+      const app = createApp({ cmsUrl: base, cmsReadToken: token.accessKey, rateLimit: 100 }, {
+        sendEmail: async () => {}, verifyAdmin: async () => ({ role: 'portfolio-admin', accessToken: jwt }),
+      });
+      const publicApp = createApp({ cmsUrl: base, cmsReadToken: token.accessKey, rateLimit: 100 }, { sendEmail: async () => {} });
+      const transportServer = await new Promise(resolve => {
+        const server = publicApp.listen(0, '127.0.0.1', () => resolve(server));
+      });
+      try {
+        const { fetchPortfolio } = await import(require('node:url').pathToFileURL(path.resolve('../../client/utils/portfolio-api.mjs')).href);
+        const response = await fetchPortfolio({ fetchImpl: (route, options) => fetch(`http://127.0.0.1:${transportServer.address().port}${route}`, options) });
+        assert.equal(response.categories.length, 8);
+      } finally { await new Promise(resolve => transportServer.close(resolve)); }
+
+      assert.equal((await request(publicApp).post('/api/admin/content').send({})).status, 401);
+      assert.equal((await fetch(base + '/api/portfolio/read')).status, 403);
+      assert.equal((await fetch(base + '/api/portfolio/admin/content', { headers: { Authorization: `Bearer ${token.accessKey}` } })).status, 403);
+      let result = await request(app).get('/api/admin/categories');
+      assert.equal(result.status, 200, JSON.stringify(result.body));
+      assert.ok(result.body.requirements.templates.hero);
+      result = await request(app).post('/api/admin/categories').send({ name: 'API Hero', slug: 'api-hero', templateKey: 'hero', cardinality: 'singleton' });
+      assert.equal(result.status, 201, JSON.stringify(result.body));
+      const categoryId = result.body.category.documentId;
+      assert.equal((await request(app).post('/api/admin/content').send({ category: 'api-hero', data: { heading: 'Incomplete' } })).status, 422);
+      result = await request(app).post('/api/admin/content').send({ category: 'api-hero', data: { heading: 'Published heading', paragraph: 'Published paragraph' } });
+      assert.equal(result.status, 201, JSON.stringify(result.body));
+      const id = result.body.item.documentId;
+      assert.equal(result.body.item.publishedAt, null);
+      assert.equal((await request(app).post('/api/admin/content').send({ category: 'api-hero', data: { heading: 'Duplicate', paragraph: 'Duplicate' } })).status, 422);
+      let read = await request(publicApp).get('/api/content?category=api-hero');
+      assert.equal(read.status, 200, JSON.stringify(read.body));
+      assert.equal(read.body.categories[0].items.length, 0);
+      const operation = body => request(app).patch(`/api/admin/content/${id}`).send(body);
+      result = await operation({ operation: 'publish' });
+      assert.equal(result.status, 200, JSON.stringify(result.body));
+      await operation({ operation: 'update', data: { heading: 'Private draft heading' } });
+      read = await request(publicApp).get('/api/content?category=api-hero');
+      assert.equal(read.body.categories[0].items[0].data.heading, 'Published heading');
+      assert.ok(!JSON.stringify(read.body).includes('Private draft heading'));
+      for (const privateField of ['createdBy', 'updatedBy', '__component', 'migrationKey', 'provider_metadata']) assert.ok(!JSON.stringify(read.body).includes(privateField));
+      assert.equal((await request(publicApp).get('/api/content?category=not-found')).status, 422);
+      assert.equal((await request(publicApp).get('/api/content?status=draft')).status, 422);
+      assert.equal((await operation({ operation: 'update', data: { paragraph: ' ' } })).status, 422);
+      assert.equal((await request(app).delete(`/api/admin/categories/${categoryId}`)).status, 422);
+      await operation({ operation: 'publish' });
+      read = await request(publicApp).get('/api/content?category=api-hero');
+      assert.equal(read.body.categories[0].items[0].data.heading, 'Private draft heading');
+      await operation({ operation: 'unpublish' });
+      read = await request(publicApp).get('/api/content?category=api-hero');
+      assert.equal(read.body.categories[0].items.length, 0);
+      assert.equal((await request(app).delete(`/api/admin/content/${id}`)).status, 200);
+      assert.equal((await request(app).delete(`/api/admin/categories/${categoryId}`)).status, 200);
+      // Every homepage group is complete by default; explicit paging retains total/order.
+      const entries = await cms.documents(CONTENT).findMany({ status: 'draft', populate: { category: true }, limit: 100 });
+      for (const entry of entries.filter(e => e.category.templateKey === 'projects')) await cms.documents(CONTENT).publish({ documentId: entry.documentId });
+      const all = await request(publicApp).get('/api/content?category=projects');
+      const page = await request(publicApp).get('/api/content?category=projects&page=2&pageSize=1');
+      assert.equal(page.body.categories[0].pagination.total, all.body.categories[0].items.length);
+      assert.equal(page.body.categories[0].items[0].documentId, all.body.categories[0].items[1].documentId);
+      assert.ok(all.body.categories[0].items[0].data.gallery[0].image.url.startsWith('http'));
+      const project = all.body.categories[0].items[0];
+      const filtered = await request(publicApp).get(`/api/content?category=projects&slug=${project.slug}`);
+      assert.equal(filtered.body.categories[0].items.length, 1);
+      const edit = await request(app).patch(`/api/admin/content/${project.documentId}`).send({ operation: 'update', data: { name: 'Edited project name' } });
+      assert.equal(edit.status, 200, JSON.stringify(edit.body));
+      assert.deepEqual(edit.body.item.data.gallery.map(g => g.image.id), project.data.gallery.map(g => g.image.id));
+      const skill = entries.find(e => e.category.templateKey === 'skills');
+      const skillEdit = await request(app).patch(`/api/admin/content/${skill.documentId}`).send({ operation: 'update', data: { name: 'Edited skill' } });
+      assert.equal(skillEdit.status, 200, JSON.stringify(skillEdit.body));
+      const inUse = project.data.gallery[0].image.id;
+      assert.equal((await request(app).delete(`/api/admin/media/${inUse}`)).status, 422);
+      const media = await request(app).get('/api/admin/media?page=1&pageSize=2');
+      assert.equal(media.status, 200, JSON.stringify(media.body)); assert.equal(media.body.items.length, 2);
+      const badUpload = await request(app).post('/api/admin/media').attach('files', Buffer.from('fake png'), { filename: 'bad.png', contentType: 'image/png' });
+      assert.equal(badUpload.status, 422, JSON.stringify(badUpload.body));
+      const png = fs.readFileSync(path.resolve('../../client/public/project-images/federal-dashboard.png'));
+      const upload = await request(app).post('/api/admin/media').attach('files', png, { filename: 'test.png', contentType: 'image/png' });
+      assert.equal(upload.status, 201, JSON.stringify(upload.body));
+      assert.equal((await request(app).delete(`/api/admin/media/${upload.body.items[0].id}`)).status, 200);
+      await cms.db.query('plugin::users-permissions.user').update({ where: { id: user.id }, data: { blocked: true } });
+      assert.equal((await request(app).get('/api/admin/categories')).status, 401);
+    });
   } finally {
     await cms.destroy();
     fs.rmSync(temp, { recursive: true, force: true });

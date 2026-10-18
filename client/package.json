@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "copy-company-images": "node scripts/copy-company-images.js"
+    "copy-company-images": "node scripts/copy-company-images.js",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.1",

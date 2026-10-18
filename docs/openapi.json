@@ -1,0 +1,1788 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Portfolio API",
+    "version": "0.3.0",
+    "description": "All browser routes live in Express. Admin cookie authentication ships in phase 5; no public editor bypass. All content responses use Cache-Control: no-store. See phase-3-api.md for setup, response wrappers, request examples and freshness."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000"
+    }
+  ],
+  "paths": {
+    "/api/content": {
+      "get": {
+        "summary": "Published, visible groups. Without explicit pagination, all entries are returned. Unknown category: 422; known empty category: items=[]. Singleton groups contain at most one item.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    },
+    "/api/admin/categories": {
+      "get": {
+        "summary": "Categories and browser-safe requirements/templates/components metadata",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a category using a registered template",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "category": {
+                      "$ref": "#/components/schemas/Category"
+                    }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    },
+    "/api/admin/categories/{categoryId}": {
+      "patch": {
+        "summary": "Update category metadata; slug stable; template/cardinality immutable while used",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Partial CategoryInput fields only."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "category": {
+                      "$ref": "#/components/schemas/Category"
+                    }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an unused category",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    },
+    "/api/admin/content": {
+      "get": {
+        "summary": "List draft content by default; status=published supported",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "published"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a complete private draft",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created draft; body {item: Entry}."
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    },
+    "/api/admin/content/{documentId}": {
+      "get": {
+        "summary": "Read draft entry; body {item: Entry}",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "item": {
+                      "$ref": "#/components/schemas/Entry"
+                    }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a validated draft, publish via Document Service, or unpublish",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentOperation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "item": {
+                      "$ref": "#/components/schemas/Entry"
+                    }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete draft and published versions; referenced skill groups are protected",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    },
+    "/api/admin/media": {
+      "get": {
+        "summary": "List safe media metadata; items and pagination envelope",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      },
+      "post": {
+        "summary": "Upload one files field: PNG/JPEG/GIF/WebP/PDF, maximum 8 MiB, verified signature/type. No extra fields or replacement.",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "files": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "files"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Uploaded items with safe metadata and absolute URLs."
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    },
+    "/api/admin/media/{id}": {
+      "delete": {
+        "summary": "Delete media only after checking all draft and published content references",
+        "security": [
+          {
+            "adminSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Administrator session required (all custom-admin access is denied until phase 5)."
+          },
+          "422": {
+            "description": "Invalid final document; no content write occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CMS unavailable or read credential not configured."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "adminSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "portfolio_session",
+        "description": "Reserved phase-5 session scheme; currently every production admin request is denied."
+      }
+    },
+    "schemas": {
+      "hero": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "heading": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "paragraph": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1
+          },
+          "greeting": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "availability": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "eyebrow": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "buttons": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "label",
+                "url"
+              ]
+            }
+          },
+          "panels": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "lines": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 200,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "tokens": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 200,
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "text": {
+                              "type": "string",
+                              "maxLength": 5000
+                            },
+                            "tone": {
+                              "type": "string",
+                              "enum": [
+                                "default",
+                                "muted",
+                                "green",
+                                "cyan",
+                                "orange",
+                                "purple",
+                                "white"
+                              ]
+                            }
+                          },
+                          "required": []
+                        }
+                      }
+                    },
+                    "required": [
+                      "tokens"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "title",
+                "lines"
+              ]
+            }
+          }
+        },
+        "required": [
+          "heading",
+          "paragraph"
+        ],
+        "description": "Hero, singleton. Required text is trimmed/non-empty. "
+      },
+      "experience": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "company": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "image": {
+            "description": "Existing upload ID (image). Pending/missing uploads are rejected.",
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          },
+          "startDate": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^\\d{4}-\\d{2}(-\\d{2})?$"
+          },
+          "endDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}(-\\d{2})?$"
+          },
+          "current": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "durationLabel": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "highlights": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "maxLength": 5000,
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        },
+        "required": [
+          "title",
+          "company",
+          "image",
+          "description",
+          "startDate",
+          "current"
+        ],
+        "description": "Experience, multiple. Required text is trimmed/non-empty. current=true requires an empty endDate; current=false requires endDate >= startDate."
+      },
+      "projects": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "slug": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          },
+          "outcome": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "projectStatus": {
+            "type": "string",
+            "enum": [
+              "Live",
+              "Completed",
+              "In progress"
+            ]
+          },
+          "gallery": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "image": {
+                  "description": "Existing upload ID (image). Pending/missing uploads are rejected.",
+                  "oneOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "alt": {
+                  "type": "string",
+                  "maxLength": 300,
+                  "minLength": 1
+                },
+                "caption": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "image",
+                "alt"
+              ]
+            }
+          },
+          "technologies": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "maxLength": 5000,
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          },
+          "details": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "maxLength": 5000,
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          },
+          "imageKind": {
+            "type": "string",
+            "enum": [
+              "logo",
+              "screenshot"
+            ]
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "demoUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "description",
+          "outcome",
+          "role",
+          "projectStatus",
+          "gallery",
+          "technologies",
+          "details"
+        ],
+        "description": "Projects, multiple. Required text is trimmed/non-empty. "
+      },
+      "skills": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "icon": {
+            "description": "Existing upload ID (image). Pending/missing uploads are rejected.",
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
+          },
+          "skillGroup": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable documentId of a Skill Groups entry."
+          }
+        },
+        "required": [
+          "name",
+          "icon",
+          "skillGroup"
+        ],
+        "description": "Skills, multiple. Required text is trimmed/non-empty. "
+      },
+      "skill-groups": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "eyebrow": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "accent": {
+            "type": "string",
+            "enum": [
+              "emerald",
+              "amber",
+              "sky"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "eyebrow",
+          "description"
+        ],
+        "description": "Skill Groups, multiple. Required text is trimmed/non-empty. "
+      },
+      "education": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "qualification": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "institution": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "credential": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "image": {
+            "description": "Existing upload ID (image). Pending/missing uploads are rejected.",
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}(-\\d{2})?$"
+          },
+          "endDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}(-\\d{2})?$"
+          },
+          "completionYear": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2200
+          },
+          "durationLabel": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "details": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "maxLength": 5000,
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        },
+        "required": [
+          "qualification",
+          "institution",
+          "credential",
+          "image"
+        ],
+        "description": "Education, multiple. Required text is trimmed/non-empty. Provide completionYear OR a complete ordered date range."
+      },
+      "site-settings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "profileImage": {
+            "description": "Existing upload ID (image). Pending/missing uploads are rejected.",
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
+          },
+          "contactEmail": {
+            "type": "string",
+            "minLength": 1,
+            "format": "email"
+          },
+          "seoTitle": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "seoDescription": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "designation": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "aboutHeading": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "aboutText": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "cv": {
+            "description": "Existing upload ID (file). Pending/missing uploads are rejected.",
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
+          },
+          "socialLinks": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "label",
+                "url"
+              ]
+            }
+          },
+          "navigation": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "label",
+                "url"
+              ]
+            }
+          },
+          "footerText": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "devUsername": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "contactIntroduction": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "displayName",
+          "profileImage",
+          "contactEmail",
+          "seoTitle",
+          "seoDescription"
+        ],
+        "description": "Site Settings, singleton. Required text is trimmed/non-empty. "
+      },
+      "section-settings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "enum": [
+                    "about",
+                    "experience",
+                    "skills",
+                    "projects",
+                    "education",
+                    "contact"
+                  ]
+                },
+                "heading": {
+                  "type": "string",
+                  "maxLength": 200,
+                  "minLength": 1
+                },
+                "eyebrow": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "introduction": {
+                  "type": "string",
+                  "maxLength": 2000
+                },
+                "visible": {
+                  "type": "boolean"
+                },
+                "order": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000
+                }
+              },
+              "required": [
+                "key",
+                "heading",
+                "visible",
+                "order"
+              ]
+            }
+          }
+        },
+        "required": [
+          "sections"
+        ],
+        "description": "Section Settings, singleton. Required text is trimmed/non-empty. "
+      },
+      "Category": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "templateKey": {
+            "type": "string",
+            "enum": [
+              "hero",
+              "experience",
+              "projects",
+              "skills",
+              "skill-groups",
+              "education",
+              "site-settings",
+              "section-settings"
+            ]
+          },
+          "cardinality": {
+            "enum": [
+              "singleton",
+              "multiple"
+            ]
+          },
+          "displayOrder": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        },
+        "required": []
+      },
+      "CategoryInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "templateKey": {
+            "enum": [
+              "hero",
+              "experience",
+              "projects",
+              "skills",
+              "skill-groups",
+              "education",
+              "site-settings",
+              "section-settings"
+            ]
+          },
+          "cardinality": {
+            "enum": [
+              "singleton",
+              "multiple"
+            ]
+          },
+          "displayOrder": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "templateKey",
+          "cardinality"
+        ]
+      },
+      "Payload": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/hero"
+          },
+          {
+            "$ref": "#/components/schemas/experience"
+          },
+          {
+            "$ref": "#/components/schemas/projects"
+          },
+          {
+            "$ref": "#/components/schemas/skills"
+          },
+          {
+            "$ref": "#/components/schemas/skill-groups"
+          },
+          {
+            "$ref": "#/components/schemas/education"
+          },
+          {
+            "$ref": "#/components/schemas/site-settings"
+          },
+          {
+            "$ref": "#/components/schemas/section-settings"
+          }
+        ],
+        "description": "Shape is selected by resolved category.templateKey; media and skill-group references must exist."
+      },
+      "Entry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "integer"
+          },
+          "slug": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data": {
+            "type": "object",
+            "description": "Approved template fields; media normalized to id/name/alternativeText/mime/width/height/size/url; skillGroup is a stable documentId."
+          }
+        },
+        "required": []
+      },
+      "Pagination": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "pageSize": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "pageCount": {
+            "type": "integer"
+          }
+        },
+        "required": []
+      },
+      "Envelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "documentId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "templateKey": {
+                  "type": "string",
+                  "enum": [
+                    "hero",
+                    "experience",
+                    "projects",
+                    "skills",
+                    "skill-groups",
+                    "education",
+                    "site-settings",
+                    "section-settings"
+                  ]
+                },
+                "cardinality": {
+                  "enum": [
+                    "singleton",
+                    "multiple"
+                  ]
+                },
+                "displayOrder": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "visible": {
+                  "type": "boolean"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Entry"
+                  }
+                },
+                "pagination": {
+                  "$ref": "#/components/schemas/Pagination"
+                }
+              },
+              "required": []
+            }
+          }
+        },
+        "required": []
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "const": false
+          },
+          "message": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "examples": [
+              {
+                "data.image": "An existing image is required."
+              }
+            ]
+          }
+        }
+      },
+      "CreateContent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Payload"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "category",
+          "data"
+        ]
+      },
+      "ContentOperation": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operation": {
+                "const": "update"
+              },
+              "category": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "description": "Partial template fields. The merged persisted document is validated."
+              },
+              "displayOrder": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operation": {
+                "enum": [
+                  "publish",
+                  "unpublish"
+                ]
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -2,14 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { projectsData } from "@/utils/data/projects-data";
 import { useReducedMotion } from "@/app/hooks/use-reduced-motion";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 import ProjectCard from "./project-card";
 
 const PROJECT_GUIDE_KEY = "talal-portfolio-project-guide-dismissed";
 
-const Projects = () => {
+const Projects = ({ projectsData, section = {} }) => {
   const [expandedProjectId, setExpandedProjectId] = useState(null);
   const [minimizedProjects, setMinimizedProjects] = useState({});
   const [closedProjects, setClosedProjects] = useState({});
@@ -69,15 +68,15 @@ const Projects = () => {
     <SectionVisualFrame ref={sectionRef} id="projects" variant="projects" accent="cyan" className={`relative z-30 my-12 transition-[padding-bottom] duration-300 ease-out lg:my-24 ${hasActiveProject ? "pb-20 lg:pb-28" : "pb-0"}`}>
       <div className="sticky top-[var(--nav-safe-top)]">
         <div className="relative flex items-center justify-start">
-          <span className="absolute left-0 w-fit rounded-md bg-[#151515] px-5 py-3 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">PROJECTS</span>
+          <span className="absolute left-0 w-fit rounded-md bg-[#151515] px-5 py-3 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">{section.heading || "Projects"}</span>
           <span className="h-px w-full bg-[#262626]" />
         </div>
       </div>
 
       <div className="pt-24">
         <div className="mb-6 max-w-5xl border-l-2 border-[#64d8ff]/60 pl-4">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#64d8ff]">Selected case studies</p>
-          <p className="mt-1 text-sm leading-6 text-slate-400">Open a window to review the role, technical approach, and measurable outcome behind each project.</p>
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#64d8ff]">{section.eyebrow}</p>
+          <p className="mt-1 text-sm leading-6 text-slate-400">{section.introduction}</p>
         </div>
         <div className={`flex flex-col transition-[gap] duration-300 ease-out ${hasActiveProject ? "gap-6" : "gap-4"}`}>
           {projectsData.map((project, index) => {

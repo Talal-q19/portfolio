@@ -1,19 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IoClose, IoMenu } from "react-icons/io5";
 
-const NAV_ITEMS = [
-  { label: "ABOUT", target: "about" },
-  { label: "EXPERIENCE", target: "experience" },
-  { label: "SKILLS", target: "skills" },
-  { label: "PROJECTS", target: "projects" },
-  { label: "EDUCATION", target: "education" },
-  { label: "CONTACT", target: "contact" },
-];
-
-function Navbar() {
+function Navbar({ settings, sections = [] }) {
+  const NAV_ITEMS = useMemo(() => (settings?.navigation || []).filter(item => item.url.startsWith('#') && sections.some(s => s.visible && `#${s.key}` === item.url)).map(item => ({ label: item.label, target: item.url.slice(1) })), [settings, sections]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +18,7 @@ function Navbar() {
       const isAtPageBottom = window.innerHeight + scrollPosition >= document.documentElement.scrollHeight - 8;
 
       if (isAtPageBottom) {
-        setActiveSection(NAV_ITEMS[NAV_ITEMS.length - 1].target);
+        setActiveSection(NAV_ITEMS.at(-1)?.target || "");
         return;
       }
 
@@ -48,7 +40,7 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [NAV_ITEMS]);
 
   const scrollToSection = (event, target) => {
     event.preventDefault();
@@ -100,7 +92,7 @@ function Navbar() {
               </span>
             </div>
             <span className="text-xl font-semibold tracking-[-0.04em] text-[#f4f1e8] transition-colors duration-300 group-hover:text-[#E2E8F0] sm:text-2xl">
-              Talal Qasim
+              {settings?.displayName || "Portfolio"}
             </span>
           </Link>
         </div>

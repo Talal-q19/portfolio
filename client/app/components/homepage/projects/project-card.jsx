@@ -3,15 +3,8 @@
 import Image from "next/image";
 import * as React from "react";
 import { FiChevronLeft, FiChevronRight, FiGithub, FiMaximize2, FiMinus, FiX } from "react-icons/fi";
-import { skillsImage } from "@/utils/skill-image";
 import { useReducedMotion } from "@/app/hooks/use-reduced-motion";
 import ProjectCoachMark from "./project-coach-mark";
-
-const projectImages = {
-  attendance: ["/project-images/federal-dashboard.png"],
-  streaming: ["/project-images/stream-hub.png"],
-  dataVisualization: ["/project-images/data-visualization.png"],
-};
 
 function WindowControl({ label, color, children, onClick, pressed }) {
   const fallbackIcon = label.startsWith("Expand") ? <FiMaximize2 size={9} /> : null;
@@ -36,7 +29,7 @@ function StatusBadge({ project, compact = false }) {
 function ProjectCard({ project, projectNumber, isExpanded, isMinimized, onClose, onExpand, onMinimize, showCoachMark, onDismissCoachMark }) {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const prefersReducedMotion = useReducedMotion();
-  const slides = React.useMemo(() => project.images?.length ? project.images : project.image ? [project.image] : projectImages[project.imageKey] || [], [project.image, project.imageKey, project.images]);
+  const slides = React.useMemo(() => project.images?.length ? project.images : project.image ? [project.image] : [], [project.image, project.images]);
   const details = project.details?.length ? project.details : [project.description];
   const touchStartX = React.useRef(null);
   const touchEndX = React.useRef(null);
@@ -95,7 +88,7 @@ function ProjectCard({ project, projectNumber, isExpanded, isMinimized, onClose,
                 <div className="grid grid-cols-1 gap-5 p-3 md:grid-cols-2 lg:gap-6 lg:p-5">
                   <div className="flex flex-col gap-3">
                     <div className="project-media-reveal relative aspect-[2/1] w-full overflow-hidden rounded-md border border-white/10 bg-[#06091d]" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
-                      {previewImage ? <Image key={`${project.id}-${currentSlide}`} src={previewImage} alt={`${project.name} preview ${currentSlide + 1} of ${slides.length}`} fill sizes="(max-width: 768px) 100vw, 58vw" className={`h-full w-full ${project.imageKind === "logo" ? "project-logo-float object-contain p-10 sm:p-14" : "object-cover object-center"} transition-transform duration-500 ${isExpanded ? "scale-100" : "scale-95"}`} priority={project.id === 1} /> : <p className="flex h-full items-center justify-center text-sm text-slate-400">Preview unavailable</p>}
+                      {previewImage ? <Image key={`${project.id}-${currentSlide}`} src={previewImage} alt={project.gallery?.[currentSlide]?.alt || project.name} fill sizes="(max-width: 768px) 100vw, 58vw" className={`h-full w-full ${project.imageKind === "logo" ? "project-logo-float object-contain p-10 sm:p-14" : "object-cover object-center"} transition-transform duration-500 ${isExpanded ? "scale-100" : "scale-95"}`} priority={projectNumber === 1} /> : <p className="flex h-full items-center justify-center text-sm text-slate-400">Preview unavailable</p>}
                       {hasMultipleSlides && <><button type="button" onClick={() => goToSlide(currentSlide - 1)} className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/65 text-white transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64d8ff]" aria-label={`Previous ${project.name} preview`}><FiChevronLeft size={20} /></button><button type="button" onClick={() => goToSlide(currentSlide + 1)} className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/65 text-white transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64d8ff]" aria-label={`Next ${project.name} preview`}><FiChevronRight size={20} /></button><span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/70 px-3 py-1 font-mono text-[10px] font-bold tracking-[0.14em] text-white">{currentSlide + 1} / {slides.length}</span></>}
                       <span className="sr-only" aria-live="polite">Showing preview {currentSlide + 1} of {slides.length}</span>
                     </div>

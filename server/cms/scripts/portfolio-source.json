@@ -1,0 +1,1732 @@
+[
+  {
+    "key": "hero:main",
+    "category": "hero",
+    "data": {
+      "heading": "Software Engineer",
+      "role": "Fintech Backend Engineer",
+      "paragraph": "I am a Software Engineer specializing in building scalable backend systems and modern web applications. With strong experience in Java, Spring Boot, React, Next.js, PostgreSQL, and AWS, I craft high-performance end-to-end digital experiences.",
+      "eyebrow": "Backend engineering",
+      "location": "Dubai",
+      "availability": "Open for New Opportunities",
+      "buttons": [
+        {
+          "label": "Contact me",
+          "url": "#contact"
+        },
+        {
+          "label": "View selected work",
+          "url": "#projects"
+        },
+        {
+          "label": "Get Resume",
+          "url": "/talal-qasim-cv-2026.pdf"
+        }
+      ],
+      "panels": [
+        {
+          "title": "coder.js",
+          "lines": [
+            {
+              "tokens": [
+                {
+                  "text": "const ",
+                  "tone": "default"
+                },
+                {
+                  "text": "softwareEngineer ",
+                  "tone": "default"
+                },
+                {
+                  "text": "= ",
+                  "tone": "default"
+                },
+                {
+                  "text": "{",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  name: ",
+                  "tone": "default"
+                },
+                {
+                  "text": "'",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Talal Qasim",
+                  "tone": "default"
+                },
+                {
+                  "text": "',",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  role: ",
+                  "tone": "default"
+                },
+                {
+                  "text": "'",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Software Engineer / Full Stack Developer",
+                  "tone": "green"
+                },
+                {
+                  "text": "',",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  skills: ",
+                  "tone": "default"
+                },
+                {
+                  "text": "['",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Java",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Spring Boot",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "React",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Next.js",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "PostgreSQL",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Kafka",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "Docker",
+                  "tone": "default"
+                },
+                {
+                  "text": "', '",
+                  "tone": "muted"
+                },
+                {
+                  "text": "AWS",
+                  "tone": "default"
+                },
+                {
+                  "text": "'],",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  hardWorker: ",
+                  "tone": "default"
+                },
+                {
+                  "text": "true",
+                  "tone": "orange"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  quickLearner: ",
+                  "tone": "default"
+                },
+                {
+                  "text": "true",
+                  "tone": "orange"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  problemSolver: ",
+                  "tone": "default"
+                },
+                {
+                  "text": "true",
+                  "tone": "orange"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  hireable: ",
+                  "tone": "green"
+                },
+                {
+                  "text": "function",
+                  "tone": "orange"
+                },
+                {
+                  "text": "() {",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "    return",
+                  "tone": "orange"
+                },
+                {
+                  "text": "(",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "      this.",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "hardWorker ",
+                  "tone": "default"
+                },
+                {
+                  "text": "&& ",
+                  "tone": "default"
+                },
+                {
+                  "text": "this.",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "problemSolver ",
+                  "tone": "default"
+                },
+                {
+                  "text": "&& ",
+                  "tone": "default"
+                },
+                {
+                  "text": "this.",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "skills.length ",
+                  "tone": "default"
+                },
+                {
+                  "text": ">= ",
+                  "tone": "default"
+                },
+                {
+                  "text": "5",
+                  "tone": "orange"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "    );",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  };",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "};",
+                  "tone": "muted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "skills.json",
+          "lines": [
+            {
+              "tokens": [
+                {
+                  "text": "{",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  \"developer\": ",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "\"Talal Qasim\"",
+                  "tone": "green"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  \"role\": ",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "\"Software Engineer / Full Stack Developer\"",
+                  "tone": "green"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  \"stack\": {",
+                  "tone": "default"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "    \"backend\": ",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "[\"Java\", \"Spring Boot\", \"Node.js\", \"Python\", \"PostgreSQL\", \"Kafka\", \"Redis\"]",
+                  "tone": "green"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "    \"frontend\": ",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "[\"React.js\", \"Next.js\", \"TypeScript\", \"TailwindCSS\"]",
+                  "tone": "green"
+                },
+                {
+                  "text": ",",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "    \"devops\": ",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "[\"Docker\", \"AWS (EC2, RDS)\", \"Kubernetes\", \"Linux\", \"Git\"]",
+                  "tone": "green"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  },",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "  \"status\": ",
+                  "tone": "cyan"
+                },
+                {
+                  "text": "\"Available for Hire & Projects\"",
+                  "tone": "green"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "}",
+                  "tone": "muted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "README.md",
+          "lines": [
+            {
+              "tokens": [
+                {
+                  "text": "# Talal Qasim — Software Engineer",
+                  "tone": "default"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "> Full-Stack Software Engineer building scalable backend systems & modern web applications.",
+                  "tone": "default"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "## Technical Overview",
+                  "tone": "cyan"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "- ☕ Backend: Java, Spring Boot, Node.js, Python, PostgreSQL, Kafka, Redis",
+                  "tone": "default"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "- 🌐 Frontend: React.js, Next.js 15, TypeScript, TailwindCSS, Micro-animations",
+                  "tone": "default"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "- ☁️ Cloud & DevOps: Docker, AWS (EC2/RDS), CI/CD pipelines, Linux",
+                  "tone": "default"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "```bash",
+                  "tone": "muted"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "$ npm run dev -- --mode=fullstack",
+                  "tone": "green"
+                }
+              ]
+            },
+            {
+              "tokens": [
+                {
+                  "text": "```",
+                  "tone": "muted"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "experience:1",
+    "category": "experience",
+    "data": {
+      "title": "Backend Engineer",
+      "company": "EUNX Investment LLC",
+      "image": {
+        "$file": "/company-logos/eunx.jpg"
+      },
+      "description": "Contribute to a production-grade fintech and crypto-trading platform operating across three regions, supporting spot trading, P2P, OTC, fiat and crypto wallets, KYC, payments, and internal operations.",
+      "highlights": [
+        {
+          "text": "Contribute to a production-grade fintech and crypto-trading platform operating across three regions, supporting spot trading, P2P, OTC, fiat and crypto wallets, KYC, payments, and internal operations."
+        },
+        {
+          "text": "Build and maintain Spring Boot services and secure REST APIs for customer applications and the Admin Dashboard, including trading controls, transaction monitoring, wallet operations, audit visibility, RBAC, and secure administrative actions."
+        },
+        {
+          "text": "Support regulatory and technical readiness for European, UAE, and UK expansion, contributing backend controls, compliance workflows, auditability, and licensing-related platform requirements including MiCA and VARA contexts."
+        },
+        {
+          "text": "Develop wallet, fiat-payment, and identity-verification flows; integrated Zand for payment processing and Sumsub for automated KYC onboarding, verification status handling, and jurisdiction-aware compliance workflows."
+        },
+        {
+          "text": "Created a Strapi-based legal-content service using backend APIs, AWS publish/subscribe messaging, and webhooks to synchronize multilingual regulatory content across platform services."
+        },
+        {
+          "text": "Use Kafka, WebSockets, Redis, PostgreSQL, Binance and OKX integrations, Jenkins CI/CD, SonarQube, unit/integration testing, and production release debugging to deliver reliable event-driven services."
+        }
+      ],
+      "startDate": "2025-02",
+      "endDate": null,
+      "current": true,
+      "durationLabel": "(Feb 2025 - Present | Dubai, UAE)",
+      "location": "Dubai, UAE"
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "experience:2",
+    "category": "experience",
+    "data": {
+      "title": "Software Engineer",
+      "company": "Federal Electrical",
+      "image": {
+        "$file": "/company-logos/federal_electric.jpg"
+      },
+      "description": "Developed a biometric attendance system integrated with hardware and company data workflows.",
+      "highlights": [
+        {
+          "text": "Developed a biometric attendance system integrated with hardware and company data workflows."
+        },
+        {
+          "text": "Optimized attendance reporting from a process that previously took up to two days into reports generated in about 4-5 seconds for up to 80,000 records."
+        },
+        {
+          "text": "Designed, developed, and maintained scalable software solutions across the development lifecycle with a focus on performance and reliability."
+        },
+        {
+          "text": "Collaborated with cross-functional teams, tested releases, and improved software quality for business operations."
+        }
+      ],
+      "startDate": "2024-08",
+      "endDate": "2025-02",
+      "current": false,
+      "durationLabel": "(Aug 2024 - Feb 2025)",
+      "location": ""
+    },
+    "displayOrder": 1
+  },
+  {
+    "key": "experience:3",
+    "category": "experience",
+    "data": {
+      "title": "Backend Developer",
+      "company": "Bacha Smart Solutions",
+      "image": {
+        "$file": "/company-logos/bacha_smart_solutions.jpg"
+      },
+      "description": "Designed, developed, and maintained RESTful APIs to support reliable communication between systems.",
+      "highlights": [
+        {
+          "text": "Designed, developed, and maintained RESTful APIs to support reliable communication between systems."
+        },
+        {
+          "text": "Improved database performance through query and storage optimization for efficient backend data handling."
+        },
+        {
+          "text": "Resolved backend issues, reviewed code, and supported higher quality standards for reliability and maintainability."
+        }
+      ],
+      "startDate": "2024-02",
+      "endDate": "2024-08",
+      "current": false,
+      "durationLabel": "(Feb 2024 - Aug 2024)",
+      "location": ""
+    },
+    "displayOrder": 2
+  },
+  {
+    "key": "project:1",
+    "category": "projects",
+    "data": {
+      "name": "EUNX Investment LLC Fintech Platform",
+      "slug": "eunx-investment-llc-fintech-platform",
+      "description": "Backend Engineer for a production-grade fintech and cryptocurrency platform supporting trading, wallets, payments, KYC, compliance, market data, and internal administrative operations.",
+      "outcome": "Contributing to a secure, multi-region fintech and crypto-trading platform across European, UAE, and UK market-readiness initiatives.",
+      "role": "Backend Engineer · Full-Time",
+      "projectStatus": "In progress",
+      "imageKind": "logo",
+      "gallery": [
+        {
+          "image": {
+            "$file": "/company-logos/eunx.svg"
+          },
+          "alt": "EUNX Investment LLC Fintech Platform — image 1"
+        }
+      ],
+      "technologies": [
+        {
+          "text": "Java"
+        },
+        {
+          "text": "Spring Boot"
+        },
+        {
+          "text": "Spring Security"
+        },
+        {
+          "text": "JWT"
+        },
+        {
+          "text": "OAuth 2.0"
+        },
+        {
+          "text": "PostgreSQL"
+        },
+        {
+          "text": "Redis"
+        },
+        {
+          "text": "Kafka"
+        },
+        {
+          "text": "WebSockets"
+        },
+        {
+          "text": "REST APIs"
+        },
+        {
+          "text": "Docker"
+        },
+        {
+          "text": "AWS EC2/RDS"
+        },
+        {
+          "text": "AWS Pub/Sub"
+        },
+        {
+          "text": "Webhooks"
+        },
+        {
+          "text": "Strapi"
+        },
+        {
+          "text": "Jenkins"
+        },
+        {
+          "text": "SonarQube"
+        },
+        {
+          "text": "Zand"
+        },
+        {
+          "text": "Sumsub"
+        },
+        {
+          "text": "Binance API"
+        },
+        {
+          "text": "OKX API"
+        }
+      ],
+      "details": [
+        {
+          "text": "Build and maintain Spring Boot services and secure REST APIs for customer applications and the Admin Dashboard, including trading controls, wallet operations, transaction monitoring, audit visibility, RBAC, and secure administrative actions."
+        },
+        {
+          "text": "Contribute to backend controls, compliance workflows, auditability, and platform requirements supporting regulatory and technical readiness for European MiCA-related and UAE VARA-related expansion."
+        },
+        {
+          "text": "Develop crypto-wallet workflows for hot and cold wallets, deposits, withdrawals, transaction processing, and integration with trading, account, and transaction services."
+        },
+        {
+          "text": "Integrated Zand for fiat wallet and payment flows and Sumsub for automated KYC onboarding, identity checks, verification status handling, and compliance workflows."
+        },
+        {
+          "text": "Built a Strapi-based service for multilingual legal and regulatory content, using backend APIs, AWS publish/subscribe messaging, and webhooks for event-driven synchronization across services."
+        },
+        {
+          "text": "Improve reliability through unit and integration testing, SonarQube quality work, Jenkins CI/CD, Kafka, WebSockets, Redis, and production release and incident debugging."
+        }
+      ],
+      "sourceUrl": "",
+      "demoUrl": ""
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "project:2",
+    "category": "projects",
+    "data": {
+      "name": "Biometric Attendance System",
+      "slug": "biometric-attendance-system",
+      "description": "Developed a fingerprint-based clock-in and clock-out system integrated with hardware and a redesigned company database, capable of fetching, updating, and storing records from multiple tables within 5 seconds.",
+      "outcome": "Reduced reporting for up to 80,000 records from as long as two days to about 4–5 seconds.",
+      "role": "Software Engineer",
+      "projectStatus": "Completed",
+      "imageKind": "screenshot",
+      "gallery": [
+        {
+          "image": {
+            "$file": "/project-images/federal-dashboard.png"
+          },
+          "alt": "Biometric Attendance System — image 1"
+        },
+        {
+          "image": {
+            "$file": "/project-images/muster-roll.png"
+          },
+          "alt": "Biometric Attendance System — image 2"
+        },
+        {
+          "image": {
+            "$file": "/project-images/gar-report.png"
+          },
+          "alt": "Biometric Attendance System — image 3"
+        },
+        {
+          "image": {
+            "$file": "/project-images/gar-report-2.png"
+          },
+          "alt": "Biometric Attendance System — image 4"
+        }
+      ],
+      "technologies": [
+        {
+          "text": "Node.js"
+        },
+        {
+          "text": "Express.js"
+        },
+        {
+          "text": "MySQL"
+        },
+        {
+          "text": "HTML"
+        },
+        {
+          "text": "CSS"
+        },
+        {
+          "text": "C++"
+        },
+        {
+          "text": "Python"
+        }
+      ],
+      "details": [
+        {
+          "text": "Generated attendance reports for up to 80,000 records in about 4-5 seconds after the previous process took up to two days."
+        },
+        {
+          "text": "Implemented complex SQL queries for efficient data retrieval and detailed PDF report generation."
+        },
+        {
+          "text": "Designed a Python automation script for data fetching workflows."
+        },
+        {
+          "text": "Built an HR admin dashboard for specific table access and a super admin panel for full table access and editing."
+        }
+      ],
+      "sourceUrl": "",
+      "demoUrl": ""
+    },
+    "displayOrder": 1
+  },
+  {
+    "key": "project:3",
+    "category": "projects",
+    "data": {
+      "name": "Video Streaming and Social Interaction Application",
+      "slug": "video-streaming-and-social-interaction-application",
+      "description": "Developed a hybrid platform enabling users to stream movies while engaging in real-time online interactions, enhancing the social viewing experience.",
+      "outcome": "Combined live social viewing with both user-based and content-based movie recommendations.",
+      "role": "Software Engineer",
+      "projectStatus": "Completed",
+      "imageKind": "screenshot",
+      "gallery": [
+        {
+          "image": {
+            "$file": "/project-images/stream-hub.png"
+          },
+          "alt": "Video Streaming and Social Interaction Application — image 1"
+        },
+        {
+          "image": {
+            "$file": "/project-images/stream-hub-feed.jpeg"
+          },
+          "alt": "Video Streaming and Social Interaction Application — image 2"
+        },
+        {
+          "image": {
+            "$file": "/project-images/stream-hub-watch.jpeg"
+          },
+          "alt": "Video Streaming and Social Interaction Application — image 3"
+        }
+      ],
+      "technologies": [
+        {
+          "text": "Node.js"
+        },
+        {
+          "text": "Express.js"
+        },
+        {
+          "text": "MySQL"
+        },
+        {
+          "text": "Python"
+        },
+        {
+          "text": "HTML"
+        },
+        {
+          "text": "CSS"
+        },
+        {
+          "text": "Javascript"
+        }
+      ],
+      "details": [
+        {
+          "text": "Implemented a user-based recommendation model in Python for personalized movie suggestions based on user preferences."
+        },
+        {
+          "text": "Built a content-based recommendation model in JavaScript for suggestions tailored to movie attributes."
+        },
+        {
+          "text": "Supported the interactive streaming experience with Node.js, Express.js, MySQL, Python, HTML, CSS, and JavaScript."
+        }
+      ],
+      "sourceUrl": "",
+      "demoUrl": ""
+    },
+    "displayOrder": 2
+  },
+  {
+    "key": "project:4",
+    "category": "projects",
+    "data": {
+      "name": "Data Visualization with AI Features",
+      "slug": "data-visualization-with-ai-features",
+      "description": "Built a data visualization system that dynamically creates SQL tables from uploaded Excel files and uses backend schema data to generate frontend filter fields.",
+      "outcome": "Turned uploaded spreadsheet schemas into dynamic SQL tables, filters, and paginated results.",
+      "role": "Software Engineer",
+      "projectStatus": "Completed",
+      "imageKind": "screenshot",
+      "gallery": [
+        {
+          "image": {
+            "$file": "/project-images/data-visualization.png"
+          },
+          "alt": "Data Visualization with AI Features — image 1"
+        },
+        {
+          "image": {
+            "$file": "/project-images/data-filters.png"
+          },
+          "alt": "Data Visualization with AI Features — image 2"
+        },
+        {
+          "image": {
+            "$file": "/project-images/data-table.png"
+          },
+          "alt": "Data Visualization with AI Features — image 3"
+        }
+      ],
+      "technologies": [
+        {
+          "text": "Python"
+        },
+        {
+          "text": "React"
+        },
+        {
+          "text": "MySQL"
+        },
+        {
+          "text": "Pandas"
+        },
+        {
+          "text": "Scikit-learn"
+        },
+        {
+          "text": "Flask"
+        }
+      ],
+      "details": [
+        {
+          "text": "Created SQL tables automatically from uploaded Excel file names and headers for structured storage."
+        },
+        {
+          "text": "Fetched table schemas from the backend and generated dynamic filter fields from column names."
+        },
+        {
+          "text": "Converted user-defined filters into SQL queries for efficient retrieval."
+        },
+        {
+          "text": "Maintained smooth pagination for both filtered and unfiltered records."
+        }
+      ],
+      "sourceUrl": "",
+      "demoUrl": ""
+    },
+    "displayOrder": 3
+  },
+  {
+    "key": "project:5",
+    "category": "projects",
+    "data": {
+      "name": "Portfolio",
+      "slug": "portfolio",
+      "description": "Built a full-stack developer portfolio with a polished Next.js frontend, interactive project showcases, structured career sections, protected contact workflows, and server-side email delivery.",
+      "outcome": "Created a responsive portfolio with protected contact workflows and reusable content modules.",
+      "role": "Full Stack Developer",
+      "projectStatus": "Live",
+      "imageKind": "screenshot",
+      "gallery": [
+        {
+          "image": {
+            "$file": "/project-images/portfolio-hero-preview.png"
+          },
+          "alt": "Portfolio — image 1"
+        },
+        {
+          "image": {
+            "$file": "/project-images/portfolio-experience-preview.png"
+          },
+          "alt": "Portfolio — image 2"
+        },
+        {
+          "image": {
+            "$file": "/project-images/portfolio-projects-preview.png"
+          },
+          "alt": "Portfolio — image 3"
+        },
+        {
+          "image": {
+            "$file": "/project-images/portfolio-contact-preview.png"
+          },
+          "alt": "Portfolio — image 4"
+        }
+      ],
+      "technologies": [
+        {
+          "text": "Next.js"
+        },
+        {
+          "text": "React"
+        },
+        {
+          "text": "JavaScript"
+        },
+        {
+          "text": "Tailwind CSS"
+        },
+        {
+          "text": "Sass"
+        },
+        {
+          "text": "Node.js"
+        },
+        {
+          "text": "Nodemailer"
+        },
+        {
+          "text": "Axios"
+        },
+        {
+          "text": "reCAPTCHA"
+        },
+        {
+          "text": "Docker"
+        }
+      ],
+      "details": [
+        {
+          "text": "Developed the frontend with Next.js, React, Tailwind CSS, Sass, animated Lottie visuals, sticky project cards, responsive sections, and optimized image-driven project previews."
+        },
+        {
+          "text": "Built backend API routes for contact form handling, input validation, email template generation, SMTP delivery with Nodemailer, and environment-based configuration."
+        },
+        {
+          "text": "Integrated Google reCAPTCHA verification support and client-side validation to reduce invalid submissions before they reach the email workflow."
+        },
+        {
+          "text": "Organized profile, skills, education, experience, company logos, CV assets, and project data into reusable data modules for easier updates."
+        },
+        {
+          "text": "Configured the app for local development and deployment with Next.js metadata, Docker files, environment variables, and static assets served through the public folder."
+        }
+      ],
+      "sourceUrl": "",
+      "demoUrl": ""
+    },
+    "displayOrder": 4
+  },
+  {
+    "key": "skill-group:backend",
+    "category": "skill-groups",
+    "data": {
+      "name": "Backend",
+      "eyebrow": "Primary focus",
+      "description": "APIs, services, data models, and server-side systems.",
+      "accent": "emerald"
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "skill:backend:java",
+    "category": "skills",
+    "data": {
+      "name": "Java",
+      "icon": {
+        "$file": "/app/assets/svg/skills/java.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "skill:backend:spring-boot",
+    "category": "skills",
+    "data": {
+      "name": "Spring Boot",
+      "icon": {
+        "$file": "/app/assets/svg/skills/springboot.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 1
+  },
+  {
+    "key": "skill:backend:kafka",
+    "category": "skills",
+    "data": {
+      "name": "Kafka",
+      "icon": {
+        "$file": "/app/assets/svg/skills/kafka.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 2
+  },
+  {
+    "key": "skill:backend:rabbitmq",
+    "category": "skills",
+    "data": {
+      "name": "RabbitMQ",
+      "icon": {
+        "$file": "/app/assets/svg/skills/rabbitmq.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 3
+  },
+  {
+    "key": "skill:backend:postgresql",
+    "category": "skills",
+    "data": {
+      "name": "PostgreSQL",
+      "icon": {
+        "$file": "/app/assets/svg/skills/postgresql.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 4
+  },
+  {
+    "key": "skill:backend:redis",
+    "category": "skills",
+    "data": {
+      "name": "Redis",
+      "icon": {
+        "$file": "/migration-assets/redis.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 5
+  },
+  {
+    "key": "skill:backend:python",
+    "category": "skills",
+    "data": {
+      "name": "Python",
+      "icon": {
+        "$file": "/app/assets/svg/skills/python.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 6
+  },
+  {
+    "key": "skill:backend:c",
+    "category": "skills",
+    "data": {
+      "name": "C#",
+      "icon": {
+        "$file": "/app/assets/svg/skills/csharp.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 7
+  },
+  {
+    "key": "skill:backend:net-core",
+    "category": "skills",
+    "data": {
+      "name": ".NET Core",
+      "icon": {
+        "$file": "/app/assets/svg/skills/dotnetcore.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 8
+  },
+  {
+    "key": "skill:backend:fastapi",
+    "category": "skills",
+    "data": {
+      "name": "FastAPI",
+      "icon": {
+        "$file": "/app/assets/svg/skills/fastapi.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 9
+  },
+  {
+    "key": "skill:backend:django",
+    "category": "skills",
+    "data": {
+      "name": "Django",
+      "icon": {
+        "$file": "/app/assets/svg/skills/django.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 10
+  },
+  {
+    "key": "skill:backend:mysql",
+    "category": "skills",
+    "data": {
+      "name": "MySQL",
+      "icon": {
+        "$file": "/app/assets/svg/skills/mysql.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 11
+  },
+  {
+    "key": "skill:backend:mongodb",
+    "category": "skills",
+    "data": {
+      "name": "MongoDB",
+      "icon": {
+        "$file": "/app/assets/svg/skills/mongoDB.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 12
+  },
+  {
+    "key": "skill:backend:sqlalchemy",
+    "category": "skills",
+    "data": {
+      "name": "SQLAlchemy",
+      "icon": {
+        "$file": "/app/assets/svg/skills/sqlalchemy.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:backend"
+      }
+    },
+    "displayOrder": 13
+  },
+  {
+    "key": "skill-group:devops",
+    "category": "skill-groups",
+    "data": {
+      "name": "DevOps",
+      "eyebrow": "Delivery and infrastructure",
+      "description": "Containers, Linux environments, AWS services, cloud deployment, and CI-ready workflows.",
+      "accent": "amber"
+    },
+    "displayOrder": 1
+  },
+  {
+    "key": "skill:devops:docker",
+    "category": "skills",
+    "data": {
+      "name": "Docker",
+      "icon": {
+        "$file": "/app/assets/svg/skills/docker.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 14
+  },
+  {
+    "key": "skill:devops:aws-ec2",
+    "category": "skills",
+    "data": {
+      "name": "AWS EC2",
+      "icon": {
+        "$file": "/app/assets/svg/skills/aws.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 15
+  },
+  {
+    "key": "skill:devops:rds",
+    "category": "skills",
+    "data": {
+      "name": "RDS",
+      "icon": {
+        "$file": "/app/assets/svg/skills/aws.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 16
+  },
+  {
+    "key": "skill:devops:aws-iam",
+    "category": "skills",
+    "data": {
+      "name": "AWS IAM",
+      "icon": {
+        "$file": "/app/assets/svg/skills/aws.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 17
+  },
+  {
+    "key": "skill:devops:aws",
+    "category": "skills",
+    "data": {
+      "name": "AWS",
+      "icon": {
+        "$file": "/app/assets/svg/skills/aws.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 18
+  },
+  {
+    "key": "skill:devops:kubernetes",
+    "category": "skills",
+    "data": {
+      "name": "Kubernetes",
+      "icon": {
+        "$file": "/app/assets/svg/skills/kubernetes.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 19
+  },
+  {
+    "key": "skill:devops:azure",
+    "category": "skills",
+    "data": {
+      "name": "Azure",
+      "icon": {
+        "$file": "/app/assets/svg/skills/azure.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 20
+  },
+  {
+    "key": "skill:devops:linux",
+    "category": "skills",
+    "data": {
+      "name": "Linux",
+      "icon": {
+        "$file": "/app/assets/svg/skills/linux.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 21
+  },
+  {
+    "key": "skill:devops:nginx",
+    "category": "skills",
+    "data": {
+      "name": "Nginx",
+      "icon": {
+        "$file": "/app/assets/svg/skills/nginx.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 22
+  },
+  {
+    "key": "skill:devops:git",
+    "category": "skills",
+    "data": {
+      "name": "Git",
+      "icon": {
+        "$file": "/app/assets/svg/skills/git.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:devops"
+      }
+    },
+    "displayOrder": 23
+  },
+  {
+    "key": "skill-group:frontend",
+    "category": "skill-groups",
+    "data": {
+      "name": "Frontend",
+      "eyebrow": "Product interfaces",
+      "description": "Responsive interfaces, portfolio polish, and modern web app foundations.",
+      "accent": "sky"
+    },
+    "displayOrder": 2
+  },
+  {
+    "key": "skill:frontend:javascript",
+    "category": "skills",
+    "data": {
+      "name": "Javascript",
+      "icon": {
+        "$file": "/app/assets/svg/skills/javascript.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:frontend"
+      }
+    },
+    "displayOrder": 24
+  },
+  {
+    "key": "skill:frontend:react",
+    "category": "skills",
+    "data": {
+      "name": "React",
+      "icon": {
+        "$file": "/app/assets/svg/skills/react.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:frontend"
+      }
+    },
+    "displayOrder": 25
+  },
+  {
+    "key": "skill:frontend:next-js",
+    "category": "skills",
+    "data": {
+      "name": "Next JS",
+      "icon": {
+        "$file": "/app/assets/svg/skills/nextJS.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:frontend"
+      }
+    },
+    "displayOrder": 26
+  },
+  {
+    "key": "skill:frontend:html",
+    "category": "skills",
+    "data": {
+      "name": "HTML",
+      "icon": {
+        "$file": "/app/assets/svg/skills/html.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:frontend"
+      }
+    },
+    "displayOrder": 27
+  },
+  {
+    "key": "skill:frontend:css",
+    "category": "skills",
+    "data": {
+      "name": "CSS",
+      "icon": {
+        "$file": "/app/assets/svg/skills/css.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:frontend"
+      }
+    },
+    "displayOrder": 28
+  },
+  {
+    "key": "skill:frontend:tailwind",
+    "category": "skills",
+    "data": {
+      "name": "Tailwind",
+      "icon": {
+        "$file": "/app/assets/svg/skills/tailwind.svg"
+      },
+      "skillGroup": {
+        "$entry": "skill-group:frontend"
+      }
+    },
+    "displayOrder": 29
+  },
+  {
+    "key": "education:1",
+    "category": "education",
+    "data": {
+      "qualification": "Bachelor of Science in Software Engineering",
+      "institution": "Al Ain University",
+      "credential": "Degree",
+      "image": {
+        "$file": "/education-images/degree.jpg"
+      },
+      "startDate": "2020-08",
+      "endDate": "2024-12",
+      "durationLabel": "Aug 2020 - Dec 2024",
+      "location": "Abu Dhabi, UAE",
+      "details": [
+        {
+          "text": "Studied object-oriented programming, data structures and algorithms, and database management systems."
+        },
+        {
+          "text": "Covered object-oriented analysis and design, user interface design, software measurement, and testing."
+        },
+        {
+          "text": "Completed coursework in operating systems, software requirements and specification, and software design."
+        },
+        {
+          "text": "Studied software project management, design and analysis of algorithms, software evolution, and maintenance."
+        }
+      ]
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "education:2",
+    "category": "education",
+    "data": {
+      "qualification": "Java and Spring Boot with Spring AI",
+      "institution": "Udemy",
+      "credential": "Certification",
+      "image": {
+        "$file": "/education-images/spring-boot-ai.jpg"
+      },
+      "completionYear": 2026,
+      "durationLabel": "Completed 2026",
+      "location": "Online",
+      "details": [
+        {
+          "text": "Completed Spring Boot certification with Spring AI in 2026."
+        },
+        {
+          "text": "Covered backend development with Spring Boot and AI-enabled application features."
+        },
+        {
+          "text": "Strengthened Java, REST API, service-layer, and modern Spring ecosystem knowledge."
+        }
+      ]
+    },
+    "displayOrder": 1
+  },
+  {
+    "key": "education:3",
+    "category": "education",
+    "data": {
+      "qualification": "Full Stack Development",
+      "institution": "AstroLabs",
+      "credential": "Certification",
+      "image": {
+        "$file": "/education-images/coding-certificate.jpg"
+      },
+      "startDate": "2022-05",
+      "endDate": "2022-07",
+      "durationLabel": "May 2022 - Jul 2022",
+      "location": "Dubai, UAE",
+      "details": [
+        {
+          "text": "Completed a MERN Stack Development Bootcamp."
+        },
+        {
+          "text": "Built full-stack foundations using MongoDB, Express.js, React, and Node.js."
+        },
+        {
+          "text": "Covered frontend fundamentals including HTML and CSS."
+        }
+      ]
+    },
+    "displayOrder": 2
+  },
+  {
+    "key": "education:4",
+    "category": "education",
+    "data": {
+      "qualification": "High School",
+      "institution": "High School",
+      "credential": "Certificate",
+      "image": {
+        "$file": "/education-images/high-school.png"
+      },
+      "completionYear": 2020,
+      "durationLabel": " Completed 2020",
+      "location": "Abu Dhabi, UAE",
+      "details": [
+        {
+          "text": "Subjects: Physics, Chemistry, and Mathematics."
+        }
+      ]
+    },
+    "displayOrder": 3
+  },
+  {
+    "key": "site-settings:main",
+    "category": "site-settings",
+    "data": {
+      "displayName": "Talal Qasim",
+      "profileImage": {
+        "$file": "/profilePic.jpeg"
+      },
+      "contactEmail": "talalqasim41@gmail.com",
+      "seoTitle": "Portfolio of Talal Qasim - Software Engineer",
+      "seoDescription": "This is the portfolio of Talal Qasim, a software engineer focused on backend engineering for fintech, crypto trading platforms, secure services, and scalable system development.",
+      "phone": "+971566143165",
+      "location": "Abu Dhabi, UAE",
+      "designation": "Software Engineer / Full Stack Developer",
+      "cv": {
+        "$file": "/talal-qasim-cv-2026.pdf"
+      },
+      "aboutHeading": "Who I am?",
+      "aboutText": "I am a Software Engineer specializing in building scalable backend systems and modern web applications. With strong experience in Java, Spring Boot, React, Next.js, PostgreSQL, and AWS, I craft high-performance end-to-end digital experiences.",
+      "socialLinks": [
+        {
+          "label": "github",
+          "url": "https://github.com/Talal-q19"
+        },
+        {
+          "label": "instagram",
+          "url": "https://www.instagram.com/talal.q19/"
+        },
+        {
+          "label": "linkedIn",
+          "url": "https://www.linkedin.com/in/talal-q-b8622b203"
+        }
+      ],
+      "navigation": [
+        {
+          "label": "ABOUT",
+          "url": "#about"
+        },
+        {
+          "label": "EXPERIENCE",
+          "url": "#experience"
+        },
+        {
+          "label": "SKILLS",
+          "url": "#skills"
+        },
+        {
+          "label": "PROJECTS",
+          "url": "#projects"
+        },
+        {
+          "label": "EDUCATION",
+          "url": "#education"
+        },
+        {
+          "label": "CONTACT",
+          "url": "#contact"
+        }
+      ],
+      "footerText": "© Portfolio by Talal Qasim",
+      "devUsername": "Talal-q19",
+      "contactIntroduction": "If you have any questions or concerns, please don't hesitate to contact me. I am open to any work opportunities that align with my skills and interests."
+    },
+    "displayOrder": 0
+  },
+  {
+    "key": "section-settings:main",
+    "category": "section-settings",
+    "data": {
+      "sections": [
+        {
+          "key": "about",
+          "heading": "About Me",
+          "visible": true,
+          "order": 0
+        },
+        {
+          "key": "experience",
+          "heading": "Experiences",
+          "visible": true,
+          "order": 1
+        },
+        {
+          "key": "skills",
+          "heading": "Skills",
+          "visible": true,
+          "order": 2
+        },
+        {
+          "key": "projects",
+          "heading": "Projects",
+          "visible": true,
+          "order": 3,
+          "eyebrow": "Selected case studies",
+          "introduction": "Open a window to review the role, technical approach, and measurable outcome behind each project."
+        },
+        {
+          "key": "education",
+          "heading": "Educations",
+          "visible": true,
+          "order": 4
+        },
+        {
+          "key": "contact",
+          "heading": "Contact me",
+          "visible": true,
+          "order": 5
+        }
+      ]
+    },
+    "displayOrder": 0
+  }
+]

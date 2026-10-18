@@ -1,11 +1,10 @@
 // @flow strict
 
-import { personalData } from "@/utils/data/personal-data";
 import Image from "next/image";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 
 
-function AboutSection() {
+function AboutSection({ personalData }) {
   return (
     <SectionVisualFrame id="about" variant="about" accent="cyan" className="my-12 lg:my-16 relative rounded-lg py-2">
       <div className="hidden lg:flex flex-col items-center absolute top-16 -right-8">
@@ -30,7 +29,7 @@ function AboutSection() {
                 src={personalData.profile}
                 fill
                 sizes="(min-width: 640px) 280px, 72vw"
-                alt="Talal Qasim"
+                alt={personalData.name}
                 className="rounded-lg object-cover object-center transition-transform duration-700 lg:group-hover:scale-105"
               />
               <div aria-hidden="true" className="profile-scan-overlay absolute inset-0 pointer-events-none" />

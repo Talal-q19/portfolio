@@ -1,13 +1,12 @@
 "use client";
 
-import { educations } from "@/utils/data/educations";
 import Image from "next/image";
 import { useState } from "react";
 import { FiChevronDown, FiCalendar, FiMapPin } from "react-icons/fi";
 import { IoSchoolOutline } from "react-icons/io5";
 import SectionVisualFrame from "../../helper/section-visual-frame";
 
-function Education() {
+function Education({ educations, section = {} }) {
   const [expandedIds, setExpandedIds] = useState({});
 
   const toggleEducation = (id) => {
@@ -23,7 +22,7 @@ function Education() {
         <div className="flex items-center">
           <span className="h-px w-24 bg-[#262626]"></span>
           <span className="w-fit rounded-md bg-[#151515] p-2 px-5 font-mono text-sm font-bold uppercase tracking-[0.14em] text-[#f4f1e8]">
-            Educations
+            {section.heading || "Educations"}
           </span>
           <span className="h-px w-24 bg-[#262626]"></span>
         </div>
