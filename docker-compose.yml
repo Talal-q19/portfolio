@@ -1,29 +1,44 @@
 services:
+  api:
+    build: ./server/api
+    env_file: ./server/api/.env
+    ports:
+      - "127.0.0.1:4000:4000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   dev:
+    profiles: [dev]
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.dev
-    container_name: demo-nextjs-dev
     environment:
-      - WATCHPACK_POLLING=true
+      API_INTERNAL_URL: http://api:4000
+      WATCHPACK_POLLING: "true"
+    env_file: ./client/.env
     volumes:
-      - .:/app
+      - ./client:/app
       - /app/node_modules
       - /app/.next
     ports:
       - "3000:3000"
-    env_file:
-      - .env
-
+    depends_on:
+      api:
+        condition: service_healthy
   prod:
+    profiles: [prod]
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.prod
-    container_name: demo-nextjs
+      args:
+        API_INTERNAL_URL: http://api:4000
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3005}
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
+        NEXT_PUBLIC_GTM: ${NEXT_PUBLIC_GTM:-}
     ports:
       - "3005:3000"
-    env_file:
-      - .env
-
-volumes:
-  node_modules:
+    depends_on:
+      api:
+        condition: service_healthy

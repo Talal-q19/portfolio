@@ -2,11 +2,15 @@
 // @flow strict
 import { isValidEmail } from "@/utils/check-email";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { TbMailForward } from "react-icons/tb";
 import { toast } from "react-toastify";
 
 function ContactForm() {
+  const captchaRef = useRef(null);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const captchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   const [error, setError] = useState({ email: false, required: false });
   const [isLoading, setIsLoading] = useState(false);
   const [userInput, setUserInput] = useState({
@@ -24,18 +28,24 @@ function ContactForm() {
   const handleSendMail = async (e) => {
     e.preventDefault();
 
-    if (!userInput.email || !userInput.message || !userInput.name) {
+    if (!userInput.email.trim() || !userInput.message.trim() || !userInput.name.trim()) {
       setError({ ...error, required: true });
       return;
-    } else if (error.email) {
+    } else if (!isValidEmail(userInput.email.trim())) {
+      setError({ ...error, email: true });
       return;
     } else {
       setError({ ...error, required: false });
     };
 
+    if (captchaSiteKey && !captchaToken) {
+      toast.error("Please complete the CAPTCHA.");
+      return;
+    }
+
     try {
       setIsLoading(true);
-      await axios.post("/api/contact", userInput);
+      await axios.post("/api/contact", { ...userInput, captchaToken }, { timeout: 45000 });
 
       toast.success("Message sent successfully!");
       setUserInput({
@@ -44,9 +54,11 @@ function ContactForm() {
         message: "",
       });
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "Unable to send your message. Please try again.");
     } finally {
       setIsLoading(false);
+      captchaRef.current?.reset();
+      setCaptchaToken(null);
     };
   };
 
@@ -100,6 +112,14 @@ function ContactForm() {
             />
           </div>
           <div className="flex flex-col items-center gap-3">
+            {captchaSiteKey && <ReCAPTCHA
+              ref={captchaRef}
+              sitekey={captchaSiteKey}
+              theme="dark"
+              onChange={setCaptchaToken}
+              onExpired={() => setCaptchaToken(null)}
+              onErrored={() => setCaptchaToken(null)}
+            />}
             {error.required && <p className="text-sm text-red-400">
               All fields are required!
             </p>}

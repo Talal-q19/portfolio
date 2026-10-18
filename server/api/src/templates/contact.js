@@ -1,10 +1,3 @@
-import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-
-export const runtime = 'nodejs';
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 function escapeHtml(value) {
   return value
     .replace(/&/g, '&amp;')
@@ -12,42 +5,6 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-function getRequiredEnv() {
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
-  const contactToEmail = process.env.CONTACT_TO_EMAIL || smtpUser;
-
-  if (!smtpUser || !smtpPass || !contactToEmail) {
-    return {
-      error: 'SMTP_USER, SMTP_PASS, and CONTACT_TO_EMAIL must be configured.',
-    };
-  }
-
-  return { smtpUser, smtpPass, contactToEmail };
-}
-
-function createTransporter(smtpUser, smtpPass) {
-  const port = Number(process.env.SMTP_PORT || 465);
-  const tlsRejectUnauthorized = process.env.SMTP_TLS_REJECT_UNAUTHORIZED;
-
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port,
-    secure: process.env.SMTP_SECURE
-      ? process.env.SMTP_SECURE === 'true'
-      : port === 465,
-    auth: {
-      user: smtpUser,
-      pass: smtpPass,
-    },
-    tls: {
-      rejectUnauthorized: tlsRejectUnauthorized
-        ? tlsRejectUnauthorized === 'true'
-        : true,
-    },
-  });
 }
 
 function createEmailTemplate({ name, email, message }) {
@@ -155,65 +112,5 @@ function createEmailTemplate({ name, email, message }) {
   `;
 }
 
-export async function POST(request) {
-  try {
-    const env = getRequiredEnv();
 
-    if (env.error) {
-      return NextResponse.json(
-        { success: false, message: env.error },
-        { status: 500 }
-      );
-    }
-
-    const body = await request.json();
-    const name = String(body.name || '').trim();
-    const email = String(body.email || '').trim();
-    const message = String(body.message || '').trim();
-
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { success: false, message: 'Name, email, and message are required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { success: false, message: 'Please provide a valid email address.' },
-        { status: 400 }
-      );
-    }
-
-    const transporter = createTransporter(env.smtpUser, env.smtpPass);
-    const contactFromName = process.env.CONTACT_FROM_NAME || 'Portfolio Contact';
-    const text = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      '',
-      'Message:',
-      message,
-    ].join('\n');
-
-    await transporter.sendMail({
-      from: `"${contactFromName}" <${env.smtpUser}>`,
-      to: env.contactToEmail,
-      replyTo: email,
-      subject: `New portfolio contact from ${name}`,
-      text,
-      html: createEmailTemplate({ name, email, message }),
-    });
-
-    return NextResponse.json(
-      { success: true, message: 'Message sent successfully!' },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Contact API error:', error);
-
-    return NextResponse.json(
-      { success: false, message: 'Failed to send message.' },
-      { status: 500 }
-    );
-  }
-}
+module.exports = { createEmailTemplate };

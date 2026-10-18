@@ -1,45 +1,15 @@
 {
-  "name": "developer-portfolio",
-  "description": "Portfolio of Talal Qasim",
-  "version": "0.1.0",
+  "name": "portfolio",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "copy-company-images": "node scripts/copy-company-images.js"
-  },
-  "dependencies": {
-    "@emailjs/browser": "^4.3.1",
-    "@next/third-parties": "^16.0.1",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
-    "axios": "^1.6.8",
-    "framer-motion": "^12.38.0",
-    "lottie-react": "^2.4.1",
-    "maath": "^0.10.8",
-    "next": "16.0.10",
-    "nodemailer": "^6.9.15",
-    "ogl": "^1.0.11",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-fast-marquee": "^1.6.2",
-    "react-google-recaptcha": "^3.1.0",
-    "react-icons": "^4.11.0",
-    "react-toastify": "^10.0.4",
-    "react-tsparticles": "^2.12.2",
-    "sharp": "^0.33.5",
-    "three": "^0.185.0",
-    "tsparticles-slim": "^2.12.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.16",
-    "autoprefixer": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "^16.0.1",
-    "postcss": "latest",
-    "sass": "^1.69.5",
-    "tailwindcss": "latest"
+    "dev": "npm run dev --prefix client",
+    "dev:api": "npm run dev --prefix server/api",
+    "build": "npm run build --prefix client",
+    "start": "npm start --prefix client",
+    "start:api": "npm start --prefix server/api",
+    "lint": "npm run lint --prefix client && npm run lint --prefix server/api",
+    "test": "npm test --prefix server/api",
+    "install:all": "npm ci --prefix client && npm ci --prefix server/api",
+    "copy-company-images": "npm run copy-company-images --prefix client"
   }
 }
