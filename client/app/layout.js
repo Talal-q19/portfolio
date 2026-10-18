@@ -2,9 +2,7 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { Space_Grotesk, Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PortfolioLayout from "./components/portfolio-layout";
-import Preloader from "./components/helper/preloader";
-import ParticlesBackground from "./components/helper/particles-background";
+import SiteFrame from "./components/site-frame";
 import "./css/card.scss";
 import "./css/globals.scss";
 const spaceGrotesk = Space_Grotesk({
@@ -29,11 +27,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${spaceGrotesk.variable} ${inter.variable} overflow-x-clip`}>
         <ToastContainer />
-        <Preloader />
-        <ParticlesBackground />
-        <PortfolioLayout mediaOrigin={mediaOrigin}>
+        <SiteFrame mediaOrigin={mediaOrigin}>
           {children}
-        </PortfolioLayout>
+        </SiteFrame>
       </body>
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM} />
     </html>

@@ -157,6 +157,8 @@ Phase 3 implementation and verification: [API contract, setup and results](phase
 
 ## Phase 4: Build the custom admin UI
 
+Scope updated at the user's request on 18 October 2026: implement all management features against the real local CMS without browser authentication. Use an explicit local editing connection; login and production security remain phase 5. This supersedes the original fixture-only restriction for local use.
+
 Build the custom dashboard in client/app/admin/. The built-in Strapi dashboard remains a separate CMS management tool.
 
 Screens: overview with entry counts/status; Categories; a shared Content list/filter; a category-driven Create/Edit Content form; Media Library. Hero, Experience, Projects, Skills, Education, and settings can remain sidebar shortcuts into the same category-filtered flow rather than separate editor implementations.
@@ -165,9 +167,11 @@ Main flow: Add Content -> choose category -> display that category's fields -> f
 
 Interactions: draft/published badges, required-field markers, inline validation, disabled submission during invalid fields or pending uploads, date inputs with a Present toggle, repeatable highlights/details, technology selection, gallery upload/preview/reordering, display ordering, Save Draft, Publish, Unpublish, and confirmed deletion. Preserve local edits when server validation fails. Provide clear loading/error/empty states, accessible labels and keyboard controls, and unsaved-change warnings. Production preview, if included, must use an authenticated draft path with no public caching.
 
-Build against the phase-3 API contract with test fixtures/local component previews until phase-5 authentication works. Do not enable a public editable dashboard to demonstrate it. Prepare redirect/session-expiry handling for the next phase.
+Build against the phase-3 API contract with real local persistence and optional test fixtures/local component previews. Local `/admin` must support the complete editing and publication flow without browser login. Do not enable a production editable dashboard before phase 5. Prepare redirect/session-expiry handling for the next phase.
 
 Completion checks: category selection produces the correct fields; required-field and conditional-date controls block incomplete submission; API validation errors appear beside the appropriate fields; singleton categories cannot be duplicated; gallery/date/order flows work with fixtures; desktop/mobile layouts and keyboard interactions are checked. Live authenticated editing is completed in phase 5.
+
+Phase 4 implementation and verification: [Custom admin UI, local editing and results](phase-4-admin.md). The `/admin` dashboard now operates on the local CMS without browser login, including real image uploads, persistence, publication and removal. Optional fixtures remain available. Production authorization remains phase 5.
 
 ## Phase 5: JWT admin login and final integration
 

@@ -18,7 +18,17 @@ function loadConfig(env = process.env) {
   const captchaEnabled = boolean('RECAPTCHA_ENABLED', Boolean(env.RECAPTCHA_SECRET_KEY));
   if (captchaEnabled && !env.RECAPTCHA_SECRET_KEY) throw new Error('Missing RECAPTCHA_SECRET_KEY');
   const smtpPort = integer('SMTP_PORT', 465);
+  const environment = env.NODE_ENV || 'development';
+  const localAdminEnabled = boolean('LOCAL_ADMIN_ENABLED', false);
+  if (localAdminEnabled) {
+    if (environment !== 'development') throw new Error('LOCAL_ADMIN_ENABLED is only available in development.');
+    const cms = new URL(env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337');
+    if (!['localhost', '127.0.0.1', '[::1]'].includes(cms.hostname)) throw new Error('Local admin editing requires a loopback CMS URL.');
+    if (!env.CMS_LOCAL_ADMIN_TOKEN?.trim()) throw new Error('Run npm run setup:admin to configure local editing.');
+  }
   return {
+    environment, localAdminEnabled, cmsLocalAdminToken: env.CMS_LOCAL_ADMIN_TOKEN,
+    host: localAdminEnabled ? '127.0.0.1' : '0.0.0.0',
     cmsUrl: (env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337').replace(/\/$/, ''),
     cmsReadToken: env.CMS_READ_TOKEN,
     cmsTimeout: integer('CMS_TIMEOUT_MS', 10000, 60000),

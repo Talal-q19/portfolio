@@ -1,6 +1,6 @@
 # Portfolio
 
-The existing Next.js portfolio lives in `client/`. The independent Express contact API lives in `server/api/`. Strapi lives in `server/cms/` with its content contract in `server/content-contract/`. The website continues rendering local content until phase 3.
+The Next.js portfolio and custom admin UI live in `client/`. The independent Express API lives in `server/api/`. Strapi lives in `server/cms/` with its content contract in `server/content-contract/`. The website loads published content through the shared Express category API.
 
 Use Node.js 22+ and npm. Install all packages with `npm run install:all`. Copy the client and API `.env.example` files to `.env` and configure SMTP credentials in `server/api/.env` only. Run `npm run setup:cms` once to generate separate private CMS development secrets. Existing local configuration has been split into these locations without committing secrets.
 
@@ -20,6 +20,8 @@ Real SMTP delivery is reserved for an explicitly requested manual contact submis
 
 For phase 2, run `npm run dev:cms` and open `http://localhost:1337/admin`. Create your first built-in Strapi administrator there. This is separate from the future portfolio dashboard login. `npm run migrate:portfolio` backs up the local database/media and imports 48 complete private drafts with 51 source media files. See [CMS setup and validation](docs/phase-2-cms.md) for import, publishing, production storage, permissions and verification details.
 
-Phase 3 replaces public local data imports with the shared Express category API. See [phase-3-api.md](docs/phase-3-api.md) for the least-privilege read credential, publication/setup steps, API examples, freshness behavior and verification; [openapi.json](docs/openapi.json) is the checked-in API specification. Custom-admin routes remain closed until phase-5 login is implemented.
+Phase 3 replaces public local data imports with the shared Express category API. See [phase-3-api.md](docs/phase-3-api.md) for the least-privilege read credential, publication/setup steps, API examples, freshness behavior and verification; [openapi.json](docs/openapi.json) is the checked-in API specification. Production custom-admin access remains for phase 5.
+
+Phase 4 adds the working custom dashboard at **http://localhost:3000/admin**, connected to the local CMS for content/category management, media uploads and publishing without browser login. Stop the local CMS, run `npm run setup:admin`, then restart CMS and API to configure local editing (already activated in this workspace). The API uses a server-only internal editor credential, binds to loopback, and rejects this mode outside development. Browser login and deployed-environment security remain phase 5. Optional `/admin?preview=1` fixtures remain available with the client in development. See [phase-4-admin.md](docs/phase-4-admin.md) for setup, screens and verification results.
 
 Portfolio request flow: Browser `GET /api/content` ? same-origin proxy ? Node.js/Express in `server/api` ? Strapi in `server/cms`. Content requests appear under browser Network ? Fetch/XHR. The initial page shows a loading state until the API responds; the Next.js server does not fetch portfolio content.

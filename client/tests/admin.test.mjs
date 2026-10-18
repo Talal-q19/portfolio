@@ -1,0 +1,75 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import contract from '../utils/admin-contract.cjs';
+import { AdminApiError, createAdminApi, emptyFields, payloadForWrite, moveItem, fetchAdminMedia } from '../utils/admin-api.mjs';
+import { createFixtureApi } from '../utils/admin-fixtures.mjs';
+
+test('browser form contract stays identical to the CMS/API source', async () => {
+  assert.equal(await readFile(new URL('../utils/admin-contract.cjs', import.meta.url), 'utf8'), await readFile(new URL('../../server/content-contract/index.js', import.meta.url), 'utf8'));
+});
+test('all registered templates have usable empty field values', () => {
+  for (const t of Object.values(contract.templates)) {
+    const values = emptyFields(t.fields);
+    for (const [key, spec] of Object.entries(t.fields)) assert.deepEqual(values[key], spec.type === 'list' ? [] : spec.type === 'boolean' ? false : '');
+  }
+  assert.ok(!Object.values(contract.templates.hero.fields).some(f => f.type === 'media'));
+});
+test('admin requests use same-origin credentials, no cache, and structured validation/session errors', async () => {
+  let options;
+  const api = createAdminApi(async (url, init) => { assert.equal(url, '/api/admin/content'); options = init; return { ok: false, status: 422, json: async () => ({ message: 'Incomplete', fields: { 'data.heading': 'Required' } }) }; });
+  await assert.rejects(api('content', { method: 'POST', body: { category: 'hero', data: {} } }), e => e instanceof AdminApiError && e.fields['data.heading'] === 'Required');
+  assert.equal(options.credentials, 'same-origin'); assert.equal(options.cache, 'no-store'); assert.equal(options.method, 'POST');
+  const expired = createAdminApi(async () => ({ ok: false, status: 401, json: async () => ({}) }));
+  await assert.rejects(expired('content'), e => e.status === 401 && /preserved/.test(e.message));
+});
+test('multipart upload leaves boundary generation to the browser', async () => {
+  const body = new FormData(); body.append('files', new Blob(['fixture'], { type: 'image/png' }), 'fixture.png');
+  await createAdminApi(async (url, options) => { assert.equal(options.body, body); assert.equal(options.headers, undefined); return { ok: true, json: async () => ({ items: [] }) }; })('media', { method: 'POST', body });
+});
+test('gallery writes preserve order and alt text while stripping component/media metadata', () => {
+  const rows = [{ image: { id: 1, url: '/uploads/a.png' }, alt: 'First', id: 5 }, { image: { id: 2 }, alt: 'Second' }];
+  const gallery = moveItem(rows, 1, -1);
+  assert.deepEqual(payloadForWrite(contract.templates.projects.fields, { gallery }, contract.components), { gallery: [{ image: 2, alt: 'Second' }, { image: 1, alt: 'First' }] });
+  assert.deepEqual(moveItem(rows, 0, -1), rows);
+});
+test('empty optional typed fields use null so Strapi can clear existing values', () => {
+  const result = payloadForWrite(contract.templates.projects.fields, { imageKind: '', demoUrl: '' }, contract.components);
+  assert.deepEqual(result, { imageKind: null, demoUrl: '' });
+  assert.deepEqual(payloadForWrite(contract.templates.education.fields, { startDate: '', endDate: '', completionYear: '' }, contract.components), { startDate: null, endDate: null, completionYear: null });
+});
+test('all media pages load when the real API provides total without pageCount', async () => {
+  const all = Array.from({ length: 205 }, (_, id) => ({ id }));
+  const seen = [];
+  const loaded = await fetchAdminMedia(async path => {
+    const page = Number(new URLSearchParams(path.split('?')[1]).get('page')); seen.push(page);
+    return { items: all.slice((page - 1) * 100, page * 100), pagination: { page, pageSize: 100, total: all.length } };
+  });
+  assert.deepEqual(seen, [1, 2, 3]); assert.deepEqual(loaded, all);
+});
+test('experience validation blocks absent end dates, reversed dates, and stale Present end dates', async () => {
+  const valid = { title: 'Engineer', company: 'Studio', description: 'Build software', image: 1, startDate: '2024-03', current: false };
+  for (const patch of [{}, { endDate: '2023-01' }, { current: true, endDate: '2024-04' }]) await assert.rejects(contract.validatePayload('experience', { ...valid, ...patch }, { media: () => ({ mime: 'image/png' }) }), e => Boolean(e.fields['data.endDate']));
+  await contract.validatePayload('experience', { ...valid, current: true }, { media: () => ({ mime: 'image/png' }) });
+});
+test('fixture saves cannot bypass required fields, singleton cardinality or published snapshots', async () => {
+  const api = createFixtureApi();
+  await assert.rejects(api('content', { method: 'POST', body: { category: 'hero', data: { heading: 'Duplicate', paragraph: 'Text' } } }), e => Boolean(e.fields.category));
+  await assert.rejects(api('content/hero1', { method: 'PATCH', body: { operation: 'update', data: { heading: '   ' } } }), e => Boolean(e.fields['data.heading']));
+  await api('content/hero1', { method: 'PATCH', body: { operation: 'update', data: { heading: 'New draft' } } });
+  let publicHero = (await api('content?status=published')).categories.find(c => c.slug === 'hero').items[0];
+  assert.notEqual(publicHero.data.heading, 'New draft');
+  await api('content/hero1', { method: 'PATCH', body: { operation: 'publish' } });
+  publicHero = (await api('content?status=published')).categories.find(c => c.slug === 'hero').items[0];
+  assert.equal(publicHero.data.heading, 'New draft');
+  await api('content/hero1', { method: 'PATCH', body: { operation: 'unpublish' } });
+  assert.equal((await api('content?status=published')).categories.find(c => c.slug === 'hero').items.length, 0);
+});
+test('fixture category and referenced-media safeguards match editor expectations', async () => {
+  const api = createFixtureApi();
+  await assert.rejects(api('media/1', { method: 'DELETE' }), e => Boolean(e.fields.media));
+  await assert.rejects(api('categories/category0', { method: 'DELETE' }), e => Boolean(e.fields.category));
+  await assert.rejects(api('categories/category0', { method: 'PATCH', body: { templateKey: 'projects', cardinality: 'multiple' } }), e => Boolean(e.fields.templateKey));
+  await api('categories', { method: 'POST', body: { name: 'Writing', slug: 'writing', templateKey: 'projects', cardinality: 'multiple' } });
+  assert.ok((await api('categories')).categories.some(c => c.slug === 'writing'));
+});

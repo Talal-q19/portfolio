@@ -2,6 +2,8 @@
 
 Implemented 18 October 2026. Express serves the browser APIs in [openapi.json](openapi.json); Strapi owns persistence and repeats validation through the phase-2 Document Service guard. The custom admin UI and browser login remain phases 4 and 5. Production Express admin routes deny all requests until a trusted session verifier is wired in phase 5. There is no environment variable or browser header that enables editing.
 
+Phase-4 update: the working local dashboard now uses an explicit development-only server credential connection, provisioned with `npm run setup:admin`. This enables local editing without browser login while leaving production access closed. See [phase-4-admin.md](phase-4-admin.md); the deny-by-default description below records the phase-3 baseline.
+
 ## Local setup
 
 Keep the three application environments separate. `server/api/.env` needs `CMS_INTERNAL_URL=http://127.0.0.1:1337` and a server-only `CMS_READ_TOKEN`. For development, stop the CMS and run:

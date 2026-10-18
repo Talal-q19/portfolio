@@ -267,6 +267,28 @@ test('real Strapi persistence, CMS editor and migration invariants', { timeout: 
       await cms.db.query('plugin::users-permissions.user').update({ where: { id: user.id }, data: { blocked: true } });
       assert.equal((await request(app).get('/api/admin/categories')).status, 401);
     });
+    await t.test('phase 4 local bridge provisions once and performs real CMS writes without browser authentication', async () => {
+      const { provisionLocalAdmin } = require('../scripts/local-admin');
+      const first = await provisionLocalAdmin(cms);
+      const second = await provisionLocalAdmin(cms);
+      assert.equal(first.userId, second.userId);
+      const { createApp } = require('../../api/src/app');
+      const request = require('../../api/node_modules/supertest');
+      const app = createApp({ cmsUrl: base, rateLimit: 100, environment: 'development', localAdminEnabled: true, cmsLocalAdminToken: second.accessToken }, { sendEmail: async () => {} });
+      const list = await request(app).get('/api/admin/categories');
+      assert.equal(list.status, 200, JSON.stringify(list.body));
+      const category = await request(app).post('/api/admin/categories').send({ name: 'Local editor test', slug: 'local-editor-test', templateKey: 'hero', cardinality: 'singleton' });
+      assert.equal(category.status, 201, JSON.stringify(category.body));
+      const created = await request(app).post('/api/admin/content').send({ category: 'local-editor-test', data: { heading: 'Local heading', paragraph: 'Persisted through Express and Strapi.' } });
+      assert.equal(created.status, 201, JSON.stringify(created.body));
+      const id = created.body.item.documentId;
+      for (const operation of ['publish', 'unpublish']) assert.equal((await request(app).patch(`/api/admin/content/${id}`).send({ operation })).status, 200);
+      assert.equal((await request(app).delete(`/api/admin/content/${id}`)).status, 200);
+      assert.equal((await request(app).delete(`/api/admin/categories/${category.body.category.documentId}`)).status, 200);
+      await cms.db.query('plugin::users-permissions.user').update({ where: { id: second.userId }, data: { blocked: true } });
+      assert.equal((await request(app).get('/api/admin/categories')).status, 401);
+      await assert.rejects(provisionLocalAdmin(cms), /changed or disabled/);
+    });
   } finally {
     await cms.destroy();
     fs.rmSync(temp, { recursive: true, force: true });

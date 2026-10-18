@@ -11,6 +11,7 @@
     "start:api": "npm start --prefix server/api",
     "start:cms": "npm start --prefix server/cms",
     "setup:cms": "npm run setup:local --prefix server/cms",
+    "setup:admin": "npm run setup:admin --prefix server/cms",
     "migrate:portfolio": "npm run migrate:portfolio --prefix server/cms --",
     "test:cms": "npm test --prefix server/cms",
     "lint": "npm run lint --prefix client && npm run lint --prefix server/api && npm run lint --prefix server/cms",
