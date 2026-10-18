@@ -1,6 +1,6 @@
 import AdminDashboard from './ui/dashboard';
 
-export const metadata = { title: 'Portfolio Admin', robots: { index: false, follow: false } };
+export const metadata = { title: "Talal’s Portfolio Studio", robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage({ searchParams }) {
