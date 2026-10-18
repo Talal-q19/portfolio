@@ -1,0 +1,56 @@
+{
+  "collectionName": "pf_payload_education",
+  "info": {
+    "displayName": "Education"
+  },
+  "attributes": {
+    "qualification": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "institution": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "credential": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "required": true
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "completionYear": {
+      "type": "integer",
+      "min": 1900,
+      "max": 2200
+    },
+    "durationLabel": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "location": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "details": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.bullet",
+      "min": 0
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "pf_payload_skills",
+  "info": {
+    "displayName": "Skills"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "required": true
+    },
+    "skillGroup": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::content.content",
+      "required": true
+    }
+  }
+}

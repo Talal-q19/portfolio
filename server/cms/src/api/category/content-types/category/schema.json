@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "portfolio_categories",
+  "info": {
+    "singularName": "category",
+    "pluralName": "categories",
+    "displayName": "Category"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "templateKey": {
+      "type": "enumeration",
+      "enum": [
+        "hero",
+        "experience",
+        "projects",
+        "skills",
+        "skill-groups",
+        "education",
+        "site-settings",
+        "section-settings"
+      ],
+      "required": true
+    },
+    "cardinality": {
+      "type": "enumeration",
+      "enum": [
+        "singleton",
+        "multiple"
+      ],
+      "required": true
+    },
+    "displayOrder": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "visible": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "content": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content.content",
+      "mappedBy": "category",
+      "pluginOptions": {
+        "content-manager": {
+          "visible": false
+        }
+      }
+    }
+  }
+}

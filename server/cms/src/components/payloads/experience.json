@@ -1,0 +1,56 @@
+{
+  "collectionName": "pf_payload_experience",
+  "info": {
+    "displayName": "Experience"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "company": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 10000,
+      "required": true
+    },
+    "startDate": {
+      "type": "string",
+      "required": true
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "current": {
+      "type": "boolean",
+      "required": true
+    },
+    "location": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "durationLabel": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "highlights": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.bullet",
+      "min": 0
+    }
+  }
+}

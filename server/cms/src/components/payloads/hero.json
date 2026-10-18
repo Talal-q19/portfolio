@@ -1,0 +1,50 @@
+{
+  "collectionName": "pf_payload_hero",
+  "info": {
+    "displayName": "Hero"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "paragraph": {
+      "type": "text",
+      "maxLength": 5000,
+      "required": true
+    },
+    "greeting": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "role": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "availability": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "eyebrow": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "location": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "buttons": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.link",
+      "min": 0
+    },
+    "panels": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.panel",
+      "min": 0
+    }
+  }
+}

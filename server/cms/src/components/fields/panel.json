@@ -1,0 +1,19 @@
+{
+  "collectionName": "pf_fields_panel",
+  "info": {
+    "displayName": "panel"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true
+    },
+    "lines": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.line",
+      "min": 1
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "pf_fields_gallery",
+  "info": {
+    "displayName": "gallery"
+  },
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "required": true
+    },
+    "alt": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "caption": {
+      "type": "string",
+      "maxLength": 500
+    }
+  }
+}

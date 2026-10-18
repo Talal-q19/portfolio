@@ -1,0 +1,14 @@
+{
+  "collectionName": "pf_fields_line",
+  "info": {
+    "displayName": "line"
+  },
+  "attributes": {
+    "tokens": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.token",
+      "min": 1
+    }
+  }
+}

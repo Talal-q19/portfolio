@@ -1,6 +1,8 @@
 services:
   api:
-    build: ./server/api
+    build:
+      context: ./server
+      dockerfile: api/Dockerfile
     env_file: ./server/api/.env
     ports:
       - "127.0.0.1:4000:4000"

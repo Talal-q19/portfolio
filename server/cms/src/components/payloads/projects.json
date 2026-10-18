@@ -1,0 +1,72 @@
+{
+  "collectionName": "pf_payload_projects",
+  "info": {
+    "displayName": "Projects"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 10000,
+      "required": true
+    },
+    "outcome": {
+      "type": "text",
+      "maxLength": 5000,
+      "required": true
+    },
+    "role": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "projectStatus": {
+      "type": "enumeration",
+      "enum": [
+        "Live",
+        "Completed",
+        "In progress"
+      ],
+      "required": true
+    },
+    "gallery": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.gallery",
+      "min": 1
+    },
+    "technologies": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.bullet",
+      "min": 1
+    },
+    "details": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.bullet",
+      "min": 1
+    },
+    "imageKind": {
+      "type": "enumeration",
+      "enum": [
+        "logo",
+        "screenshot"
+      ]
+    },
+    "sourceUrl": {
+      "type": "string"
+    },
+    "demoUrl": {
+      "type": "string"
+    }
+  }
+}

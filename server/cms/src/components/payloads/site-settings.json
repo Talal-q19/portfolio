@@ -1,0 +1,86 @@
+{
+  "collectionName": "pf_payload_site_settings",
+  "info": {
+    "displayName": "Site Settings"
+  },
+  "attributes": {
+    "displayName": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "profileImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "required": true
+    },
+    "contactEmail": {
+      "type": "email",
+      "required": true
+    },
+    "seoTitle": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "seoDescription": {
+      "type": "text",
+      "maxLength": 2000,
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "location": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "designation": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "aboutHeading": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "aboutText": {
+      "type": "text",
+      "maxLength": 10000
+    },
+    "cv": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.link",
+      "min": 0
+    },
+    "navigation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.link",
+      "min": 0
+    },
+    "footerText": {
+      "type": "text",
+      "maxLength": 2000
+    },
+    "devUsername": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "contactIntroduction": {
+      "type": "text",
+      "maxLength": 2000
+    }
+  }
+}

@@ -36,3 +36,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Strapi local databases, backups, uploads and generated admin artifacts
+server/cms/.tmp/
+server/cms/.cache/
+server/cms/.backups/
+server/cms/dist/
+server/cms/types/generated/
+server/cms/.strapi/
+server/cms/.strapi-updater.json
+server/cms/public/uploads/*
+!server/cms/public/uploads/.gitkeep

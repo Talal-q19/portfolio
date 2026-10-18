@@ -1,0 +1,31 @@
+{
+  "collectionName": "pf_payload_skill_groups",
+  "info": {
+    "displayName": "Skill Groups"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true
+    },
+    "eyebrow": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 2000,
+      "required": true
+    },
+    "accent": {
+      "type": "enumeration",
+      "enum": [
+        "emerald",
+        "amber",
+        "sky"
+      ]
+    }
+  }
+}

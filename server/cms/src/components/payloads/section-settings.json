@@ -1,0 +1,14 @@
+{
+  "collectionName": "pf_payload_section_settings",
+  "info": {
+    "displayName": "Section Settings"
+  },
+  "attributes": {
+    "sections": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fields.section",
+      "min": 1
+    }
+  }
+}

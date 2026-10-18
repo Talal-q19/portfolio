@@ -1,0 +1,13 @@
+{
+  "collectionName": "pf_fields_bullet",
+  "info": {
+    "displayName": "bullet"
+  },
+  "attributes": {
+    "text": {
+      "type": "text",
+      "maxLength": 5000,
+      "required": true
+    }
+  }
+}

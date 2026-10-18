@@ -1,0 +1,17 @@
+{
+  "collectionName": "pf_fields_link",
+  "info": {
+    "displayName": "link"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

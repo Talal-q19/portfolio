@@ -1,0 +1,31 @@
+{
+  "name": "portfolio-cms",
+  "version": "0.1.0",
+  "private": true,
+  "engines": { "node": ">=22 <=26.x.x" },
+  "scripts": {
+    "dev": "strapi develop",
+    "build": "strapi build",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "setup:local": "node scripts/setup-local.js",
+    "migrate:portfolio": "node scripts/migrate-portfolio.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "lint": "node scripts/check-syntax.js",
+    "smoke:admin": "node scripts/smoke-admin.js"
+  },
+  "dependencies": {
+    "@portfolio/content-contract": "file:../content-contract",
+    "@strapi/strapi": "5.58.0",
+    "@strapi/plugin-users-permissions": "5.58.0",
+    "@strapi/provider-upload-cloudinary": "5.58.0",
+    "better-sqlite3": "12.4.1",
+    "pg": "^8.16.3",
+    "mime-types": "^2.1.35",
+    "dotenv": "^17.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19"
+  }
+}
