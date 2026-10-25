@@ -1,148 +1,151 @@
 "use client";
-// @flow strict
 import { isValidEmail } from "@/utils/check-email";
 import axios from "axios";
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { TbMailForward } from "react-icons/tb";
-import { toast } from "react-toastify";
 
-function ContactForm({ introduction }) {
+export default function ContactForm() {
   const captchaRef = useRef(null);
-  const [captchaToken, setCaptchaToken] = useState(null);
   const captchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-  const [error, setError] = useState({ email: false, required: false });
-  const [isLoading, setIsLoading] = useState(false);
-  const [userInput, setUserInput] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const checkRequired = () => {
-    if (userInput.email && userInput.message && userInput.name) {
-      setError({ ...error, required: false });
-    }
-  };
-
-  const handleSendMail = async (e) => {
-    e.preventDefault();
-
-    if (!userInput.email.trim() || !userInput.message.trim() || !userInput.name.trim()) {
-      setError({ ...error, required: true });
-      return;
-    } else if (!isValidEmail(userInput.email.trim())) {
-      setError({ ...error, email: true });
-      return;
-    } else {
-      setError({ ...error, required: false });
-    };
-
-    if (captchaSiteKey && !captchaToken) {
-      toast.error("Please complete the CAPTCHA.");
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [draft, setDraft] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
+  const [errors, setErrors] = useState({});
+  const sending = useRef(false);
+  const submit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (sending.current) return;
+    const next = {};
+    if (!draft.name.trim()) next.name = "Please enter your name.";
+    if (!isValidEmail(draft.email.trim()))
+      next.email = "Please enter a valid email address.";
+    if (!draft.message.trim()) next.message = "Please enter a message.";
+    if (captchaSiteKey && !captchaToken)
+      next.captcha = "Please complete the CAPTCHA.";
+    setErrors(next);
+    if (Object.keys(next).length) {
+      setStatus("error");
+      setFeedback("Please check the highlighted fields.");
+      form.elements.namedItem(Object.keys(next)[0])?.focus();
       return;
     }
-
+    sending.current = true;
+    setStatus("sending");
+    setFeedback("Sending your message…");
     try {
-      setIsLoading(true);
-      await axios.post("/api/contact", { ...userInput, captchaToken }, { timeout: 45000 });
-
-      toast.success("Message sent successfully!");
-      setUserInput({
-        name: "",
-        email: "",
-        message: "",
-      });
+      const response = await axios.post(
+        "/api/contact",
+        { ...draft, captchaToken },
+        { timeout: 45000 },
+      );
+      if (response.data?.success === false)
+        throw new Error(
+          response.data.message || "Unable to send your message.",
+        );
+      setStatus("success");
+      setFeedback("Message sent successfully!");
+      setDraft({ name: "", email: "", message: "" });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Unable to send your message. Please try again.");
+      setStatus("error");
+      setFeedback(
+        error?.response?.data?.message ||
+          "Unable to send your message. Please try again.",
+      );
+      const fields =
+        error?.response?.data?.fields || error?.response?.data?.errors;
+      if (fields && !Array.isArray(fields) && typeof fields === "object") {
+        setErrors(fields);
+        form.elements.namedItem(Object.keys(fields)[0])?.focus();
+      }
     } finally {
-      setIsLoading(false);
+      sending.current = false;
       captchaRef.current?.reset();
       setCaptchaToken(null);
-    };
+    }
   };
-
   return (
-    <div>
-      <p className="mb-5 font-mono text-sm font-bold uppercase tracking-[0.18em] text-[#34D399]">Contact me</p>
-      <div className="max-w-3xl rounded-lg border border-[#262626] bg-[#07101d]/45 p-3 text-white lg:p-5">
-        <p className="text-sm text-[#d3d8e8]">{introduction}</p>
-        <div className="mt-6 flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Name: </label>
-            <input
-              className="min-h-11 w-full rounded-md border border-[#262626] bg-[#101010] px-3 py-2 outline-none ring-0 transition-all duration-300 focus:border-[#E2E8F0] focus:ring-2 focus:ring-[#E2E8F0]/15"
-              type="text"
-              maxLength="100"
-              required={true}
-              onChange={(e) => setUserInput({ ...userInput, name: e.target.value })}
-              onBlur={checkRequired}
-              value={userInput.name}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Email: </label>
-            <input
-              className="min-h-11 w-full rounded-md border border-[#262626] bg-[#101010] px-3 py-2 outline-none ring-0 transition-all duration-300 focus:border-[#E2E8F0] focus:ring-2 focus:ring-[#E2E8F0]/15"
-              type="email"
-              maxLength="100"
-              required={true}
-              value={userInput.email}
-              onChange={(e) => setUserInput({ ...userInput, email: e.target.value })}
-              onBlur={() => {
-                checkRequired();
-                setError({ ...error, email: !isValidEmail(userInput.email) });
-              }}
-            />
-            {error.email && <p className="text-sm text-red-400">Please provide a valid email!</p>}
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Message: </label>
+    <form
+      className="pf-contact-form"
+      onSubmit={submit}
+      noValidate
+      aria-busy={status === "sending"}
+    >
+      {["name", "email", "message"].map((field) => (
+        <div key={field}>
+          <label htmlFor={`pf-${field}`}>
+            Your {field} <span aria-hidden="true">*</span>
+          </label>
+          {field === "message" ? (
             <textarea
-              className="w-full rounded-md border border-[#262626] bg-[#101010] px-3 py-2 outline-none ring-0 transition-all duration-300 focus:border-[#E2E8F0] focus:ring-2 focus:ring-[#E2E8F0]/15"
-              maxLength="500"
-              name="message"
-              required={true}
-              onChange={(e) => setUserInput({ ...userInput, message: e.target.value })}
-              onBlur={checkRequired}
-              rows="4"
-              value={userInput.message}
-            />
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            {captchaSiteKey && <ReCAPTCHA
-              ref={captchaRef}
-              sitekey={captchaSiteKey}
-              theme="dark"
-              onChange={setCaptchaToken}
-              onExpired={() => setCaptchaToken(null)}
-              onErrored={() => setCaptchaToken(null)}
-            />}
-            {error.required && <p className="text-sm text-red-400">
-              All fields are required!
-            </p>}
-            <button
-              className="flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-white via-[#E2E8F0] to-[#CBD5E1] px-5 py-2.5 text-center font-mono text-xs font-bold uppercase tracking-[0.13em] text-[#07101d] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] disabled:cursor-not-allowed disabled:opacity-50 md:px-10 md:py-3"
-              role="button"
-              onClick={handleSendMail}
-              disabled={isLoading}
-            >
-              {
-                isLoading ?
-                <span>Sending Message...</span>:
-                <span className="flex items-center gap-1">
-                  Send Message
-                  <TbMailForward size={20} />
-                </span>
+              id={`pf-${field}`}
+              name={field}
+              required
+              maxLength={500}
+              rows={5}
+              placeholder="Tell me about your project or opportunity."
+              value={draft[field]}
+              aria-invalid={!!errors[field]}
+              aria-describedby={
+                errors[field] ? `pf-${field}-error` : "pf-message-count"
               }
-            </button>
-          </div>
+              onChange={(e) => setDraft({ ...draft, [field]: e.target.value })}
+            />
+          ) : (
+            <input
+              id={`pf-${field}`}
+              name={field}
+              type={field === "email" ? "email" : "text"}
+              autoComplete={field}
+              required
+              maxLength={100}
+              placeholder={field === "name" ? "Your name" : "you@example.com"}
+              value={draft[field]}
+              aria-invalid={!!errors[field]}
+              aria-describedby={errors[field] ? `pf-${field}-error` : undefined}
+              onChange={(e) => setDraft({ ...draft, [field]: e.target.value })}
+            />
+          )}
+          {errors[field] && (
+            <p className="pf-field-error" id={`pf-${field}-error`}>
+              {String(errors[field])}
+            </p>
+          )}
         </div>
-      </div>
-    </div>
+      ))}
+      <p className="pf-count" id="pf-message-count">
+        {draft.message.length} / 500
+      </p>
+      <p className="pf-meta">All fields are required.</p>
+      {captchaSiteKey && (
+        <ReCAPTCHA
+          ref={captchaRef}
+          sitekey={captchaSiteKey}
+          onChange={setCaptchaToken}
+          onExpired={() => setCaptchaToken(null)}
+          onErrored={() => setCaptchaToken(null)}
+        />
+      )}
+      {errors.captcha && <p className="pf-field-error">{errors.captcha}</p>}
+      <p
+        className={`pf-form-feedback ${status === "error" ? "pf-field-error" : ""}`}
+        role="status"
+        aria-live="polite"
+      >
+        {feedback}
+      </p>
+      <button
+        type="submit"
+        className="pf-primary"
+        disabled={status === "sending"}
+      >
+        {status === "sending"
+          ? "Sending…"
+          : status === "error"
+            ? "Try sending again ↗"
+            : "Send message ↗"}
+      </button>
+    </form>
   );
-};
-
-export default ContactForm;
+}

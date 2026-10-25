@@ -1,0 +1,2 @@
+// Synchronous, public-only theme resolution. No sound is played during restoration.
+export const THEME_SCRIPT = `(function(){var p='system';try{p=localStorage.getItem('portfolio-appearance')}catch(e){}if(!['light','dark','system'].includes(p))p='system';document.documentElement.dataset.portfolioPreference=p;document.documentElement.dataset.portfolioTheme=p==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p})()`;
