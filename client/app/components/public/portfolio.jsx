@@ -3,10 +3,13 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
+import ScrollExpand from "./effects/ScrollExpand";
+import FadeContent from "./effects/FadeContent";
+import LogoLoop from "./effects/LogoLoop";
+import PortraitLanyard from "./portrait-lanyard";
 import PreviewDialog from "./dialog";
 import ProjectChooser from "./project-chooser";
 import {
-  BoundedCode,
   ContactCrystal,
   ExperienceThreads,
   PublicCursor,
@@ -51,13 +54,15 @@ export function SocialLinks({ settings }) {
 }
 function Heading({ section, number, fallback }) {
   return (
-    <header className="pf-heading">
-      <p className="pf-eyebrow">
-        {String(number).padStart(2, "0")} / {section.eyebrow || fallback}
-      </p>
-      <h2>{section.heading || fallback}</h2>
-      {section.introduction && <p>{section.introduction}</p>}
-    </header>
+    <FadeContent duration={0.55} threshold={0.1} blur={false}>
+      <header className="pf-heading">
+        <p className="pf-eyebrow">
+          {String(number).padStart(2, "0")} / {section.eyebrow || fallback}
+        </p>
+        <h2>{section.heading || fallback}</h2>
+        {section.introduction && <p>{section.introduction}</p>}
+      </header>
+    </FadeContent>
   );
 }
 
@@ -142,9 +147,22 @@ function CodeEditor({ hero, policy, skills }) {
     <div className="pf-atmosphere">
       <p className="pf-eyebrow">Backend engineering / in focus</p>
       <h3>Code with intent.</h3>
-      <BoundedCode enabled={policy.desktop}>
+      <ScrollExpand
+        inline
+        mediaType="content"
+        startWidth={92}
+        startHeight={92}
+        startRadius={24}
+        endRadius={24}
+        mediaZoom={1}
+        scrollDistance={0.5}
+        holdDistance={0}
+        smoothing={0.08}
+        overlayScrim={0}
+        useWindowScroll
+      >
         <div className="pf-code">{content}</div>
-      </BoundedCode>
+      </ScrollExpand>
       <div className="pf-code-stack">
         {["Java", "Spring Boot", "PostgreSQL"]
           .map((name) => skills.find((skill) => skill.name === name))
@@ -170,7 +188,11 @@ function Hero({ data, policy }) {
           {hero.eyebrow} / {hero.location}
         </p>
         <div className="pf-identity">
-          <Media src={personal.profile} alt={personal.name} priority />
+          <PortraitLanyard
+            src={personal.profile}
+            name={personal.name}
+            policy={policy}
+          />
           <div>
             <strong>{personal.name}</strong>
             <small>{hero.availability}</small>
@@ -269,7 +291,11 @@ function Experience({ items, section, policy }) {
 function Skills({ items, section }) {
   const [selected, setSelected] = useState(items[0]?.id);
   const [all, setAll] = useState(false);
+  const [paused, setPaused] = useState(false);
   const active = items.find((item) => item.id === selected) || items[0];
+  const skills = active?.skills || [];
+  const rowCount = Math.ceil(skills.length / 6);
+  const rowSize = Math.ceil(skills.length / Math.max(1, rowCount));
   const list = (group) => (
     <div className="pf-skills">
       {group.skills?.map((skill) => (
@@ -311,7 +337,39 @@ function Skills({ items, section }) {
             !active.highlights?.includes(active.description) && (
               <p>{active.description}</p>
             )}
-          {list(active)}
+          <div className="pf-skill-loops" key={active.id}>
+            {Array.from({ length: rowCount }, (_, row) => (
+              <LogoLoop
+                key={row}
+                className="pf-skill-loop-row"
+                logos={active.skills
+                  .slice(row * rowSize, row * rowSize + rowSize)
+                  .map((skill) => ({
+                    src: skill.icon,
+                    alt: skill.name,
+                    title: skill.name,
+                  }))}
+                speed={paused ? 0 : 18}
+                direction={row % 2 ? "right" : "left"}
+                logoHeight={28}
+                gap={16}
+                labels="inline"
+                fadeOutWidth={0.04}
+                pauseOnHover
+                draggable={false}
+                intro={false}
+                ariaLabel={`${active.title}, skills row ${row + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            className="pf-text-button pf-skill-pause"
+            aria-pressed={paused}
+            onClick={() => setPaused((value) => !value)}
+          >
+            {paused ? "Resume skill animation" : "Pause skill animation"}
+          </button>
         </>
       )}
       {all && (
@@ -629,11 +687,11 @@ function Contact({ data, section, policy }) {
             </address>
           </div>
           <div className="pf-contact-lower">
-            <SocialLinks settings={data.settings} />
             <div className="pf-contact-feature">
               <ContactCrystal policy={policy} />
               <small>{data.hero?.availability}</small>
             </div>
+            <SocialLinks settings={data.settings} />
           </div>
         </div>
         <ContactForm />

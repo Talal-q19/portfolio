@@ -14,7 +14,7 @@ const GlowCursor = dynamic(() => import("./effects/GlowCursor"), {
   ssr: false,
 });
 
-class EffectBoundary extends Component {
+export class EffectBoundary extends Component {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
@@ -71,7 +71,7 @@ export function useMotionPolicy() {
 }
 
 // Prepare nearby effects once, then retain their GPU resources while pausing offscreen.
-function useEffectStage() {
+function useEffectStage(warmup = false) {
   const host = useRef(null);
   const [state, setState] = useState({
     primed: false,
@@ -81,9 +81,20 @@ function useEffectStage() {
   });
   useEffect(() => {
     const el = host.current;
+    let idle;
+    let queued = false;
+    const prepare = () => {
+      if (queued) return;
+      queued = true;
+      const start = () => setState((s) => ({ ...s, primed: true }));
+      idle = window.requestIdleCallback
+        ? window.requestIdleCallback(start, { timeout: 2000 })
+        : window.setTimeout(start, 180);
+    };
+    const prewarm = warmup ? window.setTimeout(prepare, 1200) : null;
     const nearby = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setState((s) => ({ ...s, primed: true }));
+        if (entry.isIntersecting) prepare();
       },
       { rootMargin: "480px" },
     );
@@ -95,11 +106,14 @@ function useEffectStage() {
     visible.observe(el);
     el.addEventListener("webglcontextlost", fail, true);
     return () => {
+      window.clearTimeout(prewarm);
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
       nearby.disconnect();
       visible.disconnect();
       el.removeEventListener("webglcontextlost", fail, true);
     };
-  }, []);
+  }, [warmup]);
   const ready = useCallback(() => setState((s) => ({ ...s, ready: true })), []);
   const fail = useCallback(() => setState((s) => ({ ...s, failed: true })), []);
   const mount = useCallback((element) => {
@@ -111,7 +125,7 @@ function useEffectStage() {
 export function ContactCrystal({ policy }) {
   const { theme } = useAppearance();
   const { host, primed, visible, ready, failed, onReady, onFailure, onMount } =
-    useEffectStage();
+    useEffectStage(true);
   const rendered = ready && !failed && policy.supported && policy.desktop;
   return (
     <div
@@ -270,56 +284,5 @@ export function PublicCursor({ policy, overlay }) {
       <span ref={head} className="pf-cursor-head" />
     </div>,
     document.body,
-  );
-}
-// ScrollExpand adaptation: the existing hero is the track. No sticky stage or added height.
-export function BoundedCode({ children, enabled }) {
-  const frame = useRef(null);
-  useEffect(() => {
-    const el = frame.current;
-    if (!enabled) {
-      el.style.removeProperty("--pf-progress");
-      return;
-    }
-    let raf = 0;
-    let progress = 0;
-    let target = 0;
-    let last = 0;
-    const tick = (now) => {
-      if (document.hidden) {
-        raf = 0;
-        return;
-      }
-      const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
-      last = now;
-      progress += (target - progress) * (1 - Math.exp(-dt / 0.08));
-      const ease = progress * progress * (3 - 2 * progress);
-      el.style.setProperty("--pf-progress", ease);
-      raf =
-        Math.abs(progress - target) > 0.001 ? requestAnimationFrame(tick) : 0;
-    };
-    const update = () => {
-      target = Math.min(
-        1,
-        Math.max(0, -el.closest("section").getBoundingClientRect().top / 160),
-      );
-      if (!raf && !document.hidden) {
-        last = 0;
-        raf = requestAnimationFrame(tick);
-      }
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    document.addEventListener("visibilitychange", update);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", update);
-      document.removeEventListener("visibilitychange", update);
-    };
-  }, [enabled]);
-  return (
-    <div ref={frame} className="pf-code-bound" data-no-glow>
-      {children}
-    </div>
   );
 }

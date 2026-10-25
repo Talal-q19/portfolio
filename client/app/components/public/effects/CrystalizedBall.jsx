@@ -1230,7 +1230,8 @@ const CrystalizedBall = ({
     const frame = (now) => {
       try {
         raf = 0;
-        if (!alive || document.hidden || !visible) return;
+        // Allow one prepared frame offscreen, so particle buffers/shaders are warm on entry.
+        if (!alive || document.hidden || (!visible && presented)) return;
         const s = settingsRef.current;
         const dt = Math.min(0.05, Math.max(1 / 240, (now - last) / 1000));
         last = now;
@@ -1473,7 +1474,7 @@ const CrystalizedBall = ({
     };
 
     const start = () => {
-      if (raf || !visible || !alive) return;
+      if (raf || (!visible && presented) || !alive || document.hidden) return;
       last = performance.now();
       raf = requestAnimationFrame(frame);
     };
