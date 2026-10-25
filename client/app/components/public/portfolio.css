@@ -179,45 +179,6 @@ html[data-portfolio-theme="dark"] .portfolio {
   font-size: 10px;
   margin-top: 4px;
 }
-.portfolio .pf-mute {
-  background: var(--pf-tint) !important;
-  border-radius: 14px;
-}
-.portfolio .pf-appearance-menu {
-  position: relative;
-  font-size: 11px;
-}
-.portfolio .pf-appearance-menu summary {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-}
-.portfolio .pf-appearance-menu > div {
-  position: absolute;
-  right: 0;
-  top: 48px;
-  min-width: 185px;
-  border: 1px solid var(--pf-line);
-  background: var(--pf-panel);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 15px 45px #0002;
-}
-.portfolio .pf-appearance-menu p {
-  font-weight: 600;
-}
-.portfolio .pf-appearance-menu button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  padding: 8px 12px;
-}
-.portfolio .pf-appearance-menu button[aria-pressed="true"] {
-  background: var(--pf-tint);
-}
 .portfolio .pf-lamp-cord {
   transform-origin: 22px 23px;
 }
@@ -403,23 +364,6 @@ html[data-portfolio-theme="dark"] .portfolio {
     transform 0.2s;
   box-shadow: 0 1px 0 #ffffff30 inset;
 }
-.portfolio .pf-code-expanded {
-  transform: scale(1.02);
-  box-shadow: 0 8px 28px #2454d62a;
-}
-.portfolio .pf-code-controls {
-  display: flex;
-  gap: 4px;
-  padding: 8px 12px 0;
-}
-.portfolio .pf-code-controls button {
-  background: transparent;
-  border: 0;
-  color: #b1b6c7;
-  min-height: 24px;
-  width: 28px;
-  font-size: 15px;
-}
 .portfolio .pf-code-tabs {
   display: flex;
   justify-content: space-around;
@@ -544,31 +488,6 @@ html[data-portfolio-theme="dark"] .portfolio {
   line-height: 1.85;
   margin: 20px 0;
 }
-.portfolio .pf-threads {
-  background: var(--pf-tint);
-  border-radius: 24px;
-  margin-top: 48px;
-  padding: 28px 24px;
-  overflow: hidden;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.portfolio .pf-threads svg {
-  width: calc(100% + 48px);
-  max-width: none;
-  margin: 0 -24px;
-  color: #6c8bfa;
-}
-.portfolio .pf-threads span {
-  font-size: 20px;
-  letter-spacing: -0.035em;
-}
-.portfolio .pf-threads small {
-  font-size: 11px;
-  text-align: center;
-}
 .portfolio .pf-pills {
   display: flex;
   gap: 12px;
@@ -659,23 +578,6 @@ html[data-portfolio-theme="dark"] .portfolio {
   background: #292c34;
   color: #fff;
   flex-shrink: 0;
-}
-.portfolio .pf-carousel-controls label {
-  font-size: 10px;
-  color: var(--pf-muted);
-  min-width: 0;
-}
-.portfolio .pf-carousel-controls select {
-  display: block;
-  width: 100%;
-  max-width: 220px;
-  font-size: 11px;
-  min-height: 44px;
-  border: 1px solid #565965;
-  background: #1d1e24;
-  color: #fff;
-  border-radius: 8px;
-  padding: 5px;
 }
 .portfolio .pf-project-card {
   border-radius: 20px;
@@ -783,23 +685,6 @@ html[data-portfolio-theme="dark"] .portfolio {
   color: var(--pf-muted);
   font-size: 14px;
 }
-.portfolio .pf-contact-bottom {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 30px;
-  align-items: center;
-}
-.portfolio .pf-contact-bottom .pf-socials {
-  flex-direction: column;
-  gap: 24px;
-}
-.portfolio .pf-contact-bottom > div:last-child {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 18px;
-}
 .portfolio .pf-crystal {
   position: relative;
   width: 176px;
@@ -906,13 +791,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-field-error {
   align-items: center;
   justify-content: center;
   padding: 60px 24px;
-}
-.portfolio .pf-cursor {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 40;
-  opacity: 0.22;
 }
 .portfolio .pf-no-media {
   font-size: 12px;
@@ -1059,13 +937,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   .portfolio .pf-nav > nav {
     gap: 16px;
   }
-  .portfolio .pf-appearance-menu summary {
-    font-size: 0;
-  }
-  .portfolio .pf-appearance-menu summary:after {
-    content: "⚙";
-    font-size: 18px;
-  }
   .portfolio .pf-hero {
     gap: 32px;
   }
@@ -1113,12 +984,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   .portfolio .pf-project-outcome {
     min-height: 0;
   }
-  .portfolio .pf-contact-bottom {
-    align-items: start;
-  }
-  .portfolio .pf-contact-bottom .pf-socials {
-    gap: 18px;
-  }
   .portfolio .pf-crystal {
     width: 140px;
     height: 140px;
@@ -1153,9 +1018,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   .portfolio .pf-appearance {
     margin-left: auto;
     gap: 4px;
-  }
-  .portfolio .pf-appearance-menu {
-    display: none;
   }
   .portfolio .pf-mobile-nav {
     display: block;
@@ -1276,17 +1138,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   .portfolio .pf-selectors button {
     padding: 16px;
   }
-  .portfolio .pf-threads {
-    margin-top: 24px;
-    min-height: 180px;
-    padding: 24px;
-  }
-  .portfolio .pf-threads svg {
-    height: 100px;
-  }
-  .portfolio .pf-threads span {
-    font-size: 18px;
-  }
   .portfolio .pf-panel {
     padding: 24px;
     border-radius: 20px;
@@ -1335,12 +1186,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   }
   .portfolio .pf-project-selection .pf-meta {
     margin-bottom: 12px;
-  }
-  .portfolio .pf-carousel-controls label {
-    flex: 1;
-  }
-  .portfolio .pf-carousel-controls select {
-    max-width: none;
   }
   .portfolio .pf-project-card {
     padding: 24px;
@@ -1394,19 +1239,9 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   .portfolio address > a:first-child {
     font-size: 20px;
   }
-  .portfolio .pf-contact-bottom {
-    align-items: center;
-  }
   .portfolio .pf-crystal {
     width: 64px;
     height: 64px;
-  }
-  .portfolio .pf-contact-bottom > div:last-child {
-    max-width: 135px;
-    text-align: center;
-  }
-  .portfolio .pf-contact-bottom small {
-    font-size: 10px;
   }
   .portfolio .pf-contact-form {
     padding: 24px 20px;
@@ -1440,9 +1275,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   .portfolio .pf-credential {
     height: 200px;
   }
-  .portfolio .pf-cursor {
-    display: none;
-  }
 }
 @media (max-width: 359px) {
   .portfolio h1 {
@@ -1472,24 +1304,8 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
     height: 100%;
     transform: none;
   }
-  .portfolio .pf-cursor {
-    display: none;
-  }
 }
 @media (max-width: 767px) {
-  .portfolio .pf-appearance-menu {
-    display: block;
-  }
-  .portfolio .pf-appearance-menu summary {
-    font-size: 0;
-  }
-  .portfolio .pf-appearance-menu summary:after {
-    content: "⚙";
-    font-size: 18px;
-  }
-  .portfolio .pf-appearance-menu > div {
-    right: -42px;
-  }
   .portfolio .pf-dialog-bar {
     gap: 8px;
   }
@@ -1549,5 +1365,425 @@ html[data-portfolio-theme="dark"] .portfolio .pf-code-stack {
 @media (max-width: 359px) {
   .portfolio h1 {
     font-size: 52px;
+  }
+}
+
+/* Portfolio refinement: fixed navigation, brighter effects and project chooser. */
+.portfolio {
+  padding-top: 88px;
+}
+.portfolio .pf-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 80;
+  box-shadow: 0 1px 18px #11182708;
+}
+.portfolio .pf-code-tabs {
+  padding-top: 12px;
+}
+.portfolio .pf-code-lines {
+  height: 322px;
+}
+.portfolio .pf-contact-intro {
+  min-height: 0;
+}
+.portfolio .pf-contact-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4px 0 28px;
+  gap: 4px;
+}
+.portfolio .pf-crystal {
+  width: 320px;
+  height: 320px;
+  flex-shrink: 0;
+}
+.portfolio .pf-crystal:before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #7958ed26 10%,
+    #4969ef18 46%,
+    transparent 70%
+  );
+  filter: blur(22px);
+}
+.portfolio .pf-crystal-static {
+  inset: 18%;
+  opacity: 0.85;
+  border-color: #9174f7;
+  background: radial-gradient(
+    circle at 36% 30%,
+    #fff9,
+    #b5a4ff55 35%,
+    #6f76ef33 65%,
+    #8a6adf55
+  );
+  box-shadow:
+    0 0 32px #7654ef44,
+    0 0 70px #2454d626,
+    inset 0 0 28px #8a6adf55;
+}
+html[data-portfolio-theme="dark"] .portfolio .pf-crystal-static {
+  background: radial-gradient(
+    circle at 35% 30%,
+    #a89aff33,
+    #42387477 40%,
+    #171d3a 80%
+  );
+  box-shadow:
+    0 0 36px #9a7cff66,
+    0 0 80px #5680ff33,
+    inset 0 0 28px #9a7cff55;
+}
+.portfolio .pf-project-selection {
+  min-width: 0;
+}
+.portfolio .pf-project-chooser {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  z-index: 5;
+}
+.portfolio .pf-project-chooser summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 66px;
+  padding: 12px 14px;
+  border: 1px solid #494d60;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #292c38, #1e202a);
+  box-shadow: 0 4px 16px #0002;
+}
+.portfolio .pf-project-chooser summary::-webkit-details-marker {
+  display: none;
+}
+.portfolio .pf-project-chooser summary small {
+  color: #a9b5d2;
+  font-size: 10px;
+  margin-bottom: 3px;
+  letter-spacing: 0.05em;
+}
+.portfolio .pf-project-chooser summary strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+.portfolio .pf-chooser-chevron {
+  color: #a9bfff;
+  font-size: 22px;
+  transition: transform 0.2s;
+}
+.portfolio .pf-project-chooser[open] .pf-chooser-chevron {
+  transform: rotate(180deg);
+}
+.portfolio .pf-project-chooser[open] summary {
+  border-color: #8daaff;
+  box-shadow: 0 0 0 3px #8daaff18;
+}
+.portfolio .pf-project-options {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  max-width: calc(100vw - 48px);
+  border: 1px solid #454a61;
+  border-radius: 18px;
+  background: #1b1e29;
+  box-shadow: 0 20px 55px #0007;
+  padding: 10px;
+  overflow: hidden;
+}
+.portfolio .pf-project-options > p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #c0c8db;
+  padding: 10px;
+  margin-bottom: 6px;
+}
+.portfolio .pf-project-options > p span {
+  color: #8d99b7;
+}
+.portfolio .pf-project-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  padding: 12px 8px;
+  text-align: left;
+}
+.portfolio .pf-project-option:hover {
+  background: #303648;
+}
+.portfolio .pf-project-option[aria-pressed="true"] {
+  background: #293451;
+  border-color: #657eaf;
+}
+.portfolio .pf-project-option > span:nth-last-child(2) {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.portfolio .pf-project-option small {
+  font-size: 10px;
+  color: #b0b9ce;
+  margin-top: 3px;
+}
+.portfolio .pf-project-option > span:last-child {
+  color: #a9bfff;
+}
+.portfolio .pf-project-option img {
+  width: 52px;
+  height: 36px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 6px;
+}
+.portfolio .pf-option-number {
+  font-size: 10px;
+  color: #93a3c4;
+}
+.portfolio .pf-dialog-bar .pf-appearance > button {
+  border: 0;
+  padding: 2px 6px;
+  border-radius: 0;
+  background: transparent;
+}
+@media (max-width: 767px) {
+  .portfolio {
+    padding-top: 80px;
+  }
+  .portfolio .pf-crystal {
+    width: 240px;
+    height: 240px;
+  }
+  .portfolio .pf-code-lines {
+    height: auto;
+  }
+  .portfolio .pf-project-options {
+    max-height: 380px;
+    overflow-y: auto;
+  }
+}
+.portfolio .pf-project-chooser--above .pf-project-options {
+  top: auto;
+  bottom: calc(100% + 10px);
+}
+
+/* Stable effect staging and the final contact composition. */
+.portfolio .pf-contact-copy {
+  min-width: 0;
+}
+.portfolio .pf-contact-details .pf-contact-intro {
+  margin-bottom: 30px;
+}
+.portfolio .pf-contact-details address {
+  margin-top: 0;
+}
+.portfolio .pf-contact-lower {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) 320px;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+}
+.portfolio .pf-contact-lower .pf-socials {
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 0;
+}
+.portfolio .pf-contact-feature {
+  margin: 0;
+  gap: 0;
+}
+.portfolio .pf-crystal {
+  --crystal-main: #2454d6;
+  --crystal-glow: #2454d645;
+}
+.portfolio .pf-crystal[data-theme="dark"] {
+  --crystal-main: #b798ff;
+  --crystal-glow: #b798ff55;
+}
+.portfolio .pf-crystal:before {
+  background: radial-gradient(circle, var(--crystal-glow), transparent 70%);
+}
+.portfolio .pf-crystal-static {
+  inset: 10%;
+  border-color: var(--crystal-main);
+  background:
+    radial-gradient(circle at 36% 30%, #fff7, transparent 36%),
+    radial-gradient(circle, var(--crystal-glow), transparent 68%);
+  box-shadow:
+    0 0 32px var(--crystal-glow),
+    inset 0 0 25px var(--crystal-glow);
+}
+html[data-portfolio-theme="dark"] .portfolio .pf-crystal-static {
+  background: radial-gradient(
+    circle at 35% 30%,
+    #cbb8ff30,
+    #29234466 50%,
+    transparent 80%
+  );
+  box-shadow:
+    0 0 32px var(--crystal-glow),
+    inset 0 0 25px var(--crystal-glow);
+}
+.portfolio .pf-effect-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.portfolio .pf-crystal-static,
+.portfolio .pf-threads-static {
+  transition: opacity 300ms ease;
+}
+.portfolio [data-ready="true"] > .pf-effect-canvas,
+.portfolio [data-ready="true"] > .pf-threads-art > .pf-effect-canvas {
+  opacity: 1;
+}
+.portfolio .pf-crystal[data-ready="true"] > .pf-crystal-static,
+.portfolio .pf-experience-visual[data-ready="true"] .pf-threads-static {
+  opacity: 0;
+}
+.portfolio .pf-experience-visual {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 36px;
+  min-height: 300px;
+  padding: 28px 24px;
+  border: 1px solid #7b95e32b;
+  border-radius: 24px;
+  background: linear-gradient(140deg, #e9f0ff, #f1ecff);
+  overflow: hidden;
+}
+.portfolio .pf-experience-visual > span {
+  position: relative;
+  z-index: 1;
+  font-size: 20px;
+  letter-spacing: -0.035em;
+}
+.portfolio .pf-experience-visual > small {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  text-align: center;
+}
+.portfolio .pf-threads-art {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  top: 48px;
+  bottom: 32px;
+  color: #5276db;
+}
+.portfolio .pf-threads-static {
+  width: 100%;
+  height: 100%;
+}
+html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
+  background: linear-gradient(140deg, #18243b, #242039);
+  border-color: #94b4ff2b;
+}
+.pf-cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0.75;
+  overflow: visible;
+  transition:
+    opacity 140ms ease,
+    color 240ms ease;
+}
+.pf-cursor-layer[data-enabled="false"] {
+  opacity: 0;
+}
+.pf-cursor-head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  width: 17px;
+  height: 17px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor 0%, transparent 68%);
+  box-shadow: 0 0 14px color-mix(in srgb, currentColor 45%, transparent);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.portfolio,
+.portfolio
+  :is(
+    .pf-section,
+    .pf-nav,
+    .pf-panel,
+    .pf-project-card,
+    .pf-contact-form,
+    .pf-dialog,
+    .pf-footer,
+    .pf-skills > div,
+    .pf-pills button,
+    input,
+    textarea,
+    h1,
+    h2,
+    h3,
+    p,
+    a,
+    small,
+    summary
+  ) {
+  transition:
+    background-color 240ms ease,
+    color 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease;
+}
+@media (max-width: 1199px) {
+  .portfolio .pf-contact-lower {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .portfolio .pf-contact-lower .pf-socials {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+}
+@media (max-width: 767px) {
+  .portfolio .pf-contact-lower {
+    margin-top: 20px;
+  }
+  .portfolio .pf-experience-visual {
+    min-height: 250px;
+    margin-top: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-cursor-layer {
+    display: none;
+  }
+  .portfolio .pf-effect-canvas,
+  .portfolio .pf-crystal-static,
+  .portfolio .pf-threads-static {
+    transition: none;
   }
 }

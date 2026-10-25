@@ -4,9 +4,11 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
 import PreviewDialog from "./dialog";
+import ProjectChooser from "./project-chooser";
 import {
   BoundedCode,
   ContactCrystal,
+  ExperienceThreads,
   PublicCursor,
   useMotionPolicy,
 } from "./motion";
@@ -63,7 +65,7 @@ function CodeEditor({ hero, policy, skills }) {
   const [tab, setTab] = useState(0);
   const [typed, setTyped] = useState(0);
   const [replay, setReplay] = useState(0);
-  const [mode, setMode] = useState("normal");
+
   const panel = hero.panels?.[tab] || hero.panels?.[0];
   const count = (panel?.lines || []).reduce(
     (n, line) =>
@@ -140,48 +142,9 @@ function CodeEditor({ hero, policy, skills }) {
     <div className="pf-atmosphere">
       <p className="pf-eyebrow">Backend engineering / in focus</p>
       <h3>Code with intent.</h3>
-      {mode === "closed" ? (
-        <button type="button" onClick={() => setMode("normal")}>
-          Restore coding preview ↗
-        </button>
-      ) : (
-        <BoundedCode enabled={policy.desktop}>
-          <div
-            className={`pf-code ${mode === "expanded" ? "pf-code-expanded" : ""}`}
-          >
-            <div className="pf-code-controls">
-              <button
-                type="button"
-                onClick={() => setMode("closed")}
-                aria-label="Close coding preview"
-              >
-                ×
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  setMode(mode === "minimized" ? "normal" : "minimized")
-                }
-                aria-label="Minimize coding preview"
-                aria-pressed={mode === "minimized"}
-              >
-                −
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  setMode(mode === "expanded" ? "normal" : "expanded")
-                }
-                aria-label="Expand coding preview"
-                aria-pressed={mode === "expanded"}
-              >
-                ↗
-              </button>
-            </div>
-            <div hidden={mode === "minimized"}>{content}</div>
-          </div>
-        </BoundedCode>
-      )}
+      <BoundedCode enabled={policy.desktop}>
+        <div className="pf-code">{content}</div>
+      </BoundedCode>
       <div className="pf-code-stack">
         {["Java", "Spring Boot", "PostgreSQL"]
           .map((name) => skills.find((skill) => skill.name === name))
@@ -247,7 +210,7 @@ function Hero({ data, policy }) {
     </section>
   );
 }
-function Experience({ items, section }) {
+function Experience({ items, section, policy }) {
   const [selected, setSelected] = useState(items[0]?.id);
   const active = items.find((item) => item.id === selected) || items[0];
   return (
@@ -274,20 +237,7 @@ function Experience({ items, section }) {
                   </button>
                 ))}
               </div>
-              <div className="pf-threads" aria-hidden="true">
-                <span>Event-driven, by design.</span>
-                <svg viewBox="0 0 320 160" fill="none">
-                  {Array.from({ length: 14 }, (_, i) => (
-                    <path
-                      key={i}
-                      d={`M-20 ${60 + i * 3} C90 ${220 - i * 4}, 160 ${-90 + i * 6}, 340 ${90 + i * 2}`}
-                      stroke="currentColor"
-                      opacity={0.1 + i * 0.025}
-                    />
-                  ))}
-                </svg>
-                <small>Java　 Kafka　 PostgreSQL</small>
-              </div>
+              <ExperienceThreads policy={policy} />
             </aside>
             <article id="pf-career" className="pf-panel" aria-live="polite">
               <p className="pf-meta">
@@ -546,23 +496,11 @@ function Projects({ items, section, policy, onOverlay }) {
                 >
                   ←
                 </button>
-                <label>
-                  Choose project
-                  <select
-                    value={selected.id}
-                    onChange={(e) =>
-                      select(
-                        items.findIndex((p) => String(p.id) === e.target.value),
-                      )
-                    }
-                  >
-                    {items.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <ProjectChooser
+                  projects={items}
+                  selected={selected}
+                  onSelect={select}
+                />
                 <button
                   type="button"
                   aria-label="Next project"
@@ -669,27 +607,31 @@ function Education({ items, section }) {
     </section>
   );
 }
-function Contact({ data, section, policy, onVisibility }) {
+function Contact({ data, section, policy }) {
   const p = data.personalData;
   return (
     <section id="contact" className="pf-section">
       <Heading section={section} number={6} fallback="Contact me" />
       <div className="pf-contact-grid">
-        <div>
-          <p className="pf-contact-intro">
-            {data.settings?.contactIntroduction}
-          </p>
-          <address>
-            <a className="pf-accent" href={`mailto:${p.email}`}>
-              {p.email} ↗
-            </a>
-            {p.phone && <a href={`tel:${p.phone}`}>{p.phone}</a>}
-            {p.address && <p>{p.address}</p>}
-          </address>
-          <div className="pf-contact-bottom">
+        <div className="pf-contact-copy">
+          <div className="pf-contact-details">
+            <p className="pf-contact-intro">
+              {data.settings?.contactIntroduction}
+            </p>
+            <address>
+              {p.email && (
+                <a className="pf-accent" href={`mailto:${p.email}`}>
+                  {p.email} ↗
+                </a>
+              )}
+              {p.phone && <a href={`tel:${p.phone}`}>{p.phone}</a>}
+              {p.address && <p>{p.address}</p>}
+            </address>
+          </div>
+          <div className="pf-contact-lower">
             <SocialLinks settings={data.settings} />
-            <div>
-              <ContactCrystal policy={policy} onVisibility={onVisibility} />
+            <div className="pf-contact-feature">
+              <ContactCrystal policy={policy} />
               <small>{data.hero?.availability}</small>
             </div>
           </div>
@@ -699,15 +641,17 @@ function Contact({ data, section, policy, onVisibility }) {
     </section>
   );
 }
-
 export default function Portfolio({ data }) {
   const policy = useMotionPolicy();
-  const [crystalVisible, setCrystalVisible] = useState(false);
+
   const [overlay, setOverlay] = useState(false);
+
   const renderers = {
     about: () =>
       data.hero && data.personalData && <Hero data={data} policy={policy} />,
-    experience: (s) => <Experience items={data.experiences} section={s} />,
+    experience: (s) => (
+      <Experience items={data.experiences} section={s} policy={policy} />
+    ),
     skills: (s) => <Skills items={data.skillCategories} section={s} />,
     projects: (s) => (
       <Projects
@@ -719,20 +663,13 @@ export default function Portfolio({ data }) {
     ),
     education: (s) => <Education items={data.educations} section={s} />,
     contact: (s) =>
-      data.personalData && (
-        <Contact
-          data={data}
-          section={s}
-          policy={policy}
-          onVisibility={setCrystalVisible}
-        />
-      ),
+      data.personalData && <Contact data={data} section={s} policy={policy} />,
   };
   return (
     <>
       <PublicCursor
         policy={policy}
-        crystalVisible={crystalVisible}
+
         overlay={overlay}
       />
       {data.sections

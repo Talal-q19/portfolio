@@ -12,10 +12,12 @@ export function motionPolicy({
   saveData,
 }) {
   const limited = simple || slow || cores < 4 || memory < 4 || saveData;
+  const supported = !!webgl && !limited && !reduced;
   return {
     desktop: !!desktop && !reduced && !simple,
     fine: !!fine && !reduced && !simple,
     hidden: !!hidden,
-    gpu: !!webgl && !limited && !reduced && !hidden,
+    supported,
+    gpu: supported && !hidden,
   };
 }

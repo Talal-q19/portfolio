@@ -861,6 +861,7 @@ const CrystalizedBall = ({
   intro = true,
   paused = false,
   onFailure,
+  onReady,
   className = "",
   style,
 }) => {
@@ -1225,6 +1226,7 @@ const CrystalizedBall = ({
       });
     };
 
+    let presented = false;
     const frame = (now) => {
       try {
         raf = 0;
@@ -1450,6 +1452,10 @@ const CrystalizedBall = ({
 
         compositeUniforms.uLight.value = s.light ? 1 : 0;
         renderer.render({ scene: compositeMesh, clear: false });
+        if (!presented) {
+          presented = true;
+          onReady?.();
+        }
 
         const settling =
           Math.abs(target - heat.power) > 0.002 ||

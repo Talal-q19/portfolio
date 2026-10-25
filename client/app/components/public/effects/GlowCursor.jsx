@@ -332,6 +332,7 @@ const GlowCursor = ({
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const settingsRef = useRef(null);
+  const wakeRef = useRef(null);
   settingsRef.current = {
     color: String(color),
     secondaryColor: secondaryColor ? String(secondaryColor) : "",
@@ -977,6 +978,13 @@ const GlowCursor = ({
         if (Math.abs(wanted - state.ratio) > 0.01) resize();
         allocate();
         resolveColors(s);
+        if (!s.enabled) {
+          state.ready = false;
+          clearTargets();
+          blank();
+          last = 0;
+          return;
+        }
         gl.bindVertexArray(vao);
         gl.disable(gl.BLEND);
 
@@ -1008,8 +1016,10 @@ const GlowCursor = ({
       if (!raf && alive && visible && !document.hidden)
         raf = requestAnimationFrame(frame);
     };
+    wakeRef.current = wake;
 
     const onPointerMove = (event) => {
+      if (!settingsRef.current.enabled) return;
       const rect = container.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -1081,6 +1091,7 @@ const GlowCursor = ({
 
     return () => {
       alive = false;
+      wakeRef.current = null;
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       intersection.disconnect();
@@ -1098,6 +1109,10 @@ const GlowCursor = ({
       gl.deleteVertexArray(vao);
     };
   }, []);
+
+  useEffect(() => {
+    wakeRef.current?.();
+  });
 
   const mode = blendMode ?? (theme === "light" ? "normal" : "screen");
 

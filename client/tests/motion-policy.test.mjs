@@ -42,3 +42,10 @@ test("touch cannot enable a cursor, while mobile and reduced motion use static p
     assert.equal(result.fine, false);
   }
 });
+
+test("hiding a document pauses GPU work without discarding supported renderers", () => {
+  const hidden = motionPolicy({ ...capable, hidden: true });
+  assert.equal(hidden.gpu, false);
+  assert.equal(hidden.supported, true);
+  assert.equal(motionPolicy({ ...capable, webgl: false }).supported, false);
+});
