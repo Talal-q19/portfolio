@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
     process.env.CMS_MEDIA_PUBLIC_URL || "http://localhost:1337",
   ).origin;
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-portfolio-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>

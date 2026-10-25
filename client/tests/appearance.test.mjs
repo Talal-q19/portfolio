@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { THEME_SCRIPT } from "../utils/appearance.mjs";
 
-test("every visit starts light before paint, ignoring OS and old saved dark preferences", () => {
+test("every visit starts dark before paint, ignoring OS and old saved preferences", () => {
   for (const previous of ["light", "dark", "system", undefined]) {
     const document = {
       documentElement: { dataset: { portfolioTheme: previous } },
@@ -13,7 +13,7 @@ test("every visit starts light before paint, ignoring OS and old saved dark pref
       matchMedia: () => ({ matches: true }),
       localStorage: { getItem: () => "dark" },
     });
-    assert.equal(document.documentElement.dataset.portfolioTheme, "light");
+    assert.equal(document.documentElement.dataset.portfolioTheme, "dark");
   }
 });
 test("initial appearance requires neither storage nor audio access", () => {
@@ -27,5 +27,5 @@ test("initial appearance requires neither storage nor audio access", () => {
     localStorage: { getItem: forbidden },
     AudioContext: forbidden,
   });
-  assert.equal(document.documentElement.dataset.portfolioTheme, "light");
+  assert.equal(document.documentElement.dataset.portfolioTheme, "dark");
 });

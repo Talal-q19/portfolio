@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
 } from "react";
 import { fetchPortfolio } from "@/utils/portfolio-api.mjs";
@@ -21,11 +22,30 @@ export function usePortfolio() {
 }
 
 export default function PortfolioLayout({ children, mediaOrigin }) {
+  const navbar = useRef(null);
   const [state, setState] = useState({ status: "loading", data: null });
   const [requestId, reload] = useReducer((value) => value + 1, 0);
   const retry = useCallback(() => {
     setState({ status: "loading", data: null });
     reload();
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const previous = root.style.getPropertyValue("--nav-safe-top");
+    const measure = () =>
+      root.style.setProperty(
+        "--nav-safe-top",
+        `${navbar.current.getBoundingClientRect().height}px`,
+      );
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(navbar.current);
+    return () => {
+      observer.disconnect();
+      if (previous) root.style.setProperty("--nav-safe-top", previous);
+      else root.style.removeProperty("--nav-safe-top");
+    };
   }, []);
 
   useEffect(() => {
@@ -52,7 +72,7 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
         <a className="pf-skip" href="#portfolio-content">
           Skip to content
         </a>
-        <header className="pf-nav">
+        <header ref={navbar} className="pf-nav">
           <a className="pf-brand" href="#top">
             <strong>TQ</strong>
             <span>{state.data?.settings?.displayName || "Portfolio"}</span>

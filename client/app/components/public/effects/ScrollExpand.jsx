@@ -30,6 +30,7 @@ const ScrollExpand = ({
   useWindowScroll = false,
   enabled = true,
   inline = false,
+  reverse = false,
   children,
   className = "",
   style,
@@ -59,6 +60,7 @@ const ScrollExpand = ({
     useWindowScroll,
     enabled,
     inline,
+    reverse,
   };
 
   const applyProgress = useCallback((p) => {
@@ -67,7 +69,10 @@ const ScrollExpand = ({
     if (!frame || !media) return;
     const c = propsRef.current;
 
-    const e = smoothstep(0, 1, p);
+    const staticFrame = !c.enabled ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      (c.inline && window.innerWidth < 768);
+    const e = staticFrame ? 1 : smoothstep(0, 1, c.reverse ? 1 - p : p);
 
     const w = c.startWidth + (100 - c.startWidth) * e;
     const h = c.startHeight + (100 - c.startHeight) * e;
@@ -75,8 +80,10 @@ const ScrollExpand = ({
     const iy = Math.max(0, (100 - h) / 2);
     const r = c.startRadius + (c.endRadius - c.startRadius) * e;
     if (c.inline) {
-      frame.style.width = `${w}%`;
-      frame.style.height = `${h}%`;
+      // Scale the complete panel so shrinking never reflows code or adds scrollbars.
+      frame.style.width = "100%";
+      frame.style.height = "100%";
+      frame.style.transform = `scale(${Math.min(w, h) / 100})`;
       frame.style.borderRadius = `${r}px`;
       frame.style.clipPath = "none";
     } else {
@@ -150,7 +157,8 @@ const ScrollExpand = ({
       const span = stageH * Math.max(0.01, c.scrollDistance);
       if (c.inline)
         return clamp(
-          -(root.closest("section") || root).getBoundingClientRect().top / span,
+          ((parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-safe-top")) || 0) -
+            (root.closest("section") || root).getBoundingClientRect().top) / span,
           0,
           1,
         );
@@ -250,7 +258,7 @@ const ScrollExpand = ({
     <div
       ref={rootRef}
       className={`scroll-expand ${inline ? "scroll-expand--inline" : useWindowScroll ? "" : "scroll-expand--scroller"} ${className}`.trim()}
-      style={style}
+      style={{ ...style, "--se-initial-scale": reverse ? 1 : Math.min(startWidth, startHeight) / 100 }}
       {...rest}
     >
       <div ref={trackRef} className="scroll-expand__track">

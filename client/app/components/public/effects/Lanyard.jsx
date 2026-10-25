@@ -503,6 +503,37 @@ const paintFace = (canvas, image, color, fit) => {
   if (image) drawFitted(ctx, image, canvas.width, canvas.height, fit);
 };
 
+const paintBackText = (canvas, text, color) => {
+  paintFace(canvas, null, color, "cover");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const ink = luminance(color) > 0.5 ? "#18243b" : "#f4f6ff";
+  ctx.fillStyle = ink;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = `600 ${canvas.width * 0.09}px sans-serif`;
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > canvas.width * 0.8) {
+      lines.push(line);
+      line = word;
+    } else line = next;
+  }
+  if (line) lines.push(line);
+  const lineHeight = canvas.width * 0.13;
+  lines.forEach((value, i) => {
+    ctx.fillText(value, canvas.width / 2,
+      canvas.height / 2 + (i - (lines.length - 1) / 2) * lineHeight);
+  });
+  ctx.fillStyle = ink;
+  ctx.globalAlpha = 0.35;
+  ctx.fillRect(canvas.width * 0.4, canvas.height * 0.7, canvas.width * 0.2, 4);
+  ctx.globalAlpha = 1;
+};
+
 const paintStrap = (canvas, image, color) => {
   const across = 192;
   const along = image
@@ -655,12 +686,12 @@ const placeHanging = (sim, layout, intro) => {
   nodes[0].copy(anchor);
   for (let i = 1; i <= JOINTS; i++) {
     nodes[i].copy(nodes[i - 1]);
-    if (intro) nodes[i].x += sim.rest;
+    if (intro) nodes[i].y += sim.rest;
     else nodes[i].y -= sim.rest;
   }
   body.quaternion.identity();
   if (intro)
-    body.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2);
+    body.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), -0.12);
   body.hang.set(0, layout.hangY, 0);
   const offset = scratch.a.copy(body.hang).applyQuaternion(body.quaternion);
   body.position.copy(nodes[JOINTS]).sub(offset);
@@ -822,6 +853,7 @@ const stepSimulation = (sim, dt, physics, time) => {
 const Lanyard = ({
   frontImage,
   backImage,
+  backText = "",
   imageFit = "cover",
   cardColor = "#ffffff",
   orientation = "portrait",
@@ -840,6 +872,8 @@ const Lanyard = ({
   breeze = 0.5,
   interactive = true,
   intro = true,
+  anchorElement = null,
+  maxStretch = 800,
   paused = false,
   onReady,
   onFailure,
@@ -853,6 +887,7 @@ const Lanyard = ({
   settingsRef.current = {
     frontImage,
     backImage,
+    backText,
     imageFit: imageFit === "contain" ? "contain" : "cover",
     cardColor,
     orientation: orientation === "landscape" ? "landscape" : "portrait",
@@ -871,6 +906,8 @@ const Lanyard = ({
     breeze,
     interactive,
     intro,
+    anchorElement,
+    maxStretch,
     paused,
   };
 
@@ -953,11 +990,17 @@ const Lanyard = ({
 
     const frontMaterial = new THREE.MeshPhysicalMaterial({
       map: frontTexture,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
       normalMap: grain,
       normalScale: new THREE.Vector2(0.06, 0.06),
     });
     const backMaterial = new THREE.MeshPhysicalMaterial({
       map: backTexture,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
       normalMap: grain,
       normalScale: new THREE.Vector2(0.06, 0.06),
     });
@@ -1012,6 +1055,32 @@ const Lanyard = ({
     const tuck = new THREE.Vector3();
     const curve = new THREE.CatmullRomCurve3(controls, false, "centripetal");
     const view = { width: 1, height: 1 };
+    let unitsPerPixel = 1;
+    let inView = true;
+    const anchorPosition = new THREE.Vector3();
+    const anchorShift = new THREE.Vector3();
+    const projected = new THREE.Vector3();
+    const dragOffset = new THREE.Vector3();
+    const syncAnchor = () => {
+      const element = settingsRef.current.anchorElement?.current;
+      if (!element) return;
+      const rect = element.getBoundingClientRect();
+      anchorPosition.set(
+        (rect.left + rect.width / 2 - view.width / 2) * unitsPerPixel,
+        (view.height / 2 - rect.top - 3) * unitsPerPixel,
+        0,
+      );
+      anchorShift.subVectors(anchorPosition, sim.anchor);
+      sim.anchor.copy(anchorPosition);
+      if (!sim.grab && placed) {
+        for (const points of [sim.nodes, sim.previous])
+          for (const point of points) point.add(anchorShift);
+        sim.body.position.add(anchorShift);
+        sim.body.previous.add(anchorShift);
+      }
+      sim.nodes[0].copy(sim.anchor);
+      sim.previous[0].copy(sim.anchor);
+    };
     let layout = cardLayout("portrait", 0.3);
     let applied = {};
     let strapScale = STRAP_WIDTH;
@@ -1043,6 +1112,7 @@ const Lanyard = ({
       }
       paintFace(frontCanvas, images.front, color, s.imageFit);
       paintFace(backCanvas, images.back || images.front, color, s.imageFit);
+      if (s.backText) paintBackText(backCanvas, s.backText, color);
       frontTexture.needsUpdate = true;
       backTexture.needsUpdate = true;
       start();
@@ -1064,7 +1134,11 @@ const Lanyard = ({
     const frameView = () => {
       const s = settingsRef.current;
       const aspect = view.width / view.height;
-      let viewHeight = layout.height / clamp(s.size, 0.15, 0.9);
+      const slot = s.anchorElement?.current?.getBoundingClientRect();
+      let viewHeight = slot
+        ? (layout.height * view.height) /
+          Math.max(74, Math.min(128, slot.height - 30))
+        : layout.height / clamp(s.size, 0.15, 0.9);
       const minimumWidth = layout.width / 0.72;
       if (viewHeight * aspect < minimumWidth)
         viewHeight = minimumWidth / aspect;
@@ -1090,13 +1164,28 @@ const Lanyard = ({
         .set(0.5, 4.5, 8)
         .normalize()
         .transformDirection(camera.matrixWorldInverse);
-      const anchorX = ((ANCHORS[s.anchor] ?? 0.5) - 0.5) * viewWidth;
-      const anchorY = viewHeight / 2 + 0.2;
+      unitsPerPixel = viewHeight / view.height;
+      const anchorX = slot
+        ? (slot.left + slot.width / 2 - view.width / 2) * unitsPerPixel
+        : ((ANCHORS[s.anchor] ?? 0.5) - 0.5) * viewWidth;
+      const anchorY = slot
+        ? (view.height / 2 - slot.top - 3) * unitsPerPixel
+        : viewHeight / 2 + 0.2;
       const cardTop =
         viewHeight / 2 -
         viewHeight * mix(0.12, 0.42, clamp(s.strapLength, 0, 1));
-      const hangTop = cardTop + (layout.hangY - layout.height / 2);
-      sim.anchor.set(anchorX, anchorY, 0);
+      const hangTop = slot
+        ? anchorY - 28 * unitsPerPixel
+        : cardTop + (layout.hangY - layout.height / 2);
+      anchorPosition.set(anchorX, anchorY, 0);
+      anchorShift.subVectors(anchorPosition, sim.anchor);
+      if (placed && !sim.grab) {
+        for (const points of [sim.nodes, sim.previous])
+          for (const point of points) point.add(anchorShift);
+        sim.body.position.add(anchorShift);
+        sim.body.previous.add(anchorShift);
+      }
+      sim.anchor.copy(anchorPosition);
       configureSimulation(sim, layout, anchorY - hangTop);
       sim.nodes[0].copy(sim.anchor);
       sim.previous[0].copy(sim.anchor);
@@ -1114,9 +1203,9 @@ const Lanyard = ({
         bodyMesh.geometry = geometry.body;
         frontMesh.geometry = geometry.face;
         backMesh.geometry = geometry.face.clone();
-        frontMesh.position.z = THICKNESS / 2 + BEVEL + 0.0006;
+        frontMesh.position.z = THICKNESS / 2 + BEVEL + 0.003;
         backMesh.rotation.y = Math.PI;
-        backMesh.position.z = -(THICKNESS / 2 + BEVEL + 0.0006);
+        backMesh.position.z = -(THICKNESS / 2 + BEVEL + 0.003);
         ring.position.set(0, layout.ringY, 0);
         applied.framingKey = "";
       }
@@ -1129,6 +1218,9 @@ const Lanyard = ({
         } else if (layoutKey !== applied.layoutKey) {
           placeHanging(sim, layout, false);
         }
+      }
+      if (placed && s.intro && !applied.intro && !reducedMotion) {
+        placeHanging(sim, layout, true);
       }
 
       const imageKey = `${s.frontImage}|${s.backImage}|${s.strapImage}`;
@@ -1147,7 +1239,7 @@ const Lanyard = ({
           repaintStrap();
         });
       }
-      const faceKey = `${layoutKey}|${s.cardColor}|${s.imageFit}`;
+      const faceKey = `${layoutKey}|${s.cardColor}|${s.imageFit}|${s.backText}`;
       if (faceKey !== applied.faceKey) paintFaces();
       if (s.strapColor !== applied.strapColor) repaintStrap();
 
@@ -1183,6 +1275,7 @@ const Lanyard = ({
       canvas.style.touchAction = s.interactive ? "pan-y" : "auto";
 
       applied = {
+        intro: s.intro,
         layoutKey,
         framingKey,
         imageKey,
@@ -1295,10 +1388,47 @@ const Lanyard = ({
 
     let presented = false;
     const render = () => {
+      syncAnchor();
       cardGroup.position.copy(sim.body.position);
       cardGroup.quaternion.copy(sim.body.quaternion);
       updateBand();
       renderer.render(scene, camera);
+      if (settingsRef.current.anchorElement) {
+        // Keep the badge and its hit surface inside the hero as it moves.
+        cardGroup.updateMatrixWorld();
+        let left = Infinity,
+          top = Infinity,
+          right = -Infinity,
+          bottom = -Infinity;
+        const include = (point) => {
+          projected.copy(point).project(camera);
+          const x = ((projected.x + 1) * view.width) / 2;
+          const y = ((1 - projected.y) * view.height) / 2;
+          left = Math.min(left, x);
+          right = Math.max(right, x);
+          top = Math.min(top, y);
+          bottom = Math.max(bottom, y);
+        };
+        for (const x of [-layout.width / 2, layout.width / 2])
+          for (const y of [-layout.height / 2, layout.height / 2])
+            include(projected.set(x, y, 0).applyMatrix4(cardGroup.matrixWorld));
+        for (const node of sim.nodes) include(node);
+        const hero = settingsRef.current.anchorElement?.current?.closest("section")?.getBoundingClientRect();
+        if (hero) {
+          left = Math.max(left, hero.left + 12);
+          right = Math.min(right, hero.right - 12);
+          top = Math.max(top, hero.top);
+          bottom = Math.min(bottom, hero.bottom);
+        }
+        inView =
+          right > left && bottom > top &&
+          right > 0 && left < view.width && bottom > 0 && top < view.height;
+        canvas.tabIndex = inView ? 0 : -1;
+        canvas.setAttribute("aria-hidden", inView ? "false" : "true");
+        canvas.style.clipPath = inView
+          ? `inset(${Math.max(0, top)}px ${Math.max(0, view.width - right)}px ${Math.max(0, view.height - bottom)}px ${Math.max(0, left)}px)`
+          : "inset(50%)";
+      }
       if (images.front && !presented) {
         presented = true;
         onReady?.();
@@ -1332,14 +1462,34 @@ const Lanyard = ({
       };
     };
 
+    const stretchLimit = () => {
+      const s = settingsRef.current;
+      if (s.maxStretch === "hero") {
+        const hero = s.anchorElement?.current?.closest("section")?.getBoundingClientRect();
+        if (hero) return Math.hypot(hero.width, hero.height) * unitsPerPixel;
+      }
+      return Math.min(Number(s.maxStretch) || 800, view.width * 0.8) * unitsPerPixel;
+    };
+
     const tick = (now) => {
       raf = 0;
       if (!alive || !visible || document.hidden) return;
       const dt = Math.min(1 / 30, Math.max(1 / 240, (now - last) / 1000));
       last = now;
-      if (!settingsRef.current.paused) time += dt;
+      if (!settingsRef.current.paused && presented) time += dt;
       const current = physics();
-      if (!settingsRef.current.paused) stepSimulation(sim, dt, current, time);
+      syncAnchor();
+      if (!settingsRef.current.paused && presented)
+        stepSimulation(sim, dt, current, time);
+      if (settingsRef.current.anchorElement) {
+        const max = stretchLimit();
+        dragOffset.subVectors(sim.body.position, sim.anchor);
+        if (dragOffset.length() > max) {
+          dragOffset.setLength(max);
+          sim.body.position.copy(sim.anchor).add(dragOffset);
+          sim.body.velocity.multiplyScalar(0.35);
+        }
+      }
       const body = sim.body;
       if (
         !Number.isFinite(
@@ -1354,7 +1504,7 @@ const Lanyard = ({
       }
       render();
       const resting = sim.calm > 1.2 && !sim.grab && current.breeze === 0;
-      if (visible && !resting && !settingsRef.current.paused)
+      if (visible && inView && !resting && !settingsRef.current.paused)
         raf = requestAnimationFrame(tick);
     };
 
@@ -1432,6 +1582,75 @@ const Lanyard = ({
       start();
     };
 
+    const limitTarget = (target) => {
+      if (!settingsRef.current.anchorElement) return;
+      const hero = settingsRef.current.anchorElement.current?.closest("section")?.getBoundingClientRect();
+      const margin = layout.height * 0.6;
+      target.x = clamp(
+        target.x,
+        ((hero?.left ?? 0) - view.width / 2) * unitsPerPixel + margin,
+        ((hero?.right ?? view.width) - view.width / 2) * unitsPerPixel - margin,
+      );
+      target.y = clamp(
+        target.y,
+        (view.height / 2 - (hero?.bottom ?? view.height)) * unitsPerPixel + margin,
+        (view.height / 2 - (hero?.top ?? 0)) * unitsPerPixel - margin,
+      );
+      dragOffset.subVectors(target, sim.anchor);
+      const max = stretchLimit();
+      if (dragOffset.length() > max)
+        target.copy(sim.anchor).add(dragOffset.setLength(max));
+    };
+    const onKeyDown = (event) => {
+      if (!settingsRef.current.interactive) return;
+      if (event.key === "Escape") {
+        sim.grab = null;
+        start();
+        return;
+      }
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        sim.grab = null;
+        flip(sim.body.position);
+        start();
+        return;
+      }
+      const directions = {
+        ArrowLeft: [-1, 0],
+        ArrowRight: [1, 0],
+        ArrowUp: [0, 1],
+        ArrowDown: [0, -1],
+      };
+      const direction = directions[event.key];
+      if (!direction) return;
+      event.preventDefault();
+      sim.grab ||= {
+        local: new THREE.Vector3(),
+        rotation: sim.body.quaternion.clone(),
+        reach: camera.position.distanceTo(sim.body.position),
+        from: sim.body.position.clone(),
+        target: sim.body.position.clone(),
+      };
+      sim.grab.target.x += direction[0] * 48 * unitsPerPixel;
+      sim.grab.target.y += direction[1] * 48 * unitsPerPixel;
+      limitTarget(sim.grab.target);
+      start();
+    };
+    const onBlur = () => {
+      sim.grab = null;
+      press = null;
+      start();
+    };
+    canvas.tabIndex = 0;
+    canvas.removeAttribute("aria-hidden");
+    canvas.setAttribute("role", "button");
+    canvas.setAttribute(
+      "aria-label",
+      `Interactive portrait. Arrow keys stretch, Escape releases, Enter flips.${settingsRef.current.backText ? ` Back: ${settingsRef.current.backText}.` : ""}`,
+    );
+    canvas.addEventListener("keydown", onKeyDown);
+    canvas.addEventListener("blur", onBlur);
+
     const onPointerMove = (event) => {
       if (!settingsRef.current.interactive) return;
       toPointer(event);
@@ -1442,6 +1661,7 @@ const Lanyard = ({
         )
           press = null;
         raycaster.ray.at(sim.grab.reach, sim.grab.target);
+        limitTarget(sim.grab.target);
         start();
         return;
       }
@@ -1482,7 +1702,7 @@ const Lanyard = ({
     const resize = () => {
       view.width = Math.max(1, container.clientWidth);
       view.height = Math.max(1, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(view.width, view.height, false);
       apply();
       render();
@@ -1499,6 +1719,7 @@ const Lanyard = ({
       if (!document.hidden) start();
     };
     document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("scroll", start, { passive: true });
 
     applyRef.current = apply;
     resize();
@@ -1510,6 +1731,9 @@ const Lanyard = ({
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("scroll", start);
+      canvas.removeEventListener("keydown", onKeyDown);
+      canvas.removeEventListener("blur", onBlur);
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerup", onPointerUp);

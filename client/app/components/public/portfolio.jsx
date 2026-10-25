@@ -1,6 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import {
+  FaGithub,
+  FaLinkedinIn,
+  FaInstagram,
+  FaArrowUpRightFromSquare,
+} from "react-icons/fa6";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
 import ScrollExpand from "./effects/ScrollExpand";
@@ -43,6 +49,17 @@ export function SocialLinks({ settings }) {
             target="_blank"
             rel="noopener noreferrer"
           >
+            <span className="pf-social-icon" aria-hidden="true">
+              {link.label === "github" ? (
+                <FaGithub />
+              ) : link.label === "linkedIn" ? (
+                <FaLinkedinIn />
+              ) : link.label === "instagram" ? (
+                <FaInstagram />
+              ) : (
+                <FaArrowUpRightFromSquare />
+              )}
+            </span>
             {{ github: "GitHub", linkedIn: "LinkedIn", instagram: "Instagram" }[
               link.label
             ] || link.label}{" "}
@@ -54,19 +71,17 @@ export function SocialLinks({ settings }) {
 }
 function Heading({ section, number, fallback }) {
   return (
-    <FadeContent duration={0.55} threshold={0.1} blur={false}>
-      <header className="pf-heading">
-        <p className="pf-eyebrow">
-          {String(number).padStart(2, "0")} / {section.eyebrow || fallback}
-        </p>
-        <h2>{section.heading || fallback}</h2>
-        {section.introduction && <p>{section.introduction}</p>}
-      </header>
-    </FadeContent>
+    <header className="pf-heading">
+      <p className="pf-eyebrow">
+        {String(number).padStart(2, "0")} / {section.eyebrow || fallback}
+      </p>
+      <h2>{section.heading || fallback}</h2>
+      {section.introduction && <p>{section.introduction}</p>}
+    </header>
   );
 }
 
-function CodeEditor({ hero, policy, skills }) {
+function CodeEditor({ hero, policy, skills, entered }) {
   const [tab, setTab] = useState(0);
   const [typed, setTyped] = useState(0);
   const [replay, setReplay] = useState(0);
@@ -78,6 +93,7 @@ function CodeEditor({ hero, policy, skills }) {
     0,
   );
   useEffect(() => {
+    if (!entered) return;
     let characters = 0;
     const tick = () => {
       if (!document.hidden) {
@@ -88,7 +104,7 @@ function CodeEditor({ hero, policy, skills }) {
     };
     const timer = setInterval(tick, 30);
     return () => clearInterval(timer);
-  }, [tab, count, replay]);
+  }, [tab, count, replay, entered]);
   let consumed = 0;
   const content = (
     <>
@@ -149,9 +165,10 @@ function CodeEditor({ hero, policy, skills }) {
       <h3>Code with intent.</h3>
       <ScrollExpand
         inline
+        reverse
         mediaType="content"
-        startWidth={92}
-        startHeight={92}
+        startWidth={82}
+        startHeight={82}
         startRadius={24}
         endRadius={24}
         mediaZoom={1}
@@ -178,25 +195,23 @@ function CodeEditor({ hero, policy, skills }) {
     </div>
   );
 }
-function Hero({ data, policy }) {
+function Hero({ data, policy, entered }) {
   const { hero, personalData: personal, settings } = data;
   const words = hero.heading?.split(" ") || [];
   return (
-    <section id="about" className="pf-section pf-hero">
+    <section className="pf-section pf-hero">
       <div>
         <p className="pf-eyebrow">
-          {hero.eyebrow} / {hero.location}
+          <strong className="pf-hero-name">{personal.name}</strong>
+          <span>{hero.eyebrow} / {hero.location}</span>
         </p>
         <div className="pf-identity">
           <PortraitLanyard
             src={personal.profile}
             name={personal.name}
             policy={policy}
+            entered={entered}
           />
-          <div>
-            <strong>{personal.name}</strong>
-            <small>{hero.availability}</small>
-          </div>
         </div>
         <h1>
           {words.slice(0, -1).join(" ")}
@@ -218,15 +233,13 @@ function Hero({ data, policy }) {
         {!hero.buttons?.some((b, i) => i === 2) && personal.resume && (
           <a href={personal.resume}>Get Resume ↗</a>
         )}
-        <p className="pf-availability">
-          <span />
-          {hero.availability}
-        </p>
+
         <SocialLinks settings={settings} />
       </div>
       <CodeEditor
         hero={hero}
         policy={policy}
+        entered={entered}
         skills={data.skillCategories.flatMap((group) => group.skills)}
       />
     </section>
@@ -236,7 +249,7 @@ function Experience({ items, section, policy }) {
   const [selected, setSelected] = useState(items[0]?.id);
   const active = items.find((item) => item.id === selected) || items[0];
   return (
-    <section id="experience" className="pf-section pf-alternate">
+    <section className="pf-section pf-alternate">
       <div className="pf-inner">
         <Heading section={section} number={2} fallback="Experiences" />
         {active ? (
@@ -307,7 +320,7 @@ function Skills({ items, section }) {
     </div>
   );
   return (
-    <section id="skills" className="pf-section">
+    <section className="pf-section">
       <Heading section={section} number={3} fallback="Skills" />
       <div className="pf-skills-bar">
         <div className="pf-pills" aria-label="Choose skill group">
@@ -505,7 +518,7 @@ function Projects({ items, section, policy, onOverlay }) {
     [items],
   );
   return (
-    <section id="projects" className="pf-section pf-projects">
+    <section className="pf-section pf-projects">
       <div className="pf-inner">
         <Heading section={section} number={4} fallback="Projects" />
         {selected ? (
@@ -617,7 +630,7 @@ function Projects({ items, section, policy, onOverlay }) {
 function Education({ items, section }) {
   const [active, setActive] = useState(null);
   return (
-    <section id="education" className="pf-section pf-alternate">
+    <section className="pf-section pf-alternate">
       <div className="pf-inner">
         <Heading section={section} number={5} fallback="Educations" />
         <div className="pf-education-grid">
@@ -668,7 +681,7 @@ function Education({ items, section }) {
 function Contact({ data, section, policy }) {
   const p = data.personalData;
   return (
-    <section id="contact" className="pf-section">
+    <section className="pf-section">
       <Heading section={section} number={6} fallback="Contact me" />
       <div className="pf-contact-grid">
         <div className="pf-contact-copy">
@@ -689,7 +702,6 @@ function Contact({ data, section, policy }) {
           <div className="pf-contact-lower">
             <div className="pf-contact-feature">
               <ContactCrystal policy={policy} />
-              <small>{data.hero?.availability}</small>
             </div>
             <SocialLinks settings={data.settings} />
           </div>
@@ -699,14 +711,27 @@ function Contact({ data, section, policy }) {
     </section>
   );
 }
-export default function Portfolio({ data }) {
+export default function Portfolio({ data, entered = true }) {
   const policy = useMotionPolicy();
 
   const [overlay, setOverlay] = useState(false);
+  useEffect(() => {
+    const key = window.location.hash.slice(1);
+    if (
+      !data.sections.some((section) => section.visible && section.key === key)
+    )
+      return;
+    const frame = requestAnimationFrame(() =>
+      document
+        .getElementById(key)
+        ?.scrollIntoView({ block: "start", behavior: "instant" }),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [data.sections]);
 
   const renderers = {
     about: () =>
-      data.hero && data.personalData && <Hero data={data} policy={policy} />,
+      data.hero && data.personalData && <Hero data={data} policy={policy} entered={entered} />,
     experience: (s) => (
       <Experience items={data.experiences} section={s} policy={policy} />
     ),
@@ -734,7 +759,22 @@ export default function Portfolio({ data }) {
         .filter((s) => s.visible)
         .toSorted((a, b) => a.order - b.order)
         .map((s) => (
-          <div key={s.key}>{renderers[s.key]?.(s)}</div>
+          <div key={s.key} id={s.key} className="pf-section-anchor">
+            {s.key === "about" ? (
+              renderers[s.key]?.(s)
+            ) : (
+              <FadeContent
+                className="pf-section-reveal"
+                duration={0.85}
+                blur={5}
+                distance={36}
+                threshold={0.08}
+                once={false}
+              >
+                {renderers[s.key]?.(s)}
+              </FadeContent>
+            )}
+          </div>
         ))}
       {!data.sections.length && (
         <p className="pf-empty">Portfolio content will be available soon.</p>

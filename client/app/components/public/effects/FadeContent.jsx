@@ -243,6 +243,7 @@ const FadeContent = ({
   effect = "fade",
   blur = false,
   duration = 1,
+  distance = 0,
   ease = "power2.out",
   delay = 0,
   threshold = 0.1,
@@ -300,6 +301,8 @@ const FadeContent = ({
           : {};
       const noisy = NOISE_EFFECTS.includes(effect);
       const looks = noisy ? [] : getLooks(effect, blurAmount, startOpacity);
+      if (!noisy && distance)
+        looks.push({ from: { y: distance }, to: { y: 0 }, share: 1 });
 
       if (noisy)
         masks = targets.map((target) =>
@@ -481,6 +484,7 @@ const FadeContent = ({
     effect,
     blur,
     duration,
+    distance,
     ease,
     delay,
     threshold,

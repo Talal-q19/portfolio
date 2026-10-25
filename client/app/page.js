@@ -1,15 +1,15 @@
 "use client";
 import { usePortfolio } from "./components/portfolio-layout";
 import Portfolio from "./components/public/portfolio";
+import { useCallback, useState } from "react";
+import Preloader from "./components/public/preloader";
 
 export default function Home() {
   const { data, status, retry } = usePortfolio();
-  if (status === "loading")
-    return (
-      <div role="status" aria-live="polite" className="pf-empty">
-        Loading portfolio…
-      </div>
-    );
+  const [entered, setEntered] = useState(false);
+  const [revealing, setRevealing] = useState(false);
+  const enter = useCallback(() => setEntered(true), []);
+  const reveal = useCallback(() => setRevealing(true), []);
   if (status === "error")
     return (
       <div role="alert" className="pf-empty">
@@ -19,7 +19,7 @@ export default function Home() {
         </button>
       </div>
     );
-  const settings = data.settings;
+  const settings = data?.settings;
   return (
     <>
       {settings && (
@@ -36,7 +36,19 @@ export default function Home() {
           <meta name="twitter:description" content={settings.seoDescription} />
         </>
       )}
-      <Portfolio data={data} />
+      {status === "ready" && (
+        <div className="pf-page-reveal" data-visible={revealing || entered} inert={!revealing && !entered}>
+          <Portfolio data={data} entered={entered} />
+        </div>
+      )}
+      {!entered && (
+        <Preloader
+          status={status}
+          profile={data?.personalData?.profile}
+          onReveal={reveal}
+          onComplete={enter}
+        />
+      )}
     </>
   );
 }

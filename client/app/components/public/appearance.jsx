@@ -14,11 +14,11 @@ const AppearanceContext = createContext(null);
 export const useAppearance = () => useContext(AppearanceContext);
 
 export default function Appearance({ children }) {
-  // Every visit starts light. Theme changes are local style updates for this visit.
-  const [theme, setTheme] = useState("light");
+  // Every visit starts dark. Theme changes are local style updates for this visit.
+  const [theme, setTheme] = useState("dark");
   const audio = useRef(null);
   useLayoutEffect(() => {
-    document.documentElement.dataset.portfolioTheme = "light";
+    document.documentElement.dataset.portfolioTheme = "dark";
   }, []);
   useEffect(() => () => audio.current?.dispose(), []);
   const choose = (next) => {
