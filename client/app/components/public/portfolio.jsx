@@ -546,7 +546,7 @@ function Projects({ items, section, policy, onOverlay }) {
                     parallax={0}
                     stretch={0}
                     depthFade={0.15}
-                    fadeColor="#0F1014"
+                    fadeColor="var(--pf-bg)"
                     innerShade={0.08}
                     captions={false}
                     onChange={change}

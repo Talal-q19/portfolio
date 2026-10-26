@@ -542,15 +542,17 @@ html[data-portfolio-theme="dark"] .portfolio {
   min-height: 800px;
 }
 .portfolio .pf-projects {
+  background: var(--pf-bg);
+  color: var(--pf-text);
+  min-height: 720px;
+}
+html[data-portfolio-theme="dark"] .portfolio .pf-projects {
   --pf-bg: #0f1014;
   --pf-panel: #1d1e24;
   --pf-text: #f4f4f7;
   --pf-muted: #b2b3bd;
   --pf-line: #464957;
   --pf-accent: #9bb5ff;
-  background: var(--pf-bg);
-  color: var(--pf-text);
-  min-height: 720px;
 }
 .portfolio .pf-project-grid {
   display: grid;
@@ -1548,6 +1550,114 @@ html[data-portfolio-theme="dark"] .portfolio .pf-crystal-static {
 .portfolio .pf-option-number {
   font-size: 10px;
   color: #93a3c4;
+}
+html[data-portfolio-theme="light"] .portfolio .pf-projects {
+  --pf-bg: #e1e7f0;
+  --pf-panel: #fff;
+  --pf-text: #1e2c43;
+  --pf-muted: #52627a;
+  --pf-line: #c6d2e3;
+  --pf-accent: #315acb;
+  --pf-project-selection: #eef2f8;
+  --pf-project-outline: #f9fbff;
+  --pf-project-inner: #ccd8e8;
+  --pf-project-shadow: #344e72;
+  --pf-project-hover: #f2f5fc;
+  --pf-project-selected-border: #b9cafa;
+  background: linear-gradient(145deg, #e8edf4, var(--pf-bg) 55%, #d8e2f0);
+}
+html[data-portfolio-theme="dark"] .portfolio .pf-projects {
+  --pf-bg: #0f1014;
+  --pf-panel: #1d1e24;
+  --pf-text: #f4f4f7;
+  --pf-muted: #b2b3bd;
+  --pf-line: #464957;
+  --pf-accent: #9bb5ff;
+  --pf-tint: #293451;
+  --pf-project-selection: #1b1c23;
+  --pf-project-outline: #353744;
+  --pf-project-inner: #292c34;
+  --pf-project-shadow: #000;
+  --pf-project-hover: #303648;
+  --pf-project-selected-border: #657eaf;
+  background: var(--pf-bg);
+}
+
+.portfolio .pf-projects .pf-project-selection {
+  padding: 24px 20px;
+  border: 1px solid var(--pf-project-outline);
+  border-radius: 24px;
+  background: var(--pf-project-selection);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--pf-project-shadow) 6%, transparent);
+}
+.portfolio .pf-projects .circular-carousel__inner {
+  background: var(--pf-project-inner);
+  opacity: 0.45;
+}
+.portfolio .pf-projects .circular-carousel__frame {
+  background: var(--pf-panel);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--pf-project-shadow) 15%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--pf-line) 70%, transparent);
+}
+.portfolio .pf-projects .pf-project-selection > p:not(.pf-meta) {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+.portfolio .pf-projects .pf-project-card {
+  border: 1px solid var(--pf-project-outline);
+  border-radius: 24px;
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--pf-project-shadow) 8%, transparent);
+}
+.portfolio .pf-projects .pf-project-card h3 {
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--pf-line);
+}
+.portfolio .pf-projects .pf-project-chooser summary {
+  border-color: var(--pf-line);
+  background: var(--pf-panel);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--pf-project-shadow) 4%, transparent);
+}
+.portfolio .pf-projects .pf-project-options {
+  border-color: var(--pf-line);
+  background: var(--pf-panel);
+  box-shadow: 0 20px 55px color-mix(in srgb, var(--pf-project-shadow) 13%, transparent);
+}
+.portfolio .pf-projects :is(
+  .pf-project-chooser summary small,
+  .pf-project-options > p,
+  .pf-project-options > p span,
+  .pf-project-option small,
+  .pf-option-number
+) {
+  color: var(--pf-muted);
+}
+.portfolio .pf-projects :is(
+  .pf-chooser-chevron,
+  .pf-project-option > span:last-child
+) {
+  color: var(--pf-accent);
+}
+.portfolio .pf-projects .pf-project-option:hover {
+  background: var(--pf-project-hover);
+}
+.portfolio .pf-projects .pf-project-option[aria-pressed="true"] {
+  background: var(--pf-tint);
+  border-color: var(--pf-project-selected-border);
+}
+.portfolio .pf-projects .pf-carousel-controls > button {
+  border: 1px solid var(--pf-line);
+  background: var(--pf-panel);
+  color: var(--pf-accent);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--pf-project-shadow) 4%, transparent);
+}
+.portfolio .pf-projects .pf-carousel-controls > button:hover {
+  border-color: var(--pf-project-selected-border);
+  background: var(--pf-tint);
+}
+.portfolio .pf-projects .pf-project-summary > img:not(.pf-logo) {
+  background: var(--pf-project-selection);
 }
 .portfolio .pf-dialog-bar .pf-appearance > button {
   border: 0;
