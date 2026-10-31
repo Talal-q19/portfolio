@@ -545,9 +545,9 @@ function Projects({ items, section, policy, onOverlay }) {
                     focusOnClick
                     parallax={0}
                     stretch={0}
-                    depthFade={0.15}
-                    fadeColor="var(--pf-bg)"
-                    innerShade={0.08}
+                    depthFade={0}
+                    fadeColor="transparent"
+                    innerShade={1}
                     captions={false}
                     onChange={change}
                     onItemClick={(_, i) => select(i)}
@@ -758,8 +758,13 @@ export default function Portfolio({ data, entered = true }) {
       {data.sections
         .filter((s) => s.visible)
         .toSorted((a, b) => a.order - b.order)
-        .map((s) => (
-          <div key={s.key} id={s.key} className="pf-section-anchor">
+        .map((s, index) => (
+          <div
+            key={s.key}
+            id={s.key}
+            className="pf-section-anchor"
+            data-surface={index % 2 === 0 ? "primary" : "alternate"}
+          >
             {s.key === "about" ? (
               renderers[s.key]?.(s)
             ) : (

@@ -9,13 +9,13 @@ html[data-portfolio-loading] {
 .portfolio {
   min-width: 0;
   overflow-x: clip;
-  --pf-bg: #fff;
+  --pf-bg: #e1e7f0;
   --pf-alt: #f5f5f7;
   --pf-panel: #fff;
-  --pf-text: #17181c;
-  --pf-muted: #676971;
-  --pf-line: #dedfe5;
-  --pf-accent: #2454d6;
+  --pf-text: #1e2c43;
+  --pf-muted: #52627a;
+  --pf-line: #c6d2e3;
+  --pf-accent: #315acb;
   --pf-tint: #eaf0ff;
   --pf-lilac: #8a6adf;
   background: var(--pf-bg);
@@ -27,7 +27,7 @@ html[data-portfolio-loading] {
   color-scheme: light;
 }
 html[data-portfolio-theme="dark"] .portfolio {
-  --pf-bg: #0c0d11;
+  --pf-bg: #0f1014;
   --pf-alt: #121319;
   --pf-panel: #1b1c23;
   --pf-text: #f4f4f7;
@@ -318,7 +318,7 @@ html[data-portfolio-theme="dark"] .portfolio {
   margin-top: 32px;
 }
 .portfolio .pf-atmosphere {
-  background: linear-gradient(135deg, #eaf0ff, #f1ebff);
+  background: var(--pf-panel);
   border-radius: 32px;
   padding: 28px 24px;
   position: relative;
@@ -545,14 +545,6 @@ html[data-portfolio-theme="dark"] .portfolio {
   background: var(--pf-bg);
   color: var(--pf-text);
   min-height: 720px;
-}
-html[data-portfolio-theme="dark"] .portfolio .pf-projects {
-  --pf-bg: #0f1014;
-  --pf-panel: #1d1e24;
-  --pf-text: #f4f4f7;
-  --pf-muted: #b2b3bd;
-  --pf-line: #464957;
-  --pf-accent: #9bb5ff;
 }
 .portfolio .pf-project-grid {
   display: grid;
@@ -820,9 +812,9 @@ html[data-portfolio-theme="dark"] .portfolio .pf-field-error {
   animation: pf-preview 0.2s ease-out;
 }
 html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
-  --pf-bg: #17181f;
+  --pf-bg: #1b1c23;
   --pf-alt: #20222d;
-  --pf-panel: #20222d;
+  --pf-panel: #1b1c23;
   --pf-text: #f4f4f7;
   --pf-muted: #bec0cc;
   --pf-line: #454858;
@@ -1340,7 +1332,7 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   color: var(--pf-muted);
 }
 html[data-portfolio-theme="dark"] .portfolio .pf-atmosphere {
-  background: linear-gradient(135deg, #1b2a40, #272239);
+  background: var(--pf-panel);
 }
 html[data-portfolio-theme="dark"] .portfolio .pf-atmosphere h3 {
   color: #f4f4f7;
@@ -1564,11 +1556,11 @@ html[data-portfolio-theme="light"] .portfolio .pf-projects {
   --pf-project-shadow: #344e72;
   --pf-project-hover: #f2f5fc;
   --pf-project-selected-border: #b9cafa;
-  background: linear-gradient(145deg, #e8edf4, var(--pf-bg) 55%, #d8e2f0);
+  background: var(--pf-bg);
 }
 html[data-portfolio-theme="dark"] .portfolio .pf-projects {
   --pf-bg: #0f1014;
-  --pf-panel: #1d1e24;
+  --pf-panel: #1b1c23;
   --pf-text: #f4f4f7;
   --pf-muted: #b2b3bd;
   --pf-line: #464957;
@@ -1591,12 +1583,15 @@ html[data-portfolio-theme="dark"] .portfolio .pf-projects {
   box-shadow: 0 8px 28px color-mix(in srgb, var(--pf-project-shadow) 6%, transparent);
 }
 .portfolio .pf-projects .circular-carousel__inner {
-  background: var(--pf-project-inner);
-  opacity: 0.45;
+  background: transparent;
+  opacity: 0;
 }
 .portfolio .pf-projects .circular-carousel__frame {
-  background: var(--pf-panel);
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--pf-project-shadow) 15%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--pf-line) 70%, transparent);
+  background: #fff;
+  box-shadow: none;
+}
+.portfolio .pf-projects .circular-carousel__photo {
+  background: #fff;
 }
 .portfolio .pf-projects .pf-project-selection > p:not(.pf-meta) {
   font-size: 16px;
@@ -1774,7 +1769,7 @@ html[data-portfolio-theme="dark"] .portfolio .pf-crystal-static {
   padding: 28px 24px;
   border: 1px solid #7b95e32b;
   border-radius: 24px;
-  background: linear-gradient(140deg, #e9f0ff, #f1ecff);
+  background: var(--pf-panel);
   overflow: hidden;
 }
 .portfolio .pf-experience-visual > span {
@@ -1801,7 +1796,7 @@ html[data-portfolio-theme="dark"] .portfolio .pf-crystal-static {
   height: 100%;
 }
 html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
-  background: linear-gradient(140deg, #18243b, #242039);
+  background: var(--pf-panel);
   border-color: #94b4ff2b;
 }
 .pf-cursor-layer {
@@ -2070,6 +2065,13 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 }
 .portfolio .pf-section-anchor {
   position: relative;
+}
+.portfolio .pf-section-anchor .pf-section {
+  background: var(--pf-bg);
+}
+.portfolio .pf-section-anchor[data-surface="alternate"] .pf-section {
+  --pf-bg: var(--pf-alt);
+  background: var(--pf-bg);
 }
 .portfolio .pf-section-reveal {
   will-change: auto;
