@@ -10,7 +10,8 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
 import ScrollExpand from "./effects/ScrollExpand";
-import FadeContent from "./effects/FadeContent";
+import HeroWorld from "./hero-world";
+import { useScrollWorld } from "./scroll-world";
 import LogoLoop from "./effects/LogoLoop";
 import PortraitLanyard from "./portrait-lanyard";
 import PreviewDialog from "./dialog";
@@ -199,8 +200,10 @@ function Hero({ data, policy, entered }) {
   const { hero, personalData: personal, settings } = data;
   const words = hero.heading?.split(" ") || [];
   return (
+    <>
     <section className="pf-section pf-hero">
-      <div>
+      <HeroWorld entered={entered} />
+      <div className="pf-hero-intro">
         <p className="pf-eyebrow">
           <strong className="pf-hero-name">{personal.name}</strong>
           <span>{hero.eyebrow} / {hero.location}</span>
@@ -236,13 +239,22 @@ function Hero({ data, policy, entered }) {
 
         <SocialLinks settings={settings} />
       </div>
+      <aside className="pf-world-caption" aria-hidden="true">
+        <span className="pf-world-label">ENGINEERING IN ANOTHER DIMENSION</span>
+        <span className="pf-world-index">01 — INFINITE POSSIBILITIES</span>
+        <span className="pf-world-scroll">SCROLL TO ROTATE <b>↓</b></span>
+      </aside>
+    </section>
+    <div className="pf-hero-console">
+      <p className="pf-console-label">UNDER THE SURFACE <span>↓ THE CODE BEHIND THE CRAFT</span></p>
       <CodeEditor
         hero={hero}
         policy={policy}
         entered={entered}
         skills={data.skillCategories.flatMap((group) => group.skills)}
       />
-    </section>
+    </div>
+    </>
   );
 }
 function Experience({ items, section, policy }) {
@@ -713,6 +725,8 @@ function Contact({ data, section, policy }) {
 }
 export default function Portfolio({ data, entered = true }) {
   const policy = useMotionPolicy();
+  const motionRoot = useRef(null);
+  useScrollWorld(motionRoot, entered, data.sections);
 
   const [overlay, setOverlay] = useState(false);
   useEffect(() => {
@@ -755,6 +769,7 @@ export default function Portfolio({ data, entered = true }) {
 
         overlay={overlay}
       />
+      <div ref={motionRoot} className="pf-scroll-world">
       {data.sections
         .filter((s) => s.visible)
         .toSorted((a, b) => a.order - b.order)
@@ -764,23 +779,12 @@ export default function Portfolio({ data, entered = true }) {
             id={s.key}
             className="pf-section-anchor"
             data-surface={index % 2 === 0 ? "primary" : "alternate"}
+            data-chapter={String(index + 1).padStart(2, "0")}
           >
-            {s.key === "about" ? (
-              renderers[s.key]?.(s)
-            ) : (
-              <FadeContent
-                className="pf-section-reveal"
-                duration={0.85}
-                blur={5}
-                distance={36}
-                threshold={0.08}
-                once={false}
-              >
-                {renderers[s.key]?.(s)}
-              </FadeContent>
-            )}
+            {renderers[s.key]?.(s)}
           </div>
         ))}
+      </div>
       {!data.sections.length && (
         <p className="pf-empty">Portfolio content will be available soon.</p>
       )}
