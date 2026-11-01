@@ -125,7 +125,7 @@ function useEffectStage(warmup = false) {
 export function ContactCrystal({ policy }) {
   const { theme } = useAppearance();
   const { host, primed, visible, ready, failed, onReady, onFailure, onMount } =
-    useEffectStage(true);
+    useEffectStage();
   const rendered = ready && !failed && policy.supported && policy.desktop;
   return (
     <div

@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SiteFrame from "./components/site-frame";
 import { THEME_SCRIPT } from "../utils/appearance.mjs";
+import { PORTFOLIO_START_SCRIPT } from "../utils/section-navigation.mjs";
 import "./css/globals.scss";
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-portfolio-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: PORTFOLIO_START_SCRIPT }} />
       </head>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${portfolioFont.variable} ${portfolioMono.variable} overflow-x-clip`}

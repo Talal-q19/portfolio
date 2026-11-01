@@ -14,11 +14,11 @@ export default function Preloader({ status, profile, onReveal, onComplete }) {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wait = reduced
       ? 0
-      : Math.max(0, 1800 - (performance.now() - started.current));
+      : Math.max(0, 950 - (performance.now() - started.current));
     const timers = [
       setTimeout(() => setStage("refining"), wait),
-      setTimeout(() => setStage("complete"), wait + (reduced ? 0 : 800)),
-      setTimeout(() => setLeaving(true), wait + (reduced ? 0 : 2200)),
+      setTimeout(() => setStage("complete"), wait + (reduced ? 0 : 350)),
+      setTimeout(() => setLeaving(true), wait + (reduced ? 0 : 800)),
     ];
     return () => timers.forEach(clearTimeout);
   }, [status]);
@@ -31,7 +31,7 @@ export default function Preloader({ status, profile, onReveal, onComplete }) {
     if (!leaving) return;
     onReveal();
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = setTimeout(onComplete, reduced ? 50 : 700);
+    const timer = setTimeout(onComplete, reduced ? 50 : 450);
     return () => clearTimeout(timer);
   }, [leaving, onReveal, onComplete]);
   return (

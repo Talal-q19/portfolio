@@ -13,6 +13,7 @@ import {
 import { fetchPortfolio } from "@/utils/portfolio-api.mjs";
 import { portfolioData } from "@/utils/portfolio";
 import { AppearanceControls } from "./public/appearance";
+import { scrollToPortfolioSection } from "@/utils/section-navigation.mjs";
 
 const PortfolioContext = createContext(null);
 export function usePortfolio() {
@@ -66,6 +67,17 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
   }, [requestId, mediaOrigin]);
 
   const value = useMemo(() => ({ ...state, retry }), [state, retry]);
+  const navigate = (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const hash = event.currentTarget.hash;
+    if (!document.getElementById(hash.slice(1))) return;
+    event.preventDefault();
+    event.currentTarget.closest("details")?.removeAttribute("open");
+    if (scrollToPortfolioSection(hash.slice(1))) {
+      window.dispatchEvent(new CustomEvent("portfolio:navigate", { detail: { key: hash.slice(1) } }));
+      if (window.location.hash !== hash) window.history.pushState(null, "", hash);
+    }
+  };
   return (
     <PortfolioContext.Provider value={value}>
       <div className="portfolio" id="top">
@@ -85,7 +97,7 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
                 ),
               )
               .map((n) => (
-                <a key={n.url} href={n.url}>
+                <a key={n.url} href={n.url} onClick={navigate}>
                   {n.label}
                 </a>
               ))}
@@ -104,9 +116,7 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
                   <a
                     key={n.url}
                     href={n.url}
-                    onClick={(e) =>
-                      e.currentTarget.closest("details").removeAttribute("open")
-                    }
+                    onClick={navigate}
                   >
                     {n.label}
                   </a>

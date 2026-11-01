@@ -43,10 +43,9 @@ export default function PortraitLanyard({ src, name, policy, entered = true }) {
       ref={host}
       className="pf-portrait-lanyard"
       data-ready={!!(enabled && active)}
-      data-waiting={!appeared}
       aria-label={`${name}, ${enabled ? "interactive " : ""}portrait badge`}
     >
-      {!enabled && (
+      {!(enabled && active) && (
         <div className="pf-portrait-fallback">
           <span className="pf-portrait-strap" />
           <div className="pf-portrait-badge">

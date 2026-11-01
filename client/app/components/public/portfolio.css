@@ -653,8 +653,8 @@ html[data-portfolio-theme="dark"] .portfolio {
   margin-top: 56px;
 }
 .portfolio #contact {
-  padding-top: 80px;
-  padding-bottom: 90px;
+  padding-top: 48px;
+  padding-bottom: 0;
 }
 .portfolio .pf-contact-intro {
   font-size: 20px;
@@ -2181,8 +2181,8 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
   overflow: clip;
   opacity: 1;
   transition:
-    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 700ms;
+    opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 450ms;
 }
 .portfolio .pf-preloader .refine-frame {
   flex: 0 0 auto;
@@ -2354,7 +2354,9 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
   position: relative;
   isolation: isolate;
   perspective: 1200px;
-  background: radial-gradient(ellipse at 80% 45%, color-mix(in srgb, var(--pf-accent) 7%, transparent), transparent 65%), var(--pf-bg);
+  background:
+    radial-gradient(ellipse at 85% 30%, color-mix(in srgb, var(--pf-accent) 12%, transparent), transparent 60%),
+    radial-gradient(ellipse at 15% 90%, color-mix(in srgb, var(--pf-lilac) 8%, transparent), transparent 55%), var(--pf-bg);
 }
 .portfolio .pf-hero-intro {
   position: relative;
@@ -2363,6 +2365,20 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 .portfolio .pf-hero > .pf-atmosphere {
   border: 1px solid var(--pf-line);
   box-shadow: 0 25px 80px color-mix(in srgb, var(--pf-accent) 10%, transparent);
+}
+.portfolio .pf-code-frame {
+  height: clamp(300px, calc(100svh - 350px), 380px);
+  min-width: 0;
+  flex-shrink: 0;
+}
+.portfolio .pf-code-frame .pf-code-lines {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.portfolio #portfolio-content {
+  display: flow-root;
+  overflow: clip;
 }
 @media (max-width: 899px) {
   .portfolio .pf-scroll-world .pf-section-anchor:not(#about) { padding-block: 24px; }
@@ -2375,7 +2391,20 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
   pointer-events: none;
   perspective: 900px;
   --scenery-color: var(--pf-accent);
+  background: linear-gradient(120deg, transparent 25%, color-mix(in srgb, var(--scenery-color) 5%, transparent), transparent 85%);
   mask-image: linear-gradient(90deg, #0008, #000);
+}
+.portfolio .pf-section-scenery::after {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 38%;
+  right: -28%;
+  top: 12%;
+  border-radius: 50%;
+  transform: rotate(-28deg);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--scenery-color) 7%, transparent), transparent);
+  border-top: 1px solid color-mix(in srgb, var(--scenery-color) 12%, transparent);
 }
 .portfolio .pf-section-scenery--skills,
 .portfolio .pf-section-scenery--education {
@@ -2427,7 +2456,22 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
   background: linear-gradient(135deg, color-mix(in srgb, var(--pf-accent) 4%, transparent), transparent 55%), var(--pf-panel);
   box-shadow: 0 20px 50px color-mix(in srgb, var(--pf-accent) 5%, transparent);
 }
+.portfolio .pf-scroll-world .pf-section-anchor:not(#about):last-child {
+  padding-bottom: 0;
+}
+.portfolio .pf-scroll-world {
+  display: flow-root;
+  overflow: clip;
+}
+.portfolio #contact > .pf-section {
+  padding-bottom: 24px;
+  border-bottom: 0;
+}
+.portfolio .pf-footer {
+  border-top: 1px solid var(--pf-line);
+}
 @media (max-width: 899px) {
+  .portfolio #contact { padding-top: 24px; }
   .portfolio .pf-scenery-lines { right: -55%; opacity: 0.18; }
   .portfolio .pf-scenery-glow { width: 120vw; }
   .portfolio .pf-scenery-plane { right: -15%; }
@@ -2436,4 +2480,8 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
   .pf-lanyard-overlay {
     transition: none;
   }
+}
+.pf-lanyard-overlay,
+.pf-cursor-layer {
+  overflow: clip;
 }

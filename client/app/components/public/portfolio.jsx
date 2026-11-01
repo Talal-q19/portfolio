@@ -9,9 +9,9 @@ import {
 } from "react-icons/fa6";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
-import ScrollExpand from "./effects/ScrollExpand";
 import { useScrollWorld } from "./scroll-world";
 import SectionScenery from "./section-scenery";
+import { scrollToPortfolioSection } from "@/utils/section-navigation.mjs";
 import LogoLoop from "./effects/LogoLoop";
 import PortraitLanyard from "./portrait-lanyard";
 import PreviewDialog from "./dialog";
@@ -86,6 +86,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
   const [tab, setTab] = useState(0);
   const [typed, setTyped] = useState(0);
   const [replay, setReplay] = useState(0);
+  const [typing, setTyping] = useState(false);
 
   const panel = hero.panels?.[tab] || hero.panels?.[0];
   const count = (panel?.lines || []).reduce(
@@ -94,7 +95,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
     0,
   );
   useEffect(() => {
-    if (!entered) return;
+    if (!entered || !typing || !policy.desktop) return;
     let characters = 0;
     const tick = () => {
       if (!document.hidden) {
@@ -105,7 +106,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
     };
     const timer = setInterval(tick, 30);
     return () => clearInterval(timer);
-  }, [tab, count, replay, entered]);
+  }, [tab, count, replay, entered, typing, policy.desktop]);
   let consumed = 0;
   const content = (
     <>
@@ -117,6 +118,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
             aria-pressed={tab === i}
             onClick={() => {
               setTyped(0);
+              setTyping(true);
               setTab(i);
             }}
           >
@@ -136,7 +138,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
                     key={j}
                     className={`pf-token-${token.tone || "default"}`}
                   >
-                    {policy.desktop
+                    {typing && policy.desktop
                       ? (token.text || "").slice(0, Math.max(0, typed - start))
                       : token.text}
                   </span>
@@ -151,6 +153,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
           type="button"
           onClick={() => {
             setTyped(0);
+            setTyping(true);
             setReplay((value) => value + 1);
           }}
         >
@@ -164,23 +167,9 @@ function CodeEditor({ hero, policy, skills, entered }) {
     <div className="pf-atmosphere">
       <p className="pf-eyebrow">Backend engineering / in focus</p>
       <h3>Code with intent.</h3>
-      <ScrollExpand
-        inline
-        reverse
-        mediaType="content"
-        startWidth={82}
-        startHeight={82}
-        startRadius={24}
-        endRadius={24}
-        mediaZoom={1}
-        scrollDistance={0.5}
-        holdDistance={0}
-        smoothing={0.08}
-        overlayScrim={0}
-        useWindowScroll
-      >
+      <div className="pf-code-frame">
         <div className="pf-code">{content}</div>
-      </ScrollExpand>
+      </div>
       <div className="pf-code-stack">
         {["Java", "Spring Boot", "PostgreSQL"]
           .map((name) => skills.find((skill) => skill.name === name))
@@ -724,18 +713,19 @@ export default function Portfolio({ data, entered = true }) {
 
   const [overlay, setOverlay] = useState(false);
   useEffect(() => {
-    const key = window.location.hash.slice(1);
-    if (
-      !data.sections.some((section) => section.visible && section.key === key)
-    )
-      return;
-    const frame = requestAnimationFrame(() =>
-      document
-        .getElementById(key)
-        ?.scrollIntoView({ block: "start", behavior: "instant" }),
-    );
-    return () => cancelAnimationFrame(frame);
-  }, [data.sections]);
+    if (!entered) return;
+    const align = () => {
+      const key = window.location.hash.slice(1);
+      if (data.sections.some((section) => section.visible && section.key === key))
+        scrollToPortfolioSection(key, "instant");
+    };
+    window.addEventListener("popstate", align);
+    window.addEventListener("hashchange", align);
+    return () => {
+      window.removeEventListener("popstate", align);
+      window.removeEventListener("hashchange", align);
+    };
+  }, [data.sections, entered]);
 
   const renderers = {
     about: () =>
@@ -763,10 +753,10 @@ export default function Portfolio({ data, entered = true }) {
 
         overlay={overlay}
       />
-      <div ref={motionRoot} className="pf-scroll-world">
+      <div ref={motionRoot} className="pf-scroll-world" inert={!entered}>
       {data.sections
-        .filter((s) => s.visible)
-        .toSorted((a, b) => a.order - b.order)
+        .filter((s) => s.visible && Object.hasOwn(renderers, s.key))
+        .toSorted((a, b) => Number(b.key === "about") - Number(a.key === "about") || Number(a.key === "contact") - Number(b.key === "contact") || a.order - b.order)
         .map((s, index) => (
           <div
             key={s.key}

@@ -37,9 +37,7 @@ export default function Home() {
         </>
       )}
       {status === "ready" && (
-        <div className="pf-page-reveal" data-visible={revealing || entered} inert={!revealing && !entered}>
-          <Portfolio data={data} entered={entered} />
-        </div>
+        <Portfolio data={data} entered={revealing || entered} />
       )}
       {!entered && (
         <Preloader
