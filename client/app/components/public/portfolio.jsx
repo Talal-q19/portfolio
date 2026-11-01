@@ -10,8 +10,8 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
 import ScrollExpand from "./effects/ScrollExpand";
-import HeroWorld from "./hero-world";
 import { useScrollWorld } from "./scroll-world";
+import SectionScenery from "./section-scenery";
 import LogoLoop from "./effects/LogoLoop";
 import PortraitLanyard from "./portrait-lanyard";
 import PreviewDialog from "./dialog";
@@ -70,11 +70,11 @@ export function SocialLinks({ settings }) {
     </div>
   );
 }
-function Heading({ section, number, fallback }) {
+function Heading({ section, fallback }) {
   return (
     <header className="pf-heading">
       <p className="pf-eyebrow">
-        {String(number).padStart(2, "0")} / {section.eyebrow || fallback}
+        {section.eyebrow || fallback}
       </p>
       <h2>{section.heading || fallback}</h2>
       {section.introduction && <p>{section.introduction}</p>}
@@ -200,9 +200,7 @@ function Hero({ data, policy, entered }) {
   const { hero, personalData: personal, settings } = data;
   const words = hero.heading?.split(" ") || [];
   return (
-    <>
     <section className="pf-section pf-hero">
-      <HeroWorld entered={entered} />
       <div className="pf-hero-intro">
         <p className="pf-eyebrow">
           <strong className="pf-hero-name">{personal.name}</strong>
@@ -239,22 +237,13 @@ function Hero({ data, policy, entered }) {
 
         <SocialLinks settings={settings} />
       </div>
-      <aside className="pf-world-caption" aria-hidden="true">
-        <span className="pf-world-label">ENGINEERING IN ANOTHER DIMENSION</span>
-        <span className="pf-world-index">01 — INFINITE POSSIBILITIES</span>
-        <span className="pf-world-scroll">SCROLL TO ROTATE <b>↓</b></span>
-      </aside>
-    </section>
-    <div className="pf-hero-console">
-      <p className="pf-console-label">UNDER THE SURFACE <span>↓ THE CODE BEHIND THE CRAFT</span></p>
       <CodeEditor
         hero={hero}
         policy={policy}
         entered={entered}
         skills={data.skillCategories.flatMap((group) => group.skills)}
       />
-    </div>
-    </>
+    </section>
   );
 }
 function Experience({ items, section, policy }) {
@@ -262,8 +251,9 @@ function Experience({ items, section, policy }) {
   const active = items.find((item) => item.id === selected) || items[0];
   return (
     <section className="pf-section pf-alternate">
+      <SectionScenery kind="experience" />
       <div className="pf-inner">
-        <Heading section={section} number={2} fallback="Experiences" />
+        <Heading section={section} fallback="Experiences" />
         {active ? (
           <div className="pf-experience-grid">
             <aside>
@@ -333,7 +323,8 @@ function Skills({ items, section }) {
   );
   return (
     <section className="pf-section">
-      <Heading section={section} number={3} fallback="Skills" />
+      <SectionScenery kind="skills" />
+      <Heading section={section} fallback="Skills" />
       <div className="pf-skills-bar">
         <div className="pf-pills" aria-label="Choose skill group">
           {items.map((group) => (
@@ -531,8 +522,9 @@ function Projects({ items, section, policy, onOverlay }) {
   );
   return (
     <section className="pf-section pf-projects">
+      <SectionScenery kind="projects" />
       <div className="pf-inner">
-        <Heading section={section} number={4} fallback="Projects" />
+        <Heading section={section} fallback="Projects" />
         {selected ? (
           <div className="pf-project-grid">
             <div className="pf-project-selection">
@@ -643,8 +635,9 @@ function Education({ items, section }) {
   const [active, setActive] = useState(null);
   return (
     <section className="pf-section pf-alternate">
+      <SectionScenery kind="education" />
       <div className="pf-inner">
-        <Heading section={section} number={5} fallback="Educations" />
+        <Heading section={section} fallback="Educations" />
         <div className="pf-education-grid">
           {items.map((item) => (
             <article className="pf-panel" key={item.id}>
@@ -694,7 +687,8 @@ function Contact({ data, section, policy }) {
   const p = data.personalData;
   return (
     <section className="pf-section">
-      <Heading section={section} number={6} fallback="Contact me" />
+      <SectionScenery kind="contact" />
+      <Heading section={section} fallback="Contact me" />
       <div className="pf-contact-grid">
         <div className="pf-contact-copy">
           <div className="pf-contact-details">
@@ -779,7 +773,6 @@ export default function Portfolio({ data, entered = true }) {
             id={s.key}
             className="pf-section-anchor"
             data-surface={index % 2 === 0 ? "primary" : "alternate"}
-            data-chapter={String(index + 1).padStart(2, "0")}
           >
             {renderers[s.key]?.(s)}
           </div>

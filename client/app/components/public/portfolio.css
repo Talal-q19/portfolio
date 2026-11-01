@@ -2323,7 +2323,7 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 }
 /* Immersive scene and scroll-driven 3D chapters. */
 .portfolio .pf-scroll-world {
-  background: #080b14;
+  background: color-mix(in srgb, var(--pf-bg) 94%, var(--pf-accent));
 }
 .portfolio .pf-scroll-world .pf-section-anchor {
   perspective: 1500px;
@@ -2333,19 +2333,11 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
   padding-block: 48px;
   position: relative;
 }
-.portfolio .pf-scroll-world .pf-section-anchor:not(#about)::before {
-  content: attr(data-chapter);
-  position: absolute;
-  top: 0;
-  right: 3vw;
-  font: 600 clamp(140px, 24vw, 360px)/1 var(--font-display), sans-serif;
-  color: #91a8ff0e;
-  pointer-events: none;
-}
 .portfolio .pf-scroll-world .pf-section-anchor:not(#about) .pf-section {
   position: relative;
+  isolation: isolate;
   border-block: 1px solid color-mix(in srgb, var(--pf-accent) 22%, transparent);
-  box-shadow: 0 50px 100px #0005;
+  box-shadow: 0 35px 90px color-mix(in srgb, var(--pf-text) 8%, transparent);
   backface-visibility: hidden;
 }
 .portfolio .pf-scroll-world .pf-heading h2 {
@@ -2361,123 +2353,84 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 .portfolio .pf-scroll-world .pf-hero {
   position: relative;
   isolation: isolate;
-  min-height: max(800px, calc(100svh - 88px));
-  padding-block: 64px 90px;
   perspective: 1200px;
-  background: #080b18;
-  --pf-text: #f1f4ff;
-  --pf-muted: #a5b2d0;
-  --pf-accent: #9bb5ff;
-  --pf-panel: #15213c;
-  --pf-alt: #16203a;
-  --pf-line: #819bdf45;
-  color: var(--pf-text);
-}
-.portfolio .pf-hero-world {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  overflow: hidden;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 78% 45%, #273e7750, transparent 60%), #080b18;
-}
-.portfolio .pf-hero-world canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.portfolio .pf-hero-world[data-failed="true"] canvas { display: none; }
-.portfolio .pf-world-fallback {
-  position: absolute;
-  width: 42vw;
-  aspect-ratio: 1;
-  top: 15%;
-  right: 3%;
-  border-radius: 50%;
-  background: radial-gradient(circle, #5a69df20, #9d6cff0b 45%, transparent 68%);
-  box-shadow: inset 0 0 100px #719bff15;
-}
-.portfolio .pf-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(90deg, #080b18eb, #080b1866 43%, transparent 65%), linear-gradient(0deg, #080b18, transparent 20%);
+  background: radial-gradient(ellipse at 80% 45%, color-mix(in srgb, var(--pf-accent) 7%, transparent), transparent 65%), var(--pf-bg);
 }
 .portfolio .pf-hero-intro {
   position: relative;
   transform-style: preserve-3d;
 }
-.portfolio .pf-hero h1 {
-  font-size: clamp(62px, 6.8vw, 108px);
-  line-height: 0.97;
-  max-width: 740px;
-}
-.portfolio .pf-hero h1 span {
-  color: #a4baff;
-  text-shadow: 0 0 55px #7595ff50;
-}
-.portfolio .pf-world-caption {
-  align-self: stretch;
-  position: relative;
-  min-height: 440px;
-  pointer-events: none;
-  font: 10px/1.6 monospace;
-  letter-spacing: 0.15em;
-  color: #9fb4de;
-}
-.portfolio .pf-world-label {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  border-top: 1px solid #9fb4de55;
-  padding-top: 12px;
-}
-.portfolio .pf-world-index { position: absolute; bottom: 80px; right: 0; }
-.portfolio .pf-world-scroll { position: absolute; bottom: 0; right: 0; display: flex; align-items: center; gap: 24px; }
-.portfolio .pf-world-scroll b { font-size: 36px; font-weight: 400; color: #e5eaff; }
-.portfolio .pf-hero-console {
-  padding: 32px max(32px, calc((100% - 1248px) / 2)) 72px;
-  background: #080b18;
-}
-.portfolio .pf-console-label {
-  display: flex;
-  justify-content: space-between;
-  color: #a5b2d0;
-  font: 10px/1.6 monospace;
-  letter-spacing: 0.12em;
-  border-top: 1px solid #819bdf45;
-  padding-top: 24px;
-}
-.portfolio .pf-hero-console .pf-atmosphere {
-  max-width: 950px;
-  margin: 36px auto 0;
+.portfolio .pf-hero > .pf-atmosphere {
   border: 1px solid var(--pf-line);
-  box-shadow: 0 25px 100px #455bca20;
+  box-shadow: 0 25px 80px color-mix(in srgb, var(--pf-accent) 10%, transparent);
 }
 @media (max-width: 899px) {
-  .portfolio .pf-scroll-world .pf-hero {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding-top: 300px;
-    min-height: 100svh;
-  }
-  .portfolio .pf-hero-world { max-height: 800px; }
-  .portfolio .pf-hero::after {
-    background: linear-gradient(0deg, #080b18 5%, #080b18d9 45%, transparent 80%);
-  }
-  .portfolio .pf-world-caption { min-height: 80px; margin-top: 24px; }
-  .portfolio .pf-world-label { top: auto; bottom: 54px; left: 0; right: auto; }
-  .portfolio .pf-world-index { display: none; }
-  .portfolio .pf-world-scroll { bottom: 0; left: 0; right: auto; }
-  .portfolio .pf-hero h1 { font-size: clamp(58px, 12vw, 88px); }
-  .portfolio .pf-hero-console { padding-inline: 24px; }
-  .portfolio .pf-console-label { gap: 24px; font-size: 8px; }
   .portfolio .pf-scroll-world .pf-section-anchor:not(#about) { padding-block: 24px; }
+}
+.portfolio .pf-section-scenery {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+  perspective: 900px;
+  --scenery-color: var(--pf-accent);
+  mask-image: linear-gradient(90deg, #0008, #000);
+}
+.portfolio .pf-section-scenery--skills,
+.portfolio .pf-section-scenery--education {
+  --scenery-color: var(--pf-lilac);
+}
+.portfolio .pf-scenery-glow {
+  position: absolute;
+  width: min(80vw, 1000px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--scenery-color) 15%, transparent), transparent 65%);
+}
+.portfolio .pf-scenery-glow--one { right: -15%; top: -45%; }
+.portfolio .pf-scenery-glow--two {
+  left: -20%;
+  bottom: -65%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--pf-lilac) 12%, transparent), transparent 65%);
+}
+.portfolio .pf-scenery-lines {
+  position: absolute;
+  width: max(850px, 85%);
+  height: 100%;
+  min-height: 650px;
+  right: -8%;
+  top: 0;
+  stroke: var(--scenery-color);
+  stroke-width: 1;
+  opacity: 0.23;
+}
+.portfolio .pf-scenery-lines circle {
+  fill: color-mix(in srgb, var(--scenery-color) 20%, transparent);
+}
+.portfolio .pf-scenery-plane {
+  position: absolute;
+  width: clamp(170px, 26vw, 400px);
+  aspect-ratio: 1;
+  right: 4%;
+  top: 12%;
+  border: 1px solid color-mix(in srgb, var(--scenery-color) 20%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--scenery-color) 8%, transparent), transparent 65%);
+  transform: rotateX(35deg) rotateY(-20deg) rotateZ(-25deg);
+}
+.portfolio .pf-scenery-plane--two { right: 12%; top: 28%; }
+.portfolio .pf-section-scenery--skills .pf-scenery-plane,
+.portfolio .pf-section-scenery--contact .pf-scenery-plane { border-radius: 50%; }
+.portfolio .pf-section-scenery--education .pf-scenery-plane { right: 1%; top: 3%; }
+.portfolio .pf-scroll-world :is(.pf-panel, .pf-project-card) {
+  border: 1px solid color-mix(in srgb, var(--pf-accent) 20%, var(--pf-line));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--pf-accent) 4%, transparent), transparent 55%), var(--pf-panel);
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--pf-accent) 5%, transparent);
+}
+@media (max-width: 899px) {
+  .portfolio .pf-scenery-lines { right: -55%; opacity: 0.18; }
+  .portfolio .pf-scenery-glow { width: 120vw; }
+  .portfolio .pf-scenery-plane { right: -15%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pf-lanyard-overlay {
