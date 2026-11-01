@@ -1,12 +1,13 @@
 "use client";
 
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollWorld(root, entered, sections) {
+  const heroPlayed = useRef(false);
   useLayoutEffect(() => {
     if (!entered || !root.current) return;
     const media = gsap.matchMedia();
@@ -15,16 +16,17 @@ export function useScrollWorld(root, entered, sections) {
       const q = gsap.utils.selector(root.current);
       const desktop = conditions.desktop;
       const hero = q(".pf-hero")[0];
-      if (hero) {
-        gsap.from(q(".pf-hero-intro > :not(.pf-identity)"), {
+      if (hero && !heroPlayed.current) {
+        const entrance = gsap.timeline({ onComplete: () => { heroPlayed.current = true; } });
+        entrance.from(q(".pf-hero-intro > :not(.pf-identity)"), {
           y: 22, opacity: 0, stagger: 0.08,
           duration: 0.95, ease: "power2.out", clearProps: "transform,opacity",
-        });
-        gsap.from(q(".pf-hero > .pf-atmosphere"), {
+        }, 0);
+        entrance.from(q(".pf-hero > .pf-atmosphere"), {
           y: 18, opacity: 0,
-          duration: 1.05, delay: 0.18, ease: "power2.out",
+          duration: 1.05, ease: "power2.out",
           clearProps: "transform,opacity",
-        });
+        }, 0.18);
       }
       const arrivals = new Map();
       const entrances = new Map();
@@ -57,7 +59,7 @@ export function useScrollWorld(root, entered, sections) {
         entrances.set(anchor.id, sequence);
         const reveal = (selector, from, at) => {
           const targets = anchor.querySelectorAll(selector);
-          if (targets.length) sequence.from(targets, { opacity: 0, ...from }, at);
+          if (targets.length) sequence.from(targets, from, at);
         };
         reveal(".pf-heading > *", { y: 22, stagger: 0.09 }, 0);
         if (anchor.id === "experience") {

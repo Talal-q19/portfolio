@@ -86,8 +86,9 @@ function Heading({ section, fallback }) {
 function CodeEditor({ hero, skills, typingReady }) {
   const [tab, setTab] = useState(0);
   const [typed, setTyped] = useState(0);
-  const [replay, setReplay] = useState(0);
   const [typing, setTyping] = useState(true);
+  const editor = useRef(null);
+  const progress = useRef(0);
   const reducedMotion = useReducedMotion();
 
   const panel = hero.panels?.[tab] || hero.panels?.[0];
@@ -98,10 +99,11 @@ function CodeEditor({ hero, skills, typingReady }) {
   );
   useEffect(() => {
     if (!typingReady || !typing || reducedMotion) return;
-    let characters = 0;
+    let characters = progress.current;
     const tick = () => {
       if (!document.hidden) {
         characters = Math.min(count, characters + 3);
+        progress.current = characters;
         setTyped(characters);
       }
       if (characters >= count) {
@@ -110,8 +112,17 @@ function CodeEditor({ hero, skills, typingReady }) {
       }
     };
     const timer = setInterval(tick, 30);
-    return () => clearInterval(timer);
-  }, [tab, count, replay, typingReady, typing, reducedMotion]);
+    // Leaving the hero finishes the startup effect, so returning always shows
+    // the complete code, even if the user scrolls away while it is still typing.
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) {
+        clearInterval(timer);
+        setTyping(false);
+      }
+    });
+    observer.observe(editor.current.closest("section"));
+    return () => { clearInterval(timer); observer.disconnect(); };
+  }, [count, typingReady, typing, reducedMotion]);
   let consumed = 0;
   const content = (
     <>
@@ -122,10 +133,8 @@ function CodeEditor({ hero, skills, typingReady }) {
             key={p.title}
             aria-pressed={tab === i}
             onClick={() => {
-              setTyped(0);
-              setTyping(true);
+              setTyping(false);
               setTab(i);
-              setReplay((value) => value + 1);
             }}
           >
             {p.title}
@@ -155,22 +164,13 @@ function CodeEditor({ hero, skills, typingReady }) {
         </pre>
       </div>
       <div className="pf-code-status">
-        <button
-          type="button"
-          onClick={() => {
-            setTyped(0);
-            setTyping(true);
-            setReplay((value) => value + 1);
-          }}
-        >
-          Replay typing ↻
-        </button>
+        <span>Read only</span>
         <span>⌘ · UTF-8</span>
       </div>
     </>
   );
   return (
-    <div className="pf-atmosphere">
+    <div ref={editor} className="pf-atmosphere">
       <p className="pf-eyebrow">Backend engineering / in focus</p>
       <h3>Code with intent.</h3>
       <div className="pf-code-frame">
