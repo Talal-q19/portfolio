@@ -14,6 +14,29 @@ class MemoryStore {
   async put(kind, id, value, seconds) { this.values.set(`${kind}:${id}`, { value: structuredClone(value), until: this.now + seconds * 1000 }); }
   async get(kind, id) { const item = this.values.get(`${kind}:${id}`); return item && item.until > this.now ? structuredClone(item.value) : null; }
   async remove(kind, id) { this.values.delete(`${kind}:${id}`); }
+  async attempts(kind, id, action = 'status', seconds = kind === 'password' ? 86400 : 300) {
+    const key = `attempts:${kind}:${id}`;
+    let item = this.values.get(key);
+    if (item && item.until <= this.now) { this.values.delete(key); item = null; }
+    let failed = item?.value || 0;
+    if (failed < 5) {
+      if (action === 'clear') { this.values.delete(key); failed = 0; }
+      if (action === 'fail') {
+        failed++;
+        this.values.set(key, { value: failed, until: failed === 1 || failed === 5 ? this.now + seconds * 1000 : item.until });
+      }
+    }
+    return { kind, failed, limit: 5, blocked: failed >= 5, retryAfterSeconds: failed >= 5 ? Math.max(1, Math.ceil((this.values.get(key).until - this.now) / 1000)) : 0 };
+  }
+  async verifyOtp(id, proof, purpose, accountId) {
+    const data = await this.get('otp', id);
+    if (!data || data.id !== accountId || data.purpose !== purpose) return {};
+    const attempts = await this.attempts('otp', accountId);
+    if (attempts.blocked) return { attempts };
+    if (data.proof !== proof) return { attempts: await this.attempts('otp', accountId, 'fail') };
+    await this.remove('otp', id);
+    return { data, attempts: await this.attempts('otp', accountId, 'clear') };
+  }
   async consume(kind, id, proof) {
     const value = await this.get(kind, id);
     if (!value) return null;
@@ -83,18 +106,61 @@ test('password reset requires reset-purpose OTP and one-use grant and revokes al
   await assert.rejects(f.auth.verifyAccess(tokens.access)); await assert.rejects(f.auth.refresh(tokens.refresh));
   await assert.rejects(f.auth.reset({ resetToken: grant.resetToken, password: 'another-password' }));
 });
-test('blocked admins cannot login, verify pending codes, refresh or access; forgot does not disclose accounts', async () => {
+test('blocked admins receive a backend block message on login and recovery', async () => {
   const f = await fixture(); const tokens = await f.login(); const pending = await f.challenge(); f.admin.blocked = true;
   await assert.rejects(f.challenge()); await assert.rejects(f.auth.verifyAccess(tokens.access)); await assert.rejects(f.auth.refresh(tokens.refresh));
   await assert.rejects(f.auth.verifyLogin({ challengeId: pending.challengeId, code: f.mail.at(-1).code }));
   const count = f.mail.length;
-  const a = await f.auth.forgot({ email: f.admin.email }), b = await f.auth.forgot({ email: 'unknown@example.com' });
-  assert.equal(a.message, b.message); assert.equal(f.mail.length, count);
+  await assert.rejects(f.auth.forgot({ email: f.admin.email }), error => error.status === 403 && /account is blocked/.test(error.message));
+  await f.auth.forgot({ email: 'unknown@example.com' }); assert.equal(f.mail.length, count);
 });
-test('account rate limiting is independent of IP and does not permanently block the admin', async () => {
+test('five wrong passwords report counters and lock for a full day, without extending on retries', async () => {
   const f = await fixture();
-  for (let i = 0; i < 5; i++) await assert.rejects(f.auth.login({ username: 'owner', password: 'wrong' }));
-  await assert.rejects(f.challenge(), error => error.status === 429); assert.equal(f.admin.blocked, false);
+  for (let i = 1; i <= 5; i++) {
+    await assert.rejects(f.auth.login({ username: 'owner', password: 'wrong' }), error => error.attempts.failed === i && error.attempts.blocked === (i === 5));
+    f.store.now += 1000;
+  }
+  await assert.rejects(f.challenge(), error => error.status === 429 && error.attempts.retryAfterSeconds === 86399);
+  await assert.rejects(f.auth.forgot({ email: f.admin.email }), error => error.attempts.kind === 'password');
+  assert.equal(f.admin.blocked, false);
+  f.store.now += 86400000;
+  await f.challenge();
+});
+test('successful passwords reset consecutive failure counts', async () => {
+  const f = await fixture();
+  await assert.rejects(f.auth.login({ username: 'OWNER', password: 'wrong' }), error => error.attempts.failed === 1);
+  await f.challenge();
+  await assert.rejects(f.auth.login({ username: 'owner', password: 'wrong' }), error => error.attempts.failed === 1);
+});
+test('OTP failures are counted across challenges and lock login and recovery for five minutes', async () => {
+  const f = await fixture();
+  const a = await f.challenge(), first = f.mail.at(-1).code;
+  const b = await f.challenge(), second = f.mail.at(-1).code;
+  let wrong = '000000';
+  while ([first, second].includes(wrong)) wrong = String(Number(wrong) + 1).padStart(6, '0');
+  for (let i = 1; i <= 5; i++) await assert.rejects(f.auth.verifyLogin({ challengeId: i % 2 ? a.challengeId : b.challengeId, code: wrong }), error => error.attempts.failed === i);
+  await assert.rejects(f.auth.verifyLogin({ challengeId: b.challengeId, code: second }), error => error.attempts.blocked && error.attempts.retryAfterSeconds === 300);
+  await assert.rejects(f.challenge(), error => error.attempts.kind === 'otp');
+  await assert.rejects(f.auth.forgot({ email: f.admin.email }), error => error.attempts.kind === 'otp');
+  f.store.now += 300001;
+  const c = await f.challenge();
+  await f.auth.verifyLogin({ challengeId: c.challengeId, code: f.mail.at(-1).code });
+});
+test('successful OTP verification resets the OTP failure counter', async () => {
+  const f = await fixture(); const a = await f.challenge(), code = f.mail.at(-1).code;
+  await assert.rejects(f.auth.verifyLogin({ challengeId: a.challengeId, code: '' }), error => error.attempts.failed === 1);
+  await f.auth.verifyLogin({ challengeId: a.challengeId, code });
+  const b = await f.challenge();
+  await assert.rejects(f.auth.verifyLogin({ challengeId: b.challengeId, code: '' }), error => error.attempts.failed === 1);
+});
+test('HTTP failure metadata and Retry-After use the actual password lock duration', async () => {
+  const f = await fixture(); const app = createApp(config, { auth: f.auth, sendEmail: async () => {} });
+  for (let i = 1; i <= 5; i++) {
+    const result = await request(app).post('/api/admin/auth/login').set('X-Admin-Request', '1').send({ username: 'owner', password: 'wrong' });
+    assert.equal(result.body.attempts.failed, i); assert.equal(result.body.attempts.limit, 5);
+    assert.equal(result.status, i === 5 ? 429 : 401);
+    if (i === 5) { assert.equal(result.headers['retry-after'], '86400'); assert.match(result.body.message, /1 day/); }
+  }
 });
 test('HTTP cookies, CSRF, management authorization, logout and fail-closed dependencies', async () => {
   const f = await fixture();

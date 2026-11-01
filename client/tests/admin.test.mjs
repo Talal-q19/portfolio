@@ -28,6 +28,14 @@ test('multipart upload leaves boundary generation to the browser', async () => {
   await createAdminApi(async (url, options) => { assert.equal(options.body, body); assert.equal(options.headers['Content-Type'], undefined); assert.equal(options.headers['X-Admin-Request'], '1'); return { ok: true, json: async () => ({ items: [] }) }; })('media', { method: 'POST', body });
 });
 
+test('backend failure counters and block messages are preserved for the login form', async () => {
+  const attempts = { kind: 'otp', failed: 5, limit: 5, blocked: true, retryAfterSeconds: 300 };
+  const api = createAdminApi(async () => ({ ok: false, status: 429, json: async () => ({ message: 'Account blocked for 5 minutes.', attempts }) }));
+  await assert.rejects(api('auth/login/verify', { method: 'POST', body: {} }), error => {
+    assert.deepEqual(error.attempts, attempts); assert.equal(error.message, 'Account blocked for 5 minutes.'); return true;
+  });
+});
+
 test('concurrent expired requests share refresh and retry once with the original payload', async () => {
   let refreshed = false, refreshes = 0;
   const api = createAdminApi(async (url, options) => {

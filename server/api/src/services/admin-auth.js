@@ -25,8 +25,28 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
   }
   async function eligible(id, version) {
     const admin = await repository.byId(id);
-    if (!admin || admin.blocked || admin.token_version !== version) throw invalid();
+    if (!admin || admin.token_version !== version) throw invalid();
+    await checkAccount(admin);
     return admin;
+  }
+  function attemptError(state) {
+    const duration = state.kind === 'password' ? '1 day' : '5 minutes';
+    const message = state.blocked
+      ? `Your account is temporarily blocked after 5 incorrect ${state.kind === 'password' ? 'passwords' : 'verification codes'}. The block lasts ${duration}. Try again in ${state.retryAfterSeconds} seconds.`
+      : state.kind === 'password' ? 'Incorrect username or password.' : 'Incorrect verification code.';
+    const error = new HttpError(state.blocked ? 429 : 401, message);
+    error.attempts = state;
+    return error;
+  }
+  async function checkAttempts(kind, id, action = 'status') {
+    const state = await store.attempts(kind, id, action);
+    if (state.blocked) throw attemptError(state);
+    return state;
+  }
+  async function checkAccount(admin) {
+    if (admin.blocked) throw new HttpError(403, 'Your account is blocked. Contact the administrator.');
+    await checkAttempts('password', admin.username);
+    await checkAttempts('otp', admin.id);
   }
   async function limit(id, max = 5, seconds = 900) {
     if (!await store.limit(id, max, seconds)) throw new HttpError(429, 'Too many attempts. Try again in 15 minutes.');
@@ -34,6 +54,7 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
   async function challenge(admin, purpose) {
     const challengeId = opaque();
     if (admin && !admin.blocked) {
+      await checkAccount(admin);
       const code = String(randomInt(0, 1000000)).padStart(6, '0');
       await store.put('otp', challengeId, { proof: proof(challengeId, code), purpose, id: admin.id, version: admin.token_version }, 300);
       try { await sendOtp({ email: admin.email, code, purpose }); }
@@ -42,10 +63,17 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
     return { challengeId, expiresIn: 300, message: 'If the account is eligible, a verification code has been sent.' };
   }
   async function verifyOtp(challengeId, code, purpose) {
-    if (typeof challengeId !== 'string' || !/^[a-f0-9]{64}$/.test(challengeId) || typeof code !== 'string' || !/^\d{6}$/.test(code)) throw invalid();
-    const data = await store.consume('otp', challengeId, proof(challengeId, code));
-    if (!data || data.purpose !== purpose) throw invalid();
-    return eligible(data.id, data.version);
+    if (typeof challengeId !== 'string' || !/^[a-f0-9]{64}$/.test(challengeId)) throw invalid();
+    const challengeData = await store.get('otp', challengeId);
+    if (!challengeData || challengeData.purpose !== purpose) throw new HttpError(401, 'Verification code expired or already used. Request a new code.');
+    await eligible(challengeData.id, challengeData.version);
+    const validFormat = typeof code === 'string' && /^\d{6}$/.test(code);
+    const result = await store.verifyOtp(challengeId, validFormat ? proof(challengeId, code) : '', purpose, challengeData.id);
+    if (!result.data) {
+      if (result.attempts) throw attemptError(result.attempts);
+      throw new HttpError(401, 'Verification code expired or already used. Request a new code.');
+    }
+    return eligible(result.data.id, result.data.version);
   }
   async function tokens(admin, sid = randomUUID()) {
     const refresh = sign(admin, sid, 'refresh', REFRESH_SECONDS);
@@ -55,13 +83,16 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
   }
   return {
     limit,
-    async login({ username, password }, ip) {
+    async login({ username, password }) {
       const user = normalize(username);
       if (!user || user.length > 80 || typeof password !== 'string' || Buffer.byteLength(password) > 256) throw invalid();
-      await limit(`login:${user}`);
+      await checkAttempts('password', user);
       const admin = await repository.byUsername(user);
+      if (admin) await checkAccount(admin);
       const valid = await verifyPassword(password, admin?.password_hash || await dummyHash);
-      if (!valid || !admin || admin.blocked) throw invalid();
+      if (!valid || !admin) throw attemptError(await store.attempts('password', user, 'fail'));
+      await checkAttempts('password', user, 'clear');
+      await limit(`login-code:${user}`);
       return challenge(admin, 'login');
     },
     async verifyLogin(body) { return tokens(await verifyOtp(body.challengeId, body.code, 'login')); },
@@ -69,7 +100,9 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
       const address = normalize(email);
       if (!address || address.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) throw new HttpError(422, 'Enter a valid email address.');
       await limit(`forgot:${address}`);
-      return challenge(await repository.byEmail(address), 'reset');
+      const admin = await repository.byEmail(address);
+      if (admin) await checkAccount(admin);
+      return challenge(admin, 'reset');
     },
     async verifyReset(body) {
       const admin = await verifyOtp(body.challengeId, body.code, 'reset');

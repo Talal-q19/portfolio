@@ -14,6 +14,8 @@ function errorHandler(error, req, res, next) {
   const message = status === 413 ? 'Request body is too large.'
     : status === 400 ? 'Invalid request body.'
     : error instanceof HttpError ? error.message : (req.path === '/api/contact' ? 'Failed to send message.' : 'The request could not be completed.');
-  res.status(status).json({ success: false, message, ...(error.fields ? { fields: error.fields } : {}) });
+  if (status === 429) res.set('Retry-After', String(error.attempts?.retryAfterSeconds || 900));
+  res.status(status).json({ success: false, message, ...(error.fields ? { fields: error.fields } : {}),
+    ...(error instanceof HttpError && error.attempts ? { attempts: error.attempts } : {}) });
 }
 module.exports = { HttpError, errorHandler };

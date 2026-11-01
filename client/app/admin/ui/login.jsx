@@ -14,28 +14,29 @@ export function AdminLogin({ onSuccess }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [attempts, setAttempts] = useState(null);
   const otp = step === 'login-otp' || step === 'reset-otp';
-  function restart(next) { setStep(next); setError(''); setNotice(''); setPassword(''); setConfirm(''); setCode(''); setChallenge(''); setResetToken(''); }
+  function restart(next) { setStep(next); setError(''); setNotice(''); setAttempts(null); setPassword(''); setConfirm(''); setCode(''); setChallenge(''); setResetToken(''); }
   async function submit(event) {
     event.preventDefault(); setBusy(true); setError(''); setNotice('');
     try {
       if (step === 'login') {
         const result = await api('auth/login', { method: 'POST', body: { username, password } });
-        setChallenge(result.challengeId); setPassword(''); setStep('login-otp'); setNotice('Check your admin email. The code expires in 5 minutes.');
+        setAttempts(null); setChallenge(result.challengeId); setPassword(''); setStep('login-otp'); setNotice('Check your admin email. The code expires in 5 minutes.');
       } else if (step === 'login-otp') {
         await api('auth/login/verify', { method: 'POST', body: { challengeId: challenge, code } }); onSuccess();
       } else if (step === 'forgot') {
         const result = await api('auth/forgot-password', { method: 'POST', body: { email } });
-        setChallenge(result.challengeId); setStep('reset-otp'); setNotice(result.message + ' The code expires in 5 minutes.');
+        setAttempts(null); setChallenge(result.challengeId); setStep('reset-otp'); setNotice(result.message + ' The code expires in 5 minutes.');
       } else if (step === 'reset-otp') {
         const result = await api('auth/forgot-password/verify', { method: 'POST', body: { challengeId: challenge, code } });
-        setResetToken(result.resetToken); setCode(''); setStep('password');
+        setAttempts(null); setResetToken(result.resetToken); setCode(''); setStep('password');
       } else {
         if (password !== confirm) throw new Error('Passwords must match.');
         await api('auth/reset-password', { method: 'POST', body: { resetToken, password } });
         restart('login'); setNotice('Password changed. Sign in with your new password.');
       }
-    } catch (e) { setError(e.message); }
+    } catch (e) { setError(e.message); setAttempts(e.attempts || null); }
     finally { setBusy(false); }
   }
   return <section className="admin-panel admin-auth" aria-label="Administrator authentication">
@@ -48,6 +49,7 @@ export function AdminLogin({ onSuccess }) {
       {step === 'password' && <label>Confirm password<input type="password" autoComplete="new-password" required minLength={8} maxLength={256} value={confirm} onChange={e => setConfirm(e.target.value)} /></label>}
       {otp && <label>Verification code<input autoFocus inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" minLength={6} maxLength={6} required value={code} onChange={e => setCode(e.target.value.replace(/\D/g, ''))} /></label>}
       {error && <p role="alert" className="admin-note">{error}</p>}{notice && <p role="status" className="admin-note">{notice}</p>}
+      {attempts && <p role="status" className="admin-note">{attempts.kind === 'password' ? 'Password' : 'OTP'} failed attempts: <strong>{attempts.failed}/{attempts.limit}</strong>{attempts.blocked ? ' — Account temporarily blocked.' : ''}</p>}
       <button className="admin-primary" disabled={busy}>{busy ? 'Please wait…' : otp ? 'Verify code' : step === 'password' ? 'Change password' : step === 'forgot' ? 'Send code' : 'Continue'}</button>
       <button type="button" disabled={busy} onClick={() => restart(step === 'login' ? 'forgot' : 'login')}>{step === 'login' ? 'Forgot password?' : 'Back to sign in'}</button>
       {otp && <p className="admin-muted">Code expired? Go back and request a new one.</p>}

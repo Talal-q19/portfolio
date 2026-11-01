@@ -1,5 +1,5 @@
 export class AdminApiError extends Error {
-  constructor(message, status = 0, fields = {}) { super(message); this.status = status; this.fields = fields; }
+  constructor(message, status = 0, fields = {}, attempts) { super(message); this.status = status; this.fields = fields; this.attempts = attempts; }
 }
 
 export function createAdminApi(fetchImpl = fetch) {
@@ -30,7 +30,7 @@ export function createAdminApi(fetchImpl = fetch) {
         if (await refreshing) response = await fetchImpl(`/api/admin/${path}`, options);
       }
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new AdminApiError(response.status === 401 && !path.startsWith('auth/') ? 'Your session has expired. Sign in again. Your open form has been preserved.' : data.message || 'The request failed. Please retry.', response.status, data.fields);
+      if (!response.ok) throw new AdminApiError(response.status === 401 && !path.startsWith('auth/') ? 'Your session has expired. Sign in again. Your open form has been preserved.' : data.message || 'The request failed. Please retry.', response.status, data.fields, data.attempts);
       return data;
     } catch (error) {
       if (error instanceof AdminApiError) throw error;
