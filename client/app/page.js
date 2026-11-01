@@ -37,7 +37,7 @@ export default function Home() {
         </>
       )}
       {status === "ready" && (
-        <Portfolio data={data} entered={revealing || entered} />
+        <Portfolio data={data} entered={revealing || entered} typingReady={entered} />
       )}
       {!entered && (
         <Preloader

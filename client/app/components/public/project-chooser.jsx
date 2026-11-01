@@ -63,7 +63,11 @@ export default function ProjectChooser({ projects, selected, onSelect }) {
       <summary aria-label={`Choose project: ${selected.name}`}>
         <span>
           <small>Choose project</small>
-          <strong>{selected.name}</strong>
+          <span className="pf-choice-stack">
+            {projects.map((project) => (
+              <strong key={project.id} className="pf-choice-pane" data-active={project.id === selected.id} aria-hidden={project.id !== selected.id}>{project.name}</strong>
+            ))}
+          </span>
         </span>
         <span aria-hidden="true" className="pf-chooser-chevron">
           ⌄

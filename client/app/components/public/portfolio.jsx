@@ -23,6 +23,7 @@ import {
   useMotionPolicy,
 } from "./motion";
 import ContactForm from "../homepage/contact/contact-form";
+import { useReducedMotion } from "../../hooks/use-reduced-motion";
 
 function Media({ src, alt, className = "", ...rest }) {
   return src ? (
@@ -82,11 +83,12 @@ function Heading({ section, fallback }) {
   );
 }
 
-function CodeEditor({ hero, policy, skills, entered }) {
+function CodeEditor({ hero, skills, typingReady }) {
   const [tab, setTab] = useState(0);
   const [typed, setTyped] = useState(0);
   const [replay, setReplay] = useState(0);
-  const [typing, setTyping] = useState(false);
+  const [typing, setTyping] = useState(true);
+  const reducedMotion = useReducedMotion();
 
   const panel = hero.panels?.[tab] || hero.panels?.[0];
   const count = (panel?.lines || []).reduce(
@@ -95,18 +97,21 @@ function CodeEditor({ hero, policy, skills, entered }) {
     0,
   );
   useEffect(() => {
-    if (!entered || !typing || !policy.desktop) return;
+    if (!typingReady || !typing || reducedMotion) return;
     let characters = 0;
     const tick = () => {
       if (!document.hidden) {
         characters = Math.min(count, characters + 3);
         setTyped(characters);
       }
-      if (characters >= count) clearInterval(timer);
+      if (characters >= count) {
+        clearInterval(timer);
+        setTyping(false);
+      }
     };
     const timer = setInterval(tick, 30);
     return () => clearInterval(timer);
-  }, [tab, count, replay, entered, typing, policy.desktop]);
+  }, [tab, count, replay, typingReady, typing, reducedMotion]);
   let consumed = 0;
   const content = (
     <>
@@ -120,6 +125,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
               setTyped(0);
               setTyping(true);
               setTab(i);
+              setReplay((value) => value + 1);
             }}
           >
             {p.title}
@@ -138,7 +144,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
                     key={j}
                     className={`pf-token-${token.tone || "default"}`}
                   >
-                    {typing && policy.desktop
+                    {typing && !reducedMotion
                       ? (token.text || "").slice(0, Math.max(0, typed - start))
                       : token.text}
                   </span>
@@ -185,7 +191,7 @@ function CodeEditor({ hero, policy, skills, entered }) {
     </div>
   );
 }
-function Hero({ data, policy, entered }) {
+function Hero({ data, policy, entered, typingReady }) {
   const { hero, personalData: personal, settings } = data;
   const words = hero.heading?.split(" ") || [];
   return (
@@ -228,8 +234,7 @@ function Hero({ data, policy, entered }) {
       </div>
       <CodeEditor
         hero={hero}
-        policy={policy}
-        entered={entered}
+        typingReady={typingReady}
         skills={data.skillCategories.flatMap((group) => group.skills)}
       />
     </section>
@@ -265,25 +270,29 @@ function Experience({ items, section, policy }) {
               </div>
               <ExperienceThreads policy={policy} />
             </aside>
-            <article id="pf-career" className="pf-panel" aria-live="polite">
+            <div id="pf-career" className="pf-choice-stack pf-experience-details" aria-live="polite">
+            {items.map((item) => (
+            <article key={item.id} className="pf-panel pf-choice-pane" data-active={item.id === active.id} aria-hidden={item.id !== active.id} inert={item.id !== active.id}>
               <p className="pf-meta">
-                {active.duration}
-                {active.location &&
-                  !active.duration?.includes(active.location) &&
-                  ` · ${active.location}`}
+                {item.duration}
+                {item.location &&
+                  !item.duration?.includes(item.location) &&
+                  ` · ${item.location}`}
               </p>
-              <h3>{active.title}</h3>
-              <p className="pf-accent">{active.company}</p>
-              {active.description &&
-                !active.highlights?.includes(active.description) && (
-                  <p>{active.description}</p>
+              <h3>{item.title}</h3>
+              <p className="pf-accent">{item.company}</p>
+              {item.description &&
+                !item.highlights?.includes(item.description) && (
+                  <p>{item.description}</p>
                 )}
               <ul>
-                {active.highlights?.filter(Boolean).map((text, i) => (
+                {item.highlights?.filter(Boolean).map((text, i) => (
                   <li key={i}>{text}</li>
                 ))}
               </ul>
             </article>
+            ))}
+            </div>
           </div>
         ) : (
           <p>No published experience yet.</p>
@@ -297,9 +306,6 @@ function Skills({ items, section }) {
   const [all, setAll] = useState(false);
   const [paused, setPaused] = useState(false);
   const active = items.find((item) => item.id === selected) || items[0];
-  const skills = active?.skills || [];
-  const rowCount = Math.ceil(skills.length / 6);
-  const rowSize = Math.ceil(skills.length / Math.max(1, rowCount));
   const list = (group) => (
     <div className="pf-skills">
       {group.skills?.map((skill) => (
@@ -337,17 +343,25 @@ function Skills({ items, section }) {
       </div>
       {active && (
         <>
-          <p className="pf-eyebrow">{active.eyebrow || active.name}</p>
-          {active.description &&
-            !active.highlights?.includes(active.description) && (
-              <p>{active.description}</p>
+          <div className="pf-choice-stack pf-skills-content">
+          {items.map((group) => {
+            const isActive = group.id === active.id;
+            const rowCount = Math.ceil((group.skills?.length || 0) / 6);
+            const rowSize = Math.ceil((group.skills?.length || 0) / Math.max(1, rowCount));
+            return (
+          <div key={group.id} className="pf-choice-pane" data-active={isActive} aria-hidden={!isActive} inert={!isActive}>
+          <p className="pf-eyebrow">{group.eyebrow || group.name}</p>
+          {group.description &&
+            !group.highlights?.includes(group.description) && (
+              <p>{group.description}</p>
             )}
-          <div className="pf-skill-loops" key={active.id}>
+          <div className="pf-skill-loops">
             {Array.from({ length: rowCount }, (_, row) => (
+              isActive ? (
               <LogoLoop
                 key={row}
                 className="pf-skill-loop-row"
-                logos={active.skills
+                logos={group.skills
                   .slice(row * rowSize, row * rowSize + rowSize)
                   .map((skill) => ({
                     src: skill.icon,
@@ -363,9 +377,14 @@ function Skills({ items, section }) {
                 pauseOnHover
                 draggable={false}
                 intro={false}
-                ariaLabel={`${active.title}, skills row ${row + 1}`}
+                ariaLabel={`${group.title}, skills row ${row + 1}`}
               />
+              ) : <div key={row} className="pf-skill-loop-row" />
             ))}
+          </div>
+          </div>
+            );
+          })}
           </div>
           <button
             type="button"
@@ -551,7 +570,11 @@ function Projects({ items, section, policy, onOverlay }) {
                 {String(index + 1).padStart(2, "0")} /{" "}
                 {String(items.length).padStart(2, "0")} · Selected project
               </p>
-              <p>{selected.name}</p>
+              <div className="pf-choice-stack pf-project-name" aria-live="polite">
+                {items.map((project) => (
+                  <p key={project.id} className="pf-choice-pane" data-active={project.id === selected.id} aria-hidden={project.id !== selected.id} inert={project.id !== selected.id}>{project.name}</p>
+                ))}
+              </div>
               <div className="pf-carousel-controls">
                 <button
                   type="button"
@@ -574,30 +597,34 @@ function Projects({ items, section, policy, onOverlay }) {
                 </button>
               </div>
             </div>
-            <article
-              className="pf-project-card"
+            <div
+              className="pf-choice-stack pf-project-details"
               id="pf-selected-project"
               aria-label="Selected project details"
             >
-              <h3>{selected.name}</h3>
+            {items.map((project) => (
+            <article key={project.id} className="pf-project-card pf-choice-pane" data-active={project.id === selected.id} aria-hidden={project.id !== selected.id} inert={project.id !== selected.id}>
+              <h3>{project.name}</h3>
               <div className="pf-project-summary">
                 <Media
-                  src={selected.images?.[0]}
-                  alt={selected.gallery?.[0]?.alt || selected.name}
-                  className={selected.imageKind === "logo" ? "pf-logo" : ""}
+                  src={project.images?.[0]}
+                  alt={project.gallery?.[0]?.alt || project.name}
+                  className={project.imageKind === "logo" ? "pf-logo" : ""}
                 />
                 <div>
-                  <p>{selected.role}</p>
+                  <p>{project.role}</p>
                   <p className="pf-project-outcome">
-                    {selected.outcome || selected.description}
+                    {project.outcome || project.description}
                   </p>
-                  <p className="pf-eyebrow">{selected.status}</p>
+                  <p className="pf-eyebrow">{project.status}</p>
                   <button type="button" className="pf-primary" onClick={open}>
                     Preview ↗
                   </button>
                 </div>
               </div>
             </article>
+            ))}
+            </div>
           </div>
         ) : (
           <p>No published projects yet.</p>
@@ -706,7 +733,7 @@ function Contact({ data, section, policy }) {
     </section>
   );
 }
-export default function Portfolio({ data, entered = true }) {
+export default function Portfolio({ data, entered = true, typingReady = entered }) {
   const policy = useMotionPolicy();
   const motionRoot = useRef(null);
   useScrollWorld(motionRoot, entered, data.sections);
@@ -729,7 +756,7 @@ export default function Portfolio({ data, entered = true }) {
 
   const renderers = {
     about: () =>
-      data.hero && data.personalData && <Hero data={data} policy={policy} entered={entered} />,
+      data.hero && data.personalData && <Hero data={data} policy={policy} entered={entered} typingReady={typingReady} />,
     experience: (s) => (
       <Experience items={data.experiences} section={s} policy={policy} />
     ),

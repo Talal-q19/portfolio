@@ -47,9 +47,10 @@ export function useScrollWorld(root, entered, sections) {
           );
         }
         const sequence = gsap.timeline({
-          defaults: { duration: 0.5, ease: "power2.out" },
+          defaults: { duration: 0.65, ease: "power2.out" },
           scrollTrigger: {
-            trigger: anchor, start: "top 87%", once: true,
+            trigger: anchor, start: "top 87%", end: "bottom 13%",
+            toggleActions: "restart complete restart complete",
             fastScrollEnd: true, preventOverlaps: "portfolio-sections",
           },
         });
@@ -62,15 +63,15 @@ export function useScrollWorld(root, entered, sections) {
         if (anchor.id === "experience") {
           // Career details unfold from opposite sides.
           reveal(".pf-experience-grid > aside", { x: desktop ? -75 : -25, rotationY: desktop ? -15 : -5 }, 0.15);
-          reveal(".pf-experience-grid > article", { x: desktop ? 75 : 25, rotationY: desktop ? 18 : 6 }, 0.3);
+          reveal(".pf-experience-details", { x: desktop ? 75 : 25, rotationY: desktop ? 18 : 6 }, 0.3);
         } else if (anchor.id === "skills") {
           // Controls lift first; the skill stack rolls up behind them.
           reveal(".pf-skills-bar", { y: 35 }, 0.15);
-          reveal(".pf-skill-loops", { y: 65, rotationX: desktop ? -35 : -12, transformOrigin: "50% 100%" }, 0.3);
+          reveal(".pf-skills-content", { y: 65, rotationX: desktop ? -35 : -12, transformOrigin: "50% 100%" }, 0.3);
         } else if (anchor.id === "projects") {
           // Carousel and selected work assemble with different depths.
           reveal(".pf-project-selection", { scale: 0.8, rotationZ: desktop ? -6 : -2, y: 45 }, 0.15);
-          reveal(".pf-project-card", { rotationY: desktop ? 35 : 10, z: -140, x: desktop ? 80 : 20, transformOrigin: "0% 50%" }, 0.3);
+          reveal(".pf-project-details", { rotationY: desktop ? 35 : 10, z: -140, x: desktop ? 80 : 20, transformOrigin: "0% 50%" }, 0.3);
         } else if (anchor.id === "education") {
           // Credentials turn up one after another like a row of cards.
           reveal(".pf-education-grid > article", { y: 75, rotationX: desktop ? -35 : -12, rotationZ: -3, stagger: 0.2, transformOrigin: "50% 100%" }, 0.15);

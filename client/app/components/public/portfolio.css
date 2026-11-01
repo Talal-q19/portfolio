@@ -1593,7 +1593,7 @@ html[data-portfolio-theme="dark"] .portfolio .pf-projects {
 .portfolio .pf-projects .circular-carousel__photo {
   background: #fff;
 }
-.portfolio .pf-projects .pf-project-selection > p:not(.pf-meta) {
+.portfolio .pf-projects .pf-project-name {
   font-size: 16px;
   font-weight: 500;
   line-height: 1.4;
@@ -2484,4 +2484,39 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 .pf-lanyard-overlay,
 .pf-cursor-layer {
   overflow: clip;
+}
+/* All choices share one grid cell, reserving the largest natural content size. */
+.portfolio .pf-choice-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  align-items: stretch;
+}
+.portfolio .pf-choice-pane {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.portfolio .pf-choice-pane[data-active="false"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+.portfolio .pf-project-name > p {
+  margin: 0;
+}
+.portfolio .pf-project-chooser summary > span:first-child {
+  min-width: 0;
+  flex: 1;
+}
+.portfolio .pf-project-grid {
+  align-items: stretch;
+}
+.portfolio .pf-project-selection {
+  display: flex;
+  flex-direction: column;
+}
+.portfolio .pf-project-selection .pf-carousel-controls {
+  margin-top: auto;
+}
+@media (max-width: 767px) {
+  .portfolio .pf-project-name { display: none; }
 }
