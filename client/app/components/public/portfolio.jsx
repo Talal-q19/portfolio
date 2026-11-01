@@ -11,6 +11,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircularCarousel from "./effects/CircularCarousel";
 import { useScrollWorld } from "./scroll-world";
 import SectionScenery from "./section-scenery";
+import HeroAtmosphere from "./hero-atmosphere";
 import { scrollToPortfolioSection } from "@/utils/section-navigation.mjs";
 import LogoLoop from "./effects/LogoLoop";
 import PortraitLanyard from "./portrait-lanyard";
@@ -196,6 +197,7 @@ function Hero({ data, policy, entered, typingReady }) {
   const words = hero.heading?.split(" ") || [];
   return (
     <section className="pf-section pf-hero">
+      <HeroAtmosphere enabled={entered} />
       <div className="pf-hero-intro">
         <p className="pf-eyebrow">
           <strong className="pf-hero-name">{personal.name}</strong>

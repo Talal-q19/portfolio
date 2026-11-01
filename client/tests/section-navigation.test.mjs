@@ -58,4 +58,7 @@ test("navbar jumps use stable layout offsets and do not animate through interven
   assert.equal(scrollToPortfolioSection("contact"), true);
   assert.equal(scroll.top, 900);
   assert.equal(scroll.behavior, "instant");
+  globalThis.document.querySelector = () => ({ getBoundingClientRect: () => ({ height: 72, bottom: 88 }) });
+  scrollToPortfolioSection("contact");
+  assert.equal(scroll.top, 906, "floating header's top gap is included in centering");
 });

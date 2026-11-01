@@ -30,6 +30,7 @@ export function useScrollWorld(root, entered, sections) {
       }
       const arrivals = new Map();
       const entrances = new Map();
+      let arrival;
       q(".pf-section-anchor").forEach((anchor) => {
         const section = anchor.querySelector(".pf-section");
         if (!section) return;
@@ -48,12 +49,29 @@ export function useScrollWorld(root, entered, sections) {
               scrollTrigger: { trigger: anchor, start: "top bottom", end: "bottom top", scrub: true } },
           );
         }
+        // Returning upward keeps the finished content in place instead of
+        // resetting every card to its large first-entry rotation and offset.
+        const returnArrival = gsap.fromTo(section,
+          { y: -8 },
+          { y: 0, duration: 0.32, ease: "power2.out", paused: true,
+            immediateRender: false, clearProps: "transform" },
+        );
+        const settleReturn = () => returnArrival.progress(1).pause();
         const sequence = gsap.timeline({
-          defaults: { duration: 0.65, ease: "power2.out" },
+          defaults: { duration: 0.65, ease: "power2.out", clearProps: "transform,transformOrigin" },
           scrollTrigger: {
             trigger: anchor, start: "top 87%", end: "bottom 13%",
-            toggleActions: "restart complete restart complete",
+            toggleActions: "restart complete complete complete",
             fastScrollEnd: true, preventOverlaps: "portfolio-sections",
+            onEnterBack: (trigger) => {
+              trigger.animation.progress(1).pause();
+              arrival?.progress(1).pause();
+              if (Math.abs(trigger.getVelocity()) > 1800) return;
+              arrival = returnArrival;
+              arrival.restart();
+            },
+            onLeave: settleReturn,
+            onLeaveBack: settleReturn,
           },
         });
         entrances.set(anchor.id, sequence);
@@ -83,7 +101,6 @@ export function useScrollWorld(root, entered, sections) {
           reveal(".pf-contact-grid > :last-child", { rotationX: desktop ? 28 : 8, y: 55, transformOrigin: "50% 0%" }, 0.3);
         }
       });
-      let arrival;
       const navigate = (event) => {
         const next = arrivals.get(event.detail?.key);
         if (!next) return;

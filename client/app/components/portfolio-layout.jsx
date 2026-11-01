@@ -14,6 +14,7 @@ import { fetchPortfolio } from "@/utils/portfolio-api.mjs";
 import { portfolioData } from "@/utils/portfolio";
 import { AppearanceControls } from "./public/appearance";
 import { scrollToPortfolioSection } from "@/utils/section-navigation.mjs";
+import PortfolioNavigation from "./public/portfolio-navigation";
 
 const PortfolioContext = createContext(null);
 export function usePortfolio() {
@@ -37,7 +38,7 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
     const measure = () =>
       root.style.setProperty(
         "--nav-safe-top",
-        `${navbar.current.getBoundingClientRect().height}px`,
+        `${navbar.current.getBoundingClientRect().bottom}px`,
       );
     measure();
     const observer = new ResizeObserver(measure);
@@ -67,6 +68,9 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
   }, [requestId, mediaOrigin]);
 
   const value = useMemo(() => ({ ...state, retry }), [state, retry]);
+  const navigation = useMemo(() => state.data?.settings?.navigation
+    ?.filter((item) => state.data.sections.some((section) => section.visible && item.url === `#${section.key}`))
+    .map((item) => ({ label: item.label, href: item.url })) || [], [state.data]);
   const navigate = (event) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const hash = event.currentTarget.hash;
@@ -89,40 +93,10 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
             <strong>TQ</strong>
             <span>{state.data?.settings?.displayName || "Portfolio"}</span>
           </a>
-          <nav aria-label="Main navigation">
-            {state.data?.settings?.navigation
-              ?.filter((n) =>
-                state.data.sections.some(
-                  (s) => s.visible && n.url === `#${s.key}`,
-                ),
-              )
-              .map((n) => (
-                <a key={n.url} href={n.url} onClick={navigate}>
-                  {n.label}
-                </a>
-              ))}
-          </nav>
+          <div className="pf-nav-slot">
+            <PortfolioNavigation items={navigation} onNavigate={navigate} />
+          </div>
           <AppearanceControls />
-          <details className="pf-mobile-nav">
-            <summary>Menu</summary>
-            <nav aria-label="Mobile navigation">
-              {state.data?.settings?.navigation
-                ?.filter((n) =>
-                  state.data.sections.some(
-                    (s) => s.visible && n.url === `#${s.key}`,
-                  ),
-                )
-                .map((n) => (
-                  <a
-                    key={n.url}
-                    href={n.url}
-                    onClick={navigate}
-                  >
-                    {n.label}
-                  </a>
-                ))}
-            </nav>
-          </details>
         </header>
         <main id="portfolio-content">{children}</main>
         <footer className="pf-footer">

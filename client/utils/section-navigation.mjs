@@ -15,7 +15,8 @@ export function scrollToPortfolioSection(key, behavior = "instant") {
   // Layout offsets remain stable while GSAP transforms the section in 3D.
   let top = 0;
   for (let element = section; element; element = element.offsetParent) top += element.offsetTop;
-  const navHeight = document.querySelector(".pf-nav")?.getBoundingClientRect().height || 0;
+  const nav = document.querySelector(".pf-nav")?.getBoundingClientRect();
+  const navHeight = nav?.bottom ?? nav?.height ?? 0;
   window.scrollTo({
     top: sectionScrollTarget({ top, height: section.offsetHeight, viewportHeight: window.innerHeight, navHeight, pageHeight: document.documentElement.scrollHeight }),
     behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : behavior,
