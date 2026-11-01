@@ -350,10 +350,21 @@ html[data-portfolio-theme="dark"] .portfolio {
   color: #646674;
 }
 .portfolio .pf-code {
+  --ide-bg: #f8faff;
+  --ide-chrome: #eef2f8;
+  --ide-text: #263449;
+  --ide-muted: #58657a;
+  --ide-line: #d3ddeb;
+  --ide-active: #e2eafc;
+  --ide-accent: #235eb4;
+  --ide-green: #16603f;
+  --ide-purple: #733fc2;
+  --ide-orange: #97551b;
   width: 100%;
   height: 100%;
-  background: #101115;
-  color: #dadbe4;
+  background: var(--ide-bg);
+  color: var(--ide-text);
+  border: 1px solid var(--ide-line);
   border-radius: 24px;
   overflow: hidden;
   display: flex;
@@ -361,32 +372,47 @@ html[data-portfolio-theme="dark"] .portfolio {
   transition:
     box-shadow 0.2s,
     transform 0.2s;
-  box-shadow: 0 1px 0 #ffffff30 inset;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ide-text) 8%, transparent) inset;
+}
+html[data-portfolio-theme="dark"] .portfolio .pf-code {
+  --ide-bg: #101115;
+  --ide-chrome: #15171d;
+  --ide-text: #dadbe4;
+  --ide-muted: #aeb2c0;
+  --ide-line: #33343e;
+  --ide-active: #1e2942;
+  --ide-accent: #9bb5ff;
+  --ide-green: #92c9b2;
+  --ide-purple: #c0a5f1;
+  --ide-orange: #ecc69a;
 }
 .portfolio .pf-code-tabs {
   display: flex;
   justify-content: space-around;
-  border-bottom: 1px solid #33343e;
+  background: var(--ide-chrome);
+  border-bottom: 1px solid var(--ide-line);
 }
 .portfolio .pf-code-tabs button {
   font-size: 11px;
   padding: 6px 8px;
   min-height: 36px;
   border: 0;
+  border-bottom: 2px solid transparent;
   background: transparent;
-  color: #aeb2c0;
+  color: var(--ide-muted);
   white-space: nowrap;
 }
 .portfolio .pf-code-tabs button[aria-pressed="true"] {
-  color: white;
-  border-bottom: 2px solid #9bb5ff;
+  color: var(--ide-text);
+  background: var(--ide-active);
+  border-bottom-color: var(--ide-accent);
 }
 .portfolio .pf-code-lines {
   height: 300px;
   overflow: hidden;
   padding: 14px 16px;
   scrollbar-width: thin;
-  scrollbar-color: #555 #101115;
+  scrollbar-color: var(--ide-line) var(--ide-bg);
 }
 .portfolio .pf-code pre {
   font-family: monospace;
@@ -402,7 +428,9 @@ html[data-portfolio-theme="dark"] .portfolio {
 .portfolio .pf-code-status {
   padding: 6px 16px;
   font-size: 10px;
-  color: #969baa;
+  color: var(--ide-muted);
+  background: var(--ide-chrome);
+  border-top: 1px solid var(--ide-line);
   display: flex;
   justify-content: space-between;
 }
@@ -424,22 +452,22 @@ html[data-portfolio-theme="dark"] .portfolio {
   object-fit: contain;
 }
 .portfolio .pf-token-green {
-  color: #92c9b2;
+  color: var(--ide-green);
 }
 .portfolio .pf-token-cyan {
-  color: #9bb5ff;
+  color: var(--ide-accent);
 }
 .portfolio .pf-token-purple {
-  color: #c0a5f1;
+  color: var(--ide-purple);
 }
 .portfolio .pf-token-muted {
-  color: #969baa;
+  color: var(--ide-muted);
 }
 .portfolio .pf-token-orange {
-  color: #ecc69a;
+  color: var(--ide-orange);
 }
 .portfolio .pf-token-white {
-  color: #fff;
+  color: var(--ide-text);
 }
 .portfolio .pf-experience-grid {
   display: grid;
@@ -1323,7 +1351,7 @@ html[data-portfolio-theme="dark"] .portfolio .pf-dialog {
   min-height: 32px;
   background: none;
   border: 0;
-  color: #b8bdcb;
+  color: var(--ide-muted);
   padding: 0;
 }
 .portfolio .pf-gallery-caption {
@@ -1834,26 +1862,27 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
     .pf-nav,
     .pf-panel,
     .pf-project-card,
+    .pf-atmosphere,
+    .pf-code,
+    .pf-code-tabs,
+    .pf-code-status,
     .pf-contact-form,
     .pf-dialog,
     .pf-footer,
-    .pf-skills > div,
     .pf-pills button,
     input,
     textarea,
     h1,
     h2,
     h3,
-    p,
     a,
     small,
     summary
   ) {
   transition:
-    background-color 240ms ease,
-    color 240ms ease,
-    border-color 240ms ease,
-    box-shadow 240ms ease;
+    background-color 180ms ease-out,
+    color 180ms ease-out,
+    border-color 180ms ease-out;
 }
 @media (max-width: 1199px) {
   .portfolio .pf-contact-lower {
@@ -2499,6 +2528,10 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 .portfolio .pf-choice-pane[data-active="false"] {
   visibility: hidden;
   pointer-events: none;
+}
+.portfolio .pf-choice-pane[data-active="false"],
+.portfolio .pf-choice-pane[data-active="false"] * {
+  transition: none;
 }
 .portfolio .pf-project-name > p {
   margin: 0;

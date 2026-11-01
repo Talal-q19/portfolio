@@ -3,7 +3,7 @@
 import { Component, useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { createPortal } from "react-dom";
-import { useAppearance } from "./appearance";
+import { useAppearance, usePerformanceMode } from "./appearance";
 import { motionPolicy } from "@/utils/motion-policy.mjs";
 
 const CrystalizedBall = dynamic(() => import("./effects/CrystalizedBall"), {
@@ -26,7 +26,7 @@ export class EffectBoundary extends Component {
 
 // Conservative opt-in to animation. CSS fallbacks remain underneath the canvas.
 export function useMotionPolicy() {
-  const { performance: simple } = useAppearance();
+  const simple = usePerformanceMode();
   const [policy, setPolicy] = useState({
     desktop: false,
     fine: false,

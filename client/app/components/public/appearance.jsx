@@ -2,36 +2,57 @@
 
 import {
   createContext,
+  startTransition,
+  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import { createThemeSound } from "@/utils/theme-sound.mjs";
 
 const AppearanceContext = createContext(null);
+const PerformanceContext = createContext(false);
 export const useAppearance = () => useContext(AppearanceContext);
+export const usePerformanceMode = () => useContext(PerformanceContext);
 
 export default function Appearance({ children }) {
   // Every visit starts dark. Theme changes are local style updates for this visit.
   const [theme, setTheme] = useState("dark");
   const audio = useRef(null);
+  const audioFrame = useRef(0);
+  const selected = useRef("dark");
   useLayoutEffect(() => {
     document.documentElement.dataset.portfolioTheme = "dark";
   }, []);
-  useEffect(() => () => audio.current?.dispose(), []);
-  const choose = (next) => {
+  useEffect(() => () => {
+    cancelAnimationFrame(audioFrame.current);
+    audio.current?.dispose();
+  }, []);
+  const choose = useCallback((next) => {
     if (next !== "light" && next !== "dark") return;
-    audio.current ||= createThemeSound();
-    audio.current.play(true);
-    setTheme(next);
+    if (next === selected.current) return;
+    selected.current = next;
+    // Paint the CSS palette immediately; effect recoloring is a concurrent update.
     document.documentElement.dataset.portfolioTheme = next;
-  };
+    startTransition(() => setTheme(next));
+    cancelAnimationFrame(audioFrame.current);
+    audioFrame.current = requestAnimationFrame(() => {
+      audioFrame.current = requestAnimationFrame(() => {
+        audio.current ||= createThemeSound();
+        audio.current.play(true);
+      });
+    });
+  }, []);
+  const value = useMemo(() => ({ theme, choose, performance: false }), [theme, choose]);
   return (
-    <AppearanceContext.Provider value={{ theme, choose, performance: false }}>
+    <PerformanceContext.Provider value={false}>
+    <AppearanceContext.Provider value={value}>
       {children}
     </AppearanceContext.Provider>
+    </PerformanceContext.Provider>
   );
 }
 
@@ -48,7 +69,7 @@ export function AppearanceControls() {
         onAnimationEnd={() => setPull(false)}
         onClick={() => {
           setPull(true);
-          choose(theme === "light" ? "dark" : "light");
+          choose(document.documentElement.dataset.portfolioTheme === "light" ? "dark" : "light");
         }}
       >
         <svg viewBox="0 0 44 44" width="36" height="36" aria-hidden="true">
