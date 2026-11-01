@@ -1,5 +1,7 @@
 # Phase 4: custom admin dashboard
 
+**Superseded authentication instructions:** real dashboard access now requires password + email OTP login. The local bypass described below has been removed. See [admin-auth.md](admin-auth.md) for migrations, PostgreSQL/Redis configuration, account provisioning and session behavior. The rest of this document records the original phase-4 implementation.
+
 Implemented 18 October 2026. The dashboard lives at **http://localhost:3000/admin**, under `client/app/admin/`. It uses the shared phase-3 Express API contract and the real local CMS. At the user's request, all management features work without browser login; authentication and production security remain phase 5. The built-in Strapi administrator remains separate.
 
 ## Real local editing

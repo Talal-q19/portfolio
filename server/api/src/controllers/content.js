@@ -3,7 +3,6 @@ const { ContentValidationError, validatePayload, validateCategory } = require('.
 const { queryOptions, contentBody, categoryBody, shape } = require('@portfolio/content-contract/api');
 const { HttpError } = require('../middleware/errors');
 const { createStrapiService } = require('../services/strapi');
-const { localAdminIdentity } = require('../services/local-admin');
 function contentRoutes(config, dependencies = {}) {
   const router = express.Router();
   const cms = dependencies.strapi || createStrapiService(config);
@@ -16,13 +15,13 @@ function contentRoutes(config, dependencies = {}) {
     queryOptions(req.query);
     res.json(await cms(`read?${new URLSearchParams(req.query)}`));
   }));
-  // Browser sessions arrive in phase 5. Explicit local editing uses a server-only CMS identity.
+  // Every management request requires a verified browser session.
   router.use('/admin', async (req, res, next) => {
     res.set('Cache-Control', 'no-store');
     try {
       const identity = dependencies.verifyAdmin
         ? await dependencies.verifyAdmin(req)
-        : localAdminIdentity(config, req);
+        : null;
       if (!identity?.accessToken || identity.role !== 'portfolio-admin') throw new HttpError(401, 'Administrator authentication is required.');
       req.admin = identity;
       req.cms = (path, options = {}) => cms(`admin/${path}`, { ...options, token: identity.accessToken });

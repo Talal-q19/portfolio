@@ -21,6 +21,14 @@ function createApp(config, dependencies = {}) {
     sendEmail: dependencies.sendEmail || createEmailService(config),
     verifyCaptcha: dependencies.verifyCaptcha || createCaptchaService(config),
   }));
+  if (dependencies.auth) {
+    const { authRoutes, cookies, guardAdminRequest } = require('./controllers/admin-auth');
+    app.use('/api/admin/auth', authRoutes(config, dependencies.auth));
+    dependencies = { ...dependencies, verifyAdmin: async req => {
+      guardAdminRequest(config, req);
+      return dependencies.auth.verifyAccess(cookies(req).portfolio_access);
+    } };
+  }
   app.use('/api', require('./controllers/content').contentRoutes(config, dependencies));
   app.use((req, res) => res.status(404).json({ success: false, message: 'Not found.' }));
   app.use(errorHandler);

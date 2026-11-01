@@ -25,7 +25,19 @@ test('admin requests use same-origin credentials, no cache, and structured valid
 });
 test('multipart upload leaves boundary generation to the browser', async () => {
   const body = new FormData(); body.append('files', new Blob(['fixture'], { type: 'image/png' }), 'fixture.png');
-  await createAdminApi(async (url, options) => { assert.equal(options.body, body); assert.equal(options.headers, undefined); return { ok: true, json: async () => ({ items: [] }) }; })('media', { method: 'POST', body });
+  await createAdminApi(async (url, options) => { assert.equal(options.body, body); assert.equal(options.headers['Content-Type'], undefined); assert.equal(options.headers['X-Admin-Request'], '1'); return { ok: true, json: async () => ({ items: [] }) }; })('media', { method: 'POST', body });
+});
+
+test('concurrent expired requests share refresh and retry once with the original payload', async () => {
+  let refreshed = false, refreshes = 0;
+  const api = createAdminApi(async (url, options) => {
+    if (url.endsWith('auth/refresh')) { refreshes++; await new Promise(resolve => setTimeout(resolve, 5)); refreshed = true; return { ok: true }; }
+    assert.equal(options.headers['X-Admin-Request'], '1');
+    if (!refreshed) return { ok: false, status: 401, json: async () => ({}) };
+    return { ok: true, json: async () => ({ path: url }) };
+  });
+  const results = await Promise.all([api('categories'), api('content'), api('media')]);
+  assert.equal(refreshes, 1); assert.equal(results.length, 3);
 });
 test('gallery writes preserve order and alt text while stripping component/media metadata', () => {
   const rows = [{ image: { id: 1, url: '/uploads/a.png' }, alt: 'First', id: 5 }, { image: { id: 2 }, alt: 'Second' }];

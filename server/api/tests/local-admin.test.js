@@ -7,15 +7,14 @@ const { localAdminIdentity } = require('../src/services/local-admin');
 const config = { environment: 'development', localAdminEnabled: true, cmsLocalAdminToken: 'internal-editor-token', rateLimit: 100 };
 const req = (headers = {}, address = '127.0.0.1') => ({ socket: { remoteAddress: address }, headers: { host: 'localhost:4000', ...headers } });
 
-test('explicit local mode enables real admin APIs without a browser credential', async () => {
+test('legacy local mode no longer bypasses browser authentication', async () => {
   const server = createApp(config, { sendEmail: async () => {}, strapi: async (path, options) => {
     assert.equal(path, 'admin/categories?');
     assert.equal(options.token, 'internal-editor-token');
     return { categories: [] };
   } });
   const result = await request(server).get('/api/admin/categories');
-  assert.equal(result.status, 200);
-  assert.deepEqual(result.body, { categories: [] });
+  assert.equal(result.status, 401);
   assert.ok(!JSON.stringify(result.body).includes(config.cmsLocalAdminToken));
 });
 test('local mode does not replace a real session verifier or operate outside development', async () => {

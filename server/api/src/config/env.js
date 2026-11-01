@@ -20,7 +20,7 @@ function loadConfig(env = process.env) {
   const smtpPort = integer('SMTP_PORT', 465);
   const environment = env.NODE_ENV || 'development';
   const localAdminEnabled = boolean('LOCAL_ADMIN_ENABLED', false);
-  if (localAdminEnabled) {
+  if (localAdminEnabled && !env.AUTH_JWT_SECRET) {
     if (environment !== 'development') throw new Error('LOCAL_ADMIN_ENABLED is only available in development.');
     const cms = new URL(env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337');
     if (!['localhost', '127.0.0.1', '[::1]'].includes(cms.hostname)) throw new Error('Local admin editing requires a loopback CMS URL.');
@@ -28,7 +28,14 @@ function loadConfig(env = process.env) {
   }
   return {
     environment, localAdminEnabled, cmsLocalAdminToken: env.CMS_LOCAL_ADMIN_TOKEN,
-    host: localAdminEnabled ? '127.0.0.1' : '0.0.0.0',
+    host: environment === 'development' ? '127.0.0.1' : '0.0.0.0',
+    auth: {
+      databaseUrl: env.DATABASE_URL,
+      redisUrl: env.REDIS_URL || 'redis://127.0.0.1:6379',
+      secret: env.AUTH_JWT_SECRET,
+      origin: env.ADMIN_ORIGIN || 'http://localhost:3000',
+      cmsToken: env.CMS_ADMIN_TOKEN || env.CMS_LOCAL_ADMIN_TOKEN,
+    },
     cmsUrl: (env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337').replace(/\/$/, ''),
     cmsReadToken: env.CMS_READ_TOKEN,
     cmsTimeout: integer('CMS_TIMEOUT_MS', 10000, 60000),
