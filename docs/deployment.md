@@ -9,6 +9,8 @@ The public site and Portfolio Studio are Next.js in `client/`. Express in `serve
 
 Both use Node 24. Enable files outside the backend root so npm can resolve `../content-contract`. Only the backend build runs `convex deploy`; the frontend never receives a Convex deploy key. Use separate Convex deploy keys, HTTP URLs and service secrets for development/preview; never point a preview build at production. The backend build refuses to run without its environment's deploy key.
 
+Production branch tracking is explicitly configured on each Vercel project: `be-prod` tracks `BE-PROD`, and `fe-prod` tracks `FE-PROD`. Their `vercel.json` Git allowlists reject other branches. Preview deployments are disabled for these production-only projects. The former `talal-qasim-portfolio` project is disconnected from Git, and the repository-root configuration disables its legacy Git builds. Its existing hosted deployment and domain remain intact. New commits should receive only the corresponding service's production check; older commits retain their historical checks.
+
 ## Environment
 
 Private local configuration lives in `server/api/.env.local` and `client/.env.local`; both are ignored. Vercel production variables must be configured separately.
