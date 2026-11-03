@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { mediaUrl } from '@/utils/media-url.mjs';
+import { uploadMedia } from '@/utils/upload-media.mjs';
 
 export default function MediaLibrary({ media, api, onMedia, onDelete, onBusy, onExpired }) {
   const [page, setPage] = useState(1);
@@ -14,7 +15,7 @@ export default function MediaLibrary({ media, api, onMedia, onDelete, onBusy, on
     if (!file) return;
     if (file.size > 8 * 1024 * 1024 || !['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'application/pdf'].includes(file.type)) { setMessage('Choose PNG, JPEG, GIF, WebP or PDF, up to 8 MiB.'); return; }
     setPending(true); setMessage('Uploading…');
-    try { const body = new FormData(); body.append('files', file); onMedia((await api('media', { method: 'POST', body })).items); setMessage('Upload complete. This asset is available to content forms.'); }
+    try { onMedia((await uploadMedia(api, file)).items); setMessage('Upload complete. This asset is available to content forms.'); }
     catch (e) { setMessage(e.message); if (e.status === 401) onExpired(); }
     finally { setPending(false); }
   }

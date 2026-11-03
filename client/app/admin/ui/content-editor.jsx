@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import contract from '@/utils/admin-contract.cjs';
 import { emptyFields, payloadForWrite } from '@/utils/admin-api.mjs';
 import Fields from './fields';
+import { uploadMedia } from '@/utils/upload-media.mjs';
 
 export default function ContentEditor({ item, categories, items, publishedIds, requirements, media, api, onMedia, onSaved, onCancel, onDirty, onBusy, onExpired }) {
   const [categorySlug, setCategorySlug] = useState(item?.category || '');
@@ -52,7 +53,7 @@ export default function ContentEditor({ item, categories, items, publishedIds, r
       setServerErrors(e => ({ ...e, [path]: 'Choose PNG, JPEG, GIF, WebP or PDF, up to 8 MiB.' })); return null;
     }
     setPending(true); setMessage('Uploading…');
-    try { const body = new FormData(); body.append('files', file); const result = await api('media', { method: 'POST', body }); onMedia(result.items); changed(); return result.items[0]; }
+    try { const result = await uploadMedia(api, file); onMedia(result.items); changed(); return result.items[0]; }
     catch (e) { failure(e); setServerErrors(previous => ({ ...previous, [path]: e.message })); return null; }
     finally { setPending(false); }
   }
