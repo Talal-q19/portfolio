@@ -2,5 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "express",
   "buildCommand": "npm run build:vercel",
-  "regions": ["dub1"]
+  "regions": ["dub1"],
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "BE-PROD": true
+    }
+  }
 }
