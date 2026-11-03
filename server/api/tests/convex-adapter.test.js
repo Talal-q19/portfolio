@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { createHmac } = require('node:crypto');
 const request = require('supertest');
-const { createApp } = require('../src/app');
+const { createApp } = require('../src/create-app');
 const { createConvexService, ConvexAuthStore } = require('../src/services/convex');
 test('Convex adapter does not leak server credentials or infrastructure failures', async () => {
   const call = createConvexService({ convexUrl: 'https://private.example', convexSecret: 'secret' }, async () => { throw Error('secret'); });

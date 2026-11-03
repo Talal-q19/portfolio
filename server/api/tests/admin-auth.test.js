@@ -5,7 +5,7 @@ const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const { createAdminAuth } = require('../src/services/admin-auth');
 const { hashPassword, verifyPassword } = require('../src/services/password');
-const { createApp } = require('../src/app');
+const { createApp } = require('../src/create-app');
 const { createOtpEmailService } = require('../src/services/email');
 const config = { environment: 'development', rateLimit: 100, auth: { secret: 'test-secret-'.repeat(5), cmsToken: 'server-only', origin: 'http://localhost:3000' } };
 class MemoryStore {

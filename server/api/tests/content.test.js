@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const request = require('supertest');
-const { createApp } = require('../src/app');
+const { createApp } = require('../src/create-app');
 const config = { rateLimit: 100, captchaEnabled: false };
 const app = dependencies => createApp(config, { sendEmail: async () => {}, ...dependencies });
 test('admin denies every route by default before reading request bodies or upstream', async () => {
