@@ -1,5 +1,5 @@
 const { readConfig } = require('./config/env');
-const { createApp } = require('./app');
+const { createApp } = require('./create-app');
 let initializing;
 async function application() {
   if (!initializing) initializing = (async () => {
