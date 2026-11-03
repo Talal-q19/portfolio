@@ -4,23 +4,17 @@
   "scripts": {
     "dev": "npm run dev --prefix client",
     "dev:api": "npm run dev --prefix server/api",
-    "dev:cms": "npm run dev --prefix server/cms",
     "build": "npm run build --prefix client",
-    "build:cms": "npm run build --prefix server/cms",
     "start": "npm start --prefix client",
     "start:api": "npm start --prefix server/api",
-    "start:cms": "npm start --prefix server/cms",
-    "setup:cms": "npm run setup:local --prefix server/cms",
     "setup:admin": "npm run setup:admin --prefix server/cms",
-    "migrate:portfolio": "npm run migrate:portfolio --prefix server/cms --",
-    "test:cms": "npm test --prefix server/cms",
-    "lint": "npm run lint --prefix client && npm run lint --prefix server/api && npm run lint --prefix server/cms",
-    "test": "npm test --prefix client && npm test --prefix server/api && npm test --prefix server/cms",
-    "install:all": "npm ci --prefix client && npm ci --prefix server/api && npm ci --prefix server/cms",
+    "lint": "npm run lint --prefix client && npm run lint --prefix server/api",
+    "test": "npm test --prefix client && npm test --prefix server/api && npm run test:convex --prefix server/api",
+    "install:all": "npm ci --prefix client && npm ci --prefix server/api",
     "copy-company-images": "npm run copy-company-images --prefix client",
-    "db:migrate": "npm run db:migrate --prefix server/api",
     "admin:create": "npm run admin:create --prefix server/api",
     "admin:block": "npm run admin:block --prefix server/api",
-    "admin:unblock": "npm run admin:unblock --prefix server/api"
+    "admin:unblock": "npm run admin:unblock --prefix server/api",
+    "convex:dev": "npm run convex:dev --prefix server/api"
   }
 }

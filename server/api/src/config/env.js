@@ -12,33 +12,20 @@ function loadConfig(env = process.env) {
     if (!['true', 'false'].includes(env[key])) throw new Error(`Invalid ${key}`);
     return env[key] === 'true';
   };
-  for (const key of ['SMTP_USER', 'SMTP_PASS']) {
-    if (!env[key]?.trim()) throw new Error(`Missing ${key}`);
-  }
   const captchaEnabled = boolean('RECAPTCHA_ENABLED', Boolean(env.RECAPTCHA_SECRET_KEY));
   if (captchaEnabled && !env.RECAPTCHA_SECRET_KEY) throw new Error('Missing RECAPTCHA_SECRET_KEY');
   const smtpPort = integer('SMTP_PORT', 465);
   const environment = env.NODE_ENV || 'development';
-  const localAdminEnabled = boolean('LOCAL_ADMIN_ENABLED', false);
-  if (localAdminEnabled && !env.AUTH_JWT_SECRET) {
-    if (environment !== 'development') throw new Error('LOCAL_ADMIN_ENABLED is only available in development.');
-    const cms = new URL(env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337');
-    if (!['localhost', '127.0.0.1', '[::1]'].includes(cms.hostname)) throw new Error('Local admin editing requires a loopback CMS URL.');
-    if (!env.CMS_LOCAL_ADMIN_TOKEN?.trim()) throw new Error('Run npm run setup:admin to configure local editing.');
-  }
   return {
-    environment, localAdminEnabled, cmsLocalAdminToken: env.CMS_LOCAL_ADMIN_TOKEN,
+    convexUrl: (env.CONVEX_HTTP_URL || '').replace(/\/$/, ''),
+    convexSecret: env.CONVEX_SERVICE_SECRET,
+    proxySecret: env.API_PROXY_SECRET,
+    environment,
     host: environment === 'development' ? '127.0.0.1' : '0.0.0.0',
     auth: {
-      databaseUrl: env.DATABASE_URL,
-      redisUrl: env.REDIS_URL || 'redis://127.0.0.1:6379',
       secret: env.AUTH_JWT_SECRET,
       origin: env.ADMIN_ORIGIN || 'http://localhost:3000',
-      cmsToken: env.CMS_ADMIN_TOKEN || env.CMS_LOCAL_ADMIN_TOKEN,
     },
-    cmsUrl: (env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337').replace(/\/$/, ''),
-    cmsReadToken: env.CMS_READ_TOKEN,
-    cmsTimeout: integer('CMS_TIMEOUT_MS', 10000, 60000),
     port: integer('PORT', 4000),
     // Set an exact hop count only behind a trusted, fixed reverse proxy.
     trustProxy: env.TRUST_PROXY_HOPS ? integer('TRUST_PROXY_HOPS', 1, 10) : false,
@@ -58,6 +45,7 @@ function loadConfig(env = process.env) {
 }
 
 function readConfig() {
+  dotenv.config({ path: path.resolve(__dirname, '../../.env.local'), quiet: true });
   dotenv.config({ path: path.resolve(__dirname, '../../.env'), quiet: true });
   return loadConfig();
 }

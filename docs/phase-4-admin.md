@@ -1,3 +1,5 @@
+> Historical implementation notes. The active runtime now uses Convex; see [deployment.md](deployment.md).
+
 # Phase 4: custom admin dashboard
 
 **Superseded authentication instructions:** real dashboard access now requires password + email OTP login. The local bypass described below has been removed. See [admin-auth.md](admin-auth.md) for migrations, PostgreSQL/Redis configuration, account provisioning and session behavior. The rest of this document records the original phase-4 implementation.

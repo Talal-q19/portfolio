@@ -1,8 +1,15 @@
 const nodemailer = require('nodemailer');
 const { createEmailTemplate } = require('../templates/contact');
+const { HttpError } = require('../middleware/errors');
+function emailConfigured(config) {
+  if (!config.smtp?.auth?.user || !config.smtp?.auth?.pass) throw new HttpError(503, 'Email delivery is not configured.');
+}
 
-function createEmailService(config, transport = nodemailer.createTransport(config.smtp)) {
+function createEmailService(config, injectedTransport) {
+  const transport = injectedTransport || nodemailer.createTransport(config.smtp);
   return async ({ name, email, message }) => {
+    // Injected test transports intentionally do not require real credentials.
+    if (!injectedTransport) emailConfigured(config);
     await transport.sendMail({
       from: { name: config.fromName, address: config.smtp.auth.user },
       to: config.to, replyTo: email,
@@ -12,8 +19,10 @@ function createEmailService(config, transport = nodemailer.createTransport(confi
     });
   };
 }
-function createOtpEmailService(config, transport = nodemailer.createTransport(config.smtp)) {
+function createOtpEmailService(config, injectedTransport) {
+  const transport = injectedTransport || nodemailer.createTransport(config.smtp);
   return async ({ email, code, purpose }) => {
+    if (!injectedTransport) emailConfigured(config);
     await transport.sendMail({
       from: { name: config.fromName, address: config.smtp.auth.user }, to: email,
       subject: purpose === 'login' ? 'Portfolio Studio login code' : 'Portfolio Studio password reset code',

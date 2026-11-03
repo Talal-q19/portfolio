@@ -1,3 +1,5 @@
+> Historical implementation notes. The active runtime now uses Convex; see [deployment.md](deployment.md).
+
 # Phase 2: Strapi CMS and content migration
 
 Strapi is pinned to **5.58.0**, with the same version for Users & Permissions and the Cloudinary provider. It is a separate JavaScript application in `server/cms/`. No frontend rendering or contact transport behavior changes in this phase.

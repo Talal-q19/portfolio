@@ -1,3 +1,5 @@
+> Historical implementation notes. The active runtime now uses Convex; see [deployment.md](deployment.md).
+
 # Phase 3: portfolio and admin APIs
 
 Implemented 18 October 2026. Express serves the browser APIs in [openapi.json](openapi.json); Strapi owns persistence and repeats validation through the phase-2 Document Service guard. The custom admin UI and browser login remain phases 4 and 5. Production Express admin routes deny all requests until a trusted session verifier is wired in phase 5. There is no environment variable or browser header that enables editing.

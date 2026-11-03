@@ -1,24 +1,17 @@
-const { Pool } = require('pg');
-const { createClient } = require('redis');
-const { AuthStore } = require('./auth-store');
-const { adminRepository } = require('./admin-repository');
+const { createConvexService, ConvexAuthStore, convexRepository } = require('./convex');
 const { createAdminAuth } = require('./admin-auth');
 const { createOtpEmailService } = require('./email');
 async function authRuntime(config) {
-  for (const [name, value] of Object.entries({ DATABASE_URL: config.auth.databaseUrl, AUTH_JWT_SECRET: config.auth.secret, CMS_ADMIN_TOKEN: config.auth.cmsToken })) {
-    if (!value) throw new Error(`Missing ${name}; see docs/admin-auth.md.`);
+  for (const [name, value] of Object.entries({ CONVEX_HTTP_URL: config.convexUrl, CONVEX_SERVICE_SECRET: config.convexSecret, AUTH_JWT_SECRET: config.auth.secret })) {
+    if (!value) throw new Error(`Missing ${name}; see docs/deployment.md.`);
   }
+  if (Buffer.byteLength(config.convexSecret) < 32) throw new Error('CONVEX_SERVICE_SECRET must contain at least 32 bytes.');
   const origin = new URL(config.auth.origin);
   if (origin.origin !== config.auth.origin || (config.environment === 'production' && origin.protocol !== 'https:')) throw new Error('ADMIN_ORIGIN must be an exact origin, using HTTPS in production.');
-  const pool = new Pool({ connectionString: config.auth.databaseUrl, max: 10, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
-  pool.on('error', () => console.error('PostgreSQL connection error.'));
-  const redis = createClient({ RESP: 2, url: config.auth.redisUrl, disableOfflineQueue: true, socket: { connectTimeout: 5000, reconnectStrategy: retries => Math.min(100 * retries, 3000) } });
-  redis.on('error', () => console.error('Redis connection error.'));
-  try {
-    await pool.query('SELECT id FROM portfolio_admins LIMIT 0');
-    await redis.connect();
-    const auth = createAdminAuth(config, { repository: adminRepository(pool), store: new AuthStore(redis), sendOtp: createOtpEmailService(config) });
-    return { auth, close: async () => { redis.destroy(); await pool.end(); } };
-  } catch (error) { redis.destroy(); await pool.end(); throw error; }
+  const call = createConvexService(config);
+  await call('health');
+  const store = new ConvexAuthStore(call);
+  const auth = createAdminAuth(config, { repository: convexRepository(call), store, sendOtp: createOtpEmailService(config) });
+  return { auth, call, store, close: async () => {} };
 }
 module.exports = { authRuntime };

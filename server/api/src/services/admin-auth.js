@@ -120,6 +120,12 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
     async refresh(token) {
       const claims = decode(token, 'refresh');
       const admin = await eligible(claims.sub, claims.version);
+      if (store.rotate) {
+        const refresh = sign(admin, claims.sid, 'refresh', REFRESH_SECONDS);
+        const access = sign(admin, claims.sid, 'access', ACCESS_SECONDS);
+        if (!await store.rotate(claims.sid, sha(token), { proof: sha(refresh), id: admin.id, version: admin.token_version }, REFRESH_SECONDS)) throw invalid();
+        return { access, refresh };
+      }
       const session = await store.consume('session', claims.sid, sha(token));
       if (!session || session.id !== admin.id || session.version !== claims.version) {
         await store.remove('session', claims.sid);
@@ -132,7 +138,7 @@ function createAdminAuth(config, { repository, store, sendOtp }) {
       const admin = await eligible(claims.sub, claims.version);
       const session = await store.get('session', claims.sid);
       if (!session || session.id !== admin.id || session.version !== claims.version) throw invalid();
-      return { id: admin.id, username: admin.username, role: 'portfolio-admin', accessToken: config.auth.cmsToken };
+      return { id: admin.id, username: admin.username, role: 'portfolio-admin' };
     },
     async logout(access, refresh) {
       for (const [token, type] of [[access, 'access'], [refresh, 'refresh']]) {

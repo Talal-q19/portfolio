@@ -10,11 +10,21 @@ function createApp(config, dependencies = {}) {
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy || false);
   app.get('/api/health', (req, res) => res.json({ success: true, status: 'ok' }));
-  app.post('/api/contact', rateLimit({
+  app.use(require('./middleware/proxy').verifiedProxy(config));
+  const contactLimit = dependencies.store ? async (req, res, next) => {
+    try {
+      if (!await dependencies.store.limit(`contact:${req.ip}`, config.rateLimit, 900)) {
+        res.set('Retry-After', '900');
+        return next(new HttpError(429, 'Too many messages. Please try again later.'));
+      }
+      next();
+    } catch (error) { next(error); }
+  } : rateLimit({
     windowMs: 15 * 60 * 1000, limit: config.rateLimit,
     standardHeaders: 'draft-8', legacyHeaders: false,
     message: { success: false, message: 'Too many messages. Please try again later.' },
-  }), (req, res, next) => {
+  });
+  app.post('/api/contact', contactLimit, (req, res, next) => {
     if (!req.is('application/json')) return next(new HttpError(415, 'Use application/json.'));
     next();
   }, express.json({ limit: '16kb' }), contactController({

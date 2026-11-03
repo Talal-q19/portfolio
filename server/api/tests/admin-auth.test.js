@@ -164,7 +164,7 @@ test('HTTP failure metadata and Retry-After use the actual password lock duratio
 });
 test('HTTP cookies, CSRF, management authorization, logout and fail-closed dependencies', async () => {
   const f = await fixture();
-  const app = createApp(config, { auth: f.auth, sendEmail: async () => {}, strapi: async (path, options) => { assert.equal(options.token, 'server-only'); return { categories: [] }; } });
+  const app = createApp(config, { auth: f.auth, sendEmail: async () => {}, content: async (path, options) => { assert.equal(options.token, undefined); return { categories: [] }; } });
   const post = (path, body) => request(app).post(`/api/admin/auth/${path}`).set('X-Admin-Request', '1').set('Origin', config.auth.origin).send(body);
   await request(app).get('/api/admin/categories').expect(401);
   await request(app).post('/api/admin/auth/login').send({ username: 'owner', password: 'original-password' }).expect(403);

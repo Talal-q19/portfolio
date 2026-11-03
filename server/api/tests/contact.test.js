@@ -14,7 +14,7 @@ const valid = { name: 'Visitor', email: 'visitor@example.com', message: 'Hello\n
 const app = (options = {}, deps = {}) => createApp({ ...config, ...options }, { sendEmail: async () => {}, ...deps });
 
 test('configuration rejects missing secrets and invalid flags/ports', () => {
-  assert.throws(() => loadConfig({}), /SMTP_USER/);
+  assert.equal(loadConfig({}).smtp.auth.user, undefined);
   assert.throws(() => loadConfig({ SMTP_USER: 'a', SMTP_PASS: 'b', SMTP_PORT: 'oops' }), /SMTP_PORT/);
   assert.throws(() => loadConfig({ SMTP_USER: 'a', SMTP_PASS: 'b', RECAPTCHA_ENABLED: 'true' }), /RECAPTCHA_SECRET_KEY/);
   assert.throws(() => loadConfig({ SMTP_USER: 'a', SMTP_PASS: 'b', SMTP_SECURE: 'yes' }), /SMTP_SECURE/);

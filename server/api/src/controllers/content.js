@@ -2,10 +2,10 @@ const express = require('express');
 const { ContentValidationError, validatePayload, validateCategory } = require('../validators/content');
 const { queryOptions, contentBody, categoryBody, shape } = require('@portfolio/content-contract/api');
 const { HttpError } = require('../middleware/errors');
-const { createStrapiService } = require('../services/strapi');
+const { createConvexService, createContentService } = require('../services/convex');
 function contentRoutes(config, dependencies = {}) {
   const router = express.Router();
-  const cms = dependencies.strapi || createStrapiService(config);
+  const cms = dependencies.content || createContentService(createConvexService(config));
   const route = fn => async (req, res, next) => {
     res.set('Cache-Control', 'no-store');
     try { await fn(req, res); }
@@ -22,14 +22,19 @@ function contentRoutes(config, dependencies = {}) {
       const identity = dependencies.verifyAdmin
         ? await dependencies.verifyAdmin(req)
         : null;
-      if (!identity?.accessToken || identity.role !== 'portfolio-admin') throw new HttpError(401, 'Administrator authentication is required.');
+      if (!identity || identity.role !== 'portfolio-admin') throw new HttpError(401, 'Administrator authentication is required.');
       req.admin = identity;
-      req.cms = (path, options = {}) => cms(`admin/${path}`, { ...options, token: identity.accessToken });
+      req.cms = (path, options = {}) => cms(`admin/${path}`, options);
       // Continue only after verification, before parsing privileged request bodies.
       next();
     } catch (error) { next(error); }
   });
   router.use('/admin', express.json({ limit: '1mb', type: 'application/json' }));
+  for (const operation of ['upload-ticket', 'complete-upload']) {
+    router.post(`/admin/media/${operation}`, route(async (req, res) => {
+      res.json(await req.cms(`media/${operation}`, { method: 'POST', body: req.body }));
+    }));
+  }
   async function validateContent(req, updating) {
     contentBody(req.body, updating);
     if (updating && req.body.operation !== 'update') return;
