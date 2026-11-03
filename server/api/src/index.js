@@ -1,5 +1,6 @@
 const { readConfig } = require('./config/env');
 const { createApp } = require('./create-app');
+const express = require('express');
 let initializing;
 async function application() {
   if (!initializing) initializing = (async () => {
@@ -9,10 +10,15 @@ async function application() {
   })().catch(error => { initializing = undefined; throw error; });
   return initializing;
 }
-module.exports = async (req, res) => {
+// Export a real Express application so Vercel's framework detector and runtime
+// agree on the entrypoint. Initialize its authenticated router on first use.
+const entry = express();
+entry.disable('x-powered-by');
+entry.use(async (req, res) => {
   try { (await application())(req, res); }
   catch { res.statusCode = 503; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ success: false, message: 'API initialization failed.' })); }
-};
+});
+module.exports = entry;
 if (require.main === module && !process.env.VERCEL) {
   application().then(app => {
     const config = readConfig();
