@@ -25,6 +25,7 @@ export function usePortfolio() {
 
 export default function PortfolioLayout({ children, mediaOrigin }) {
   const navbar = useRef(null);
+  const [docked, setDocked] = useState(false);
   const [state, setState] = useState({ status: "loading", data: null });
   const [requestId, reload] = useReducer((value) => value + 1, 0);
   const retry = useCallback(() => {
@@ -38,7 +39,7 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
     const measure = () =>
       root.style.setProperty(
         "--nav-safe-top",
-        `${navbar.current.getBoundingClientRect().bottom}px`,
+        `${matchMedia("(min-width: 1100px)").matches ? 88 : navbar.current.getBoundingClientRect().bottom}px`,
       );
     measure();
     const observer = new ResizeObserver(measure);
@@ -49,6 +50,30 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
       else root.style.removeProperty("--nav-safe-top");
     };
   }, []);
+
+  useEffect(() => {
+    if (state.status !== "ready") return;
+    const desktop = matchMedia("(min-width: 1100px)");
+    let frame = 0;
+    const update = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const hero = document.querySelector(".pf-hero");
+        setDocked(desktop.matches && !!hero && hero.getBoundingClientRect().bottom <= 104);
+      });
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    desktop.addEventListener("change", update);
+    update();
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      desktop.removeEventListener("change", update);
+    };
+  }, [state.status]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -88,13 +113,13 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
         <a className="pf-skip" href="#portfolio-content">
           Skip to content
         </a>
-        <header ref={navbar} className="pf-nav">
+        <header ref={navbar} className="pf-nav" data-docked={docked}>
           <a className="pf-brand" href="#top">
             <strong>TQ</strong>
             <span>{state.data?.settings?.displayName || "Portfolio"}</span>
           </a>
           <div className="pf-nav-slot">
-            <PortfolioNavigation items={navigation} onNavigate={navigate} />
+            <PortfolioNavigation items={navigation} onNavigate={navigate} docked={docked} />
           </div>
           <AppearanceControls />
         </header>

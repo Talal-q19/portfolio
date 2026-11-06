@@ -61,4 +61,11 @@ test("navbar jumps use stable layout offsets and do not animate through interven
   globalThis.document.querySelector = () => ({ getBoundingClientRect: () => ({ height: 72, bottom: 88 }) });
   scrollToPortfolioSection("contact");
   assert.equal(scroll.top, 906, "floating header's top gap is included in centering");
+  globalThis.document.querySelector = () => ({
+    dataset: { docked: "true" },
+    getBoundingClientRect: () => ({ height: 432, bottom: 576 }),
+  });
+  globalThis.document.documentElement.style = { getPropertyValue: () => "88px" };
+  scrollToPortfolioSection("contact");
+  assert.equal(scroll.top, 906, "the left menu does not count as a tall top header");
 });

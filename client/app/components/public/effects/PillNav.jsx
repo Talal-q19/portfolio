@@ -156,6 +156,7 @@ const PillNav = ({
   textColor,
   bounce = 0.3,
   stretch = 0.5,
+  glideDuration = 0.26,
   intro = true,
   collapse = 'auto',
   onMenuToggle,
@@ -198,7 +199,8 @@ const PillNav = ({
     indicator,
     activeIndex,
     bounce: clamp(bounce, 0, 1),
-    stretch: clamp(stretch, 0, 1)
+    stretch: clamp(stretch, 0, 1),
+    glideDuration: clamp(glideDuration, 0.16, 1)
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -333,7 +335,7 @@ const PillNav = ({
       const index = glideIndex();
       const target = rects[index];
       const zeta = 1 - 0.55 * s.bounce;
-      const base = 520;
+      const base = (6 / s.glideDuration) ** 2;
       let busy = false;
 
       if (target && !state.waiting) {
