@@ -22,6 +22,10 @@
       "type": "string",
       "maxLength": 500
     },
+    "designation": {
+      "type": "string",
+      "maxLength": 500
+    },
     "availability": {
       "type": "string",
       "maxLength": 500

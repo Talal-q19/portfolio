@@ -22,10 +22,18 @@ async function main() {
   for (const row of source.content) {
     const category = source.categories.find(c => c.slug === row.category);
     if (!category) throw new Error('Dangling category reference.');
-    for (const version of [row.draft, row.published].filter(Boolean)) await validatePayload(category.templateKey, version.data, {
-      media: async id => source.media.find(m => m.id === (id?.id || id)),
-      skillGroup: async id => source.content.some(g => g.documentId === id && source.categories.find(c => c.slug === g.category)?.templateKey === 'skill-groups' && (!row.published || version === row.draft || g.published)),
-    });
+    for (const version of [row.draft, row.published].filter(Boolean)) {
+      // Historical snapshots retain these source values for the runtime's Hero fallback.
+      // Validate the current editable fields without rewriting the imported snapshot.
+      const data = { ...version.data };
+      if (category.templateKey === 'site-settings') {
+        for (const key of ['location', 'designation', 'aboutHeading', 'aboutText']) delete data[key];
+      }
+      await validatePayload(category.templateKey, data, {
+        media: async id => source.media.find(m => m.id === (id?.id || id)),
+        skillGroup: async id => source.content.some(g => g.documentId === id && source.categories.find(c => c.slug === g.category)?.templateKey === 'skill-groups' && (!row.published || version === row.draft || g.published)),
+      });
+    }
   }
   const call = createConvexService({ convexUrl: process.env.CONVEX_HTTP_URL, convexSecret: process.env.CONVEX_SERVICE_SECRET });
   if (process.argv.includes('--validate-only')) { console.log('Snapshot checksums, content and references validated; no network writes.'); return; }

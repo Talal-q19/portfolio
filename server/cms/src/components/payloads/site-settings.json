@@ -35,22 +35,6 @@
       "type": "string",
       "maxLength": 500
     },
-    "location": {
-      "type": "string",
-      "maxLength": 500
-    },
-    "designation": {
-      "type": "string",
-      "maxLength": 500
-    },
-    "aboutHeading": {
-      "type": "string",
-      "maxLength": 500
-    },
-    "aboutText": {
-      "type": "text",
-      "maxLength": 10000
-    },
     "cv": {
       "type": "media",
       "multiple": false,
