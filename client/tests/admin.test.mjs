@@ -15,6 +15,16 @@ test('all registered templates have usable empty field values', () => {
   }
   assert.ok(!Object.values(contract.templates.hero.fields).some(f => f.type === 'media'));
 });
+
+test('Hero owns the card designation and location; Site Settings contains global fields', () => {
+  assert.equal(contract.templates.hero.fields.designation.type, 'text');
+  assert.equal(contract.templates.hero.fields.location.type, 'text');
+  for (const key of ['designation', 'location', 'aboutHeading', 'aboutText']) {
+    assert.equal(contract.templates['site-settings'].fields[key], undefined);
+  }
+  assert.ok(contract.components.section.heading);
+  assert.ok(contract.components.section.introduction);
+});
 test('admin requests use same-origin credentials, no cache, and structured validation/session errors', async () => {
   let options;
   const api = createAdminApi(async (url, init) => { assert.equal(url, '/api/admin/content'); options = init; return { ok: false, status: 422, json: async () => ({ message: 'Incomplete', fields: { 'data.heading': 'Required' } }) }; });

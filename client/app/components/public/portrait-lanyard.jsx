@@ -9,7 +9,7 @@ import { useAppearance } from "./appearance";
 
 const Lanyard = dynamic(() => import("./effects/Lanyard"), { ssr: false });
 
-export default function PortraitLanyard({ src, name, policy, entered = true }) {
+export default function PortraitLanyard({ src, name, designation, policy, entered = true }) {
   const { theme } = useAppearance();
   const host = useRef(null);
   const [primed, setPrimed] = useState(false);
@@ -47,7 +47,7 @@ export default function PortraitLanyard({ src, name, policy, entered = true }) {
       <EffectBoundary>
         <Lanyard
           frontImage={src}
-          backText="Backend Engineer at EUNX"
+          backText={designation || ""}
           imageFit="cover"
           orientation="portrait"
           size={0.68}

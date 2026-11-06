@@ -207,6 +207,7 @@ function Hero({ data, policy, entered, typingReady }) {
           <PortraitLanyard
             src={personal.profile}
             name={personal.name}
+            designation={hero.designation}
             policy={policy}
             entered={entered}
           />

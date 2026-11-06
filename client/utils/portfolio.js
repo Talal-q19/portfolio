@@ -29,7 +29,7 @@ export function portfolioData(envelope, mediaOrigin) {
         description: hero?.paragraph || settings.aboutText,
         email: settings.contactEmail,
         phone: settings.phone,
-        address: settings.location,
+        address: hero?.location || settings.location,
         resume: media(settings.cv) || "#contact",
         ...social,
       }

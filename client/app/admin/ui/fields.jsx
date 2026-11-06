@@ -14,7 +14,7 @@ export default function Fields({ fields, value, onChange, components, errors, me
     const error = errors[path];
     const set = next => onChange({ ...value, [key]: next, ...(templateKey === 'experience' && key === 'current' && next ? { endDate: '' } : {}) });
     const required = spec.required || spec.type === 'list' && spec.min > 0 || templateKey === 'experience' && key === 'endDate' && value.current === false;
-    const title = key === 'current' ? 'Present position' : key === 'alt' ? 'Alt text' : prefix.includes('technologies') && key === 'text' ? 'Technology' : labelFor(key);
+    const title = templateKey === 'hero' && key === 'designation' ? 'Current designation (card back)' : key === 'current' ? 'Present position' : key === 'alt' ? 'Alt text' : prefix.includes('technologies') && key === 'text' ? 'Technology' : labelFor(key);
     const props = { id, 'aria-invalid': Boolean(error), 'aria-describedby': error ? `${id}-error` : undefined, required, disabled: pending };
     let control;
     if (spec.type === 'list') {
