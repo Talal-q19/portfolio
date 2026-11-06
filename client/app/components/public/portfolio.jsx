@@ -60,13 +60,13 @@ export function SocialLinks({ settings }) {
               ) : link.label === "instagram" ? (
                 <FaInstagram />
               ) : (
-                <FaArrowUpRightFromSquare />
+                <FaArrowUpRightFromSquare className="pf-link-arrow" />
               )}
             </span>
             {{ github: "GitHub", linkedIn: "LinkedIn", instagram: "Instagram" }[
               link.label
             ] || link.label}{" "}
-            ↗
+            <span className="pf-link-arrow" aria-hidden="true">↗</span>
           </a>
         ))}
     </div>
@@ -224,12 +224,12 @@ function Hero({ data, policy, entered, typingReady }) {
               className={i === 0 ? "pf-primary" : i === 1 ? "pf-secondary" : ""}
               href={i === 2 ? personal.resume : b.url}
             >
-              {b.label} {i === 1 ? "↓" : "↗"}
+              {b.label} <span className="pf-link-arrow" aria-hidden="true">{i === 1 ? "↓" : "↗"}</span>
             </a>
           ))}
         </div>
         {!hero.buttons?.some((b, i) => i === 2) && personal.resume && (
-          <a href={personal.resume}>Get Resume ↗</a>
+          <a href={personal.resume}>Get Resume <span className="pf-link-arrow" aria-hidden="true">↗</span></a>
         )}
 
         <SocialLinks settings={settings} />
@@ -340,7 +340,7 @@ function Skills({ items, section }) {
           className="pf-text-button"
           onClick={() => setAll(true)}
         >
-          All skills ↗
+          All skills <span className="pf-link-arrow" aria-hidden="true">↗</span>
         </button>
       </div>
       {active && (
@@ -438,7 +438,8 @@ function ProjectPreview({ project, slide, setSlide }) {
                 setSlide((slide + images.length - 1) % images.length)
               }
             >
-              ←
+              <span className="pf-link-arrow" aria-hidden="true">←</span>
+              <span className="pf-mobile-control-label">Previous</span>
             </button>
             <span aria-live="polite">
               {slide + 1} / {images.length}
@@ -448,7 +449,8 @@ function ProjectPreview({ project, slide, setSlide }) {
               aria-label="Next gallery image"
               onClick={() => setSlide((slide + 1) % images.length)}
             >
-              →
+              <span className="pf-link-arrow" aria-hidden="true">→</span>
+              <span className="pf-mobile-control-label">Next</span>
             </button>
           </div>
         )}
@@ -480,12 +482,12 @@ function ProjectPreview({ project, slide, setSlide }) {
       <div className="pf-actions">
         {project.code && (
           <a href={project.code} target="_blank" rel="noopener noreferrer">
-            View source ↗
+            View source <span className="pf-link-arrow" aria-hidden="true">↗</span>
           </a>
         )}
         {project.demo && (
           <a href={project.demo} target="_blank" rel="noopener noreferrer">
-            Visit project ↗
+            Visit project <span className="pf-link-arrow" aria-hidden="true">↗</span>
           </a>
         )}
       </div>
@@ -538,7 +540,7 @@ function Projects({ items, section, policy, onOverlay }) {
         {selected ? (
           <div className="pf-project-grid">
             <div className="pf-project-selection">
-              {policy.desktop ? (
+              {policy.motion ? (
                 <div className="pf-carousel">
                   <CircularCarousel
                     controlRef={carousel}
@@ -546,10 +548,10 @@ function Projects({ items, section, policy, onOverlay }) {
                     items={assets}
                     preset="cylinder"
                     intro="none"
-                    cardWidth={152}
+                    cardWidth={policy.desktop ? 152 : 128}
                     aspectRatio={1.58}
-                    gap={24}
-                    curve={0.1}
+                    gap={policy.desktop ? 24 : 16}
+                    curve={policy.desktop ? 0.1 : 0}
                     tilt={-2}
                     perspective={2600}
                     autoplay="off"
@@ -583,7 +585,8 @@ function Projects({ items, section, policy, onOverlay }) {
                   aria-label="Previous project"
                   onClick={() => select(index - 1)}
                 >
-                  ←
+                  <span className="pf-link-arrow" aria-hidden="true">←</span>
+                  <span className="pf-mobile-control-label">Previous</span>
                 </button>
                 <ProjectChooser
                   projects={items}
@@ -595,7 +598,8 @@ function Projects({ items, section, policy, onOverlay }) {
                   aria-label="Next project"
                   onClick={() => select(index + 1)}
                 >
-                  →
+                  <span className="pf-link-arrow" aria-hidden="true">→</span>
+                  <span className="pf-mobile-control-label">Next</span>
                 </button>
               </div>
             </div>
@@ -620,7 +624,7 @@ function Projects({ items, section, policy, onOverlay }) {
                   </p>
                   <p className="pf-eyebrow">{project.status}</p>
                   <button type="button" className="pf-primary" onClick={open}>
-                    Preview ↗
+                    Preview <span className="pf-link-arrow" aria-hidden="true">↗</span>
                   </button>
                 </div>
               </div>
@@ -672,7 +676,7 @@ function Education({ items, section }) {
                 className="pf-text-button"
                 onClick={() => setActive(item)}
               >
-                View credential & details ↗
+                View credential & details <span className="pf-link-arrow" aria-hidden="true">↗</span>
               </button>
             </article>
           ))}
@@ -716,7 +720,7 @@ function Contact({ data, section, policy }) {
             <address>
               {p.email && (
                 <a className="pf-accent" href={`mailto:${p.email}`}>
-                  {p.email} ↗
+                  {p.email} <span className="pf-link-arrow" aria-hidden="true">↗</span>
                 </a>
               )}
               {p.phone && <a href={`tel:${p.phone}`}>{p.phone}</a>}

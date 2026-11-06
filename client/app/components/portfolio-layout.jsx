@@ -100,8 +100,10 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
         </header>
         <main id="portfolio-content">{children}</main>
         <footer className="pf-footer">
-          <span>{state.data?.settings?.footerText}</span>
-          <a href="#top">Back to top ↑</a>
+          <div className="pf-footer-inner">
+            <span>{state.data?.settings?.footerText || "© Talal Qasim"}</span>
+            <a href="#top">Back to top</a>
+          </div>
         </footer>
       </div>
     </PortfolioContext.Provider>

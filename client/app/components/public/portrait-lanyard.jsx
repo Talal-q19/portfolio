@@ -35,9 +35,39 @@ export default function PortraitLanyard({ src, name, policy, entered = true }) {
   const onMount = useCallback((element) => {
     if (element) setReady(false);
   }, []);
-  const enabled = policy.desktop && policy.supported && !failed && src;
+  const enabled = policy.supported && !failed && src;
   const appeared = entered && released;
   const active = appeared && ready;
+  const effect = enabled && primed ? (
+    <div
+      ref={onMount}
+      className={policy.desktop ? "pf-lanyard-overlay" : "pf-mobile-lanyard"}
+      data-ready={active}
+    >
+      <EffectBoundary>
+        <Lanyard
+          frontImage={src}
+          backText="Backend Engineer at EUNX"
+          imageFit="cover"
+          orientation="portrait"
+          size={0.68}
+          strapLength={0.3}
+          finish="matte"
+          strapColor={theme === "dark" ? "#8fafff" : "#2454d6"}
+          cardColor={theme === "dark" ? "#18243b" : "#ffffff"}
+          damping={0.6}
+          elasticity={0.45}
+          breeze={0}
+          intro={policy.desktop && active}
+          anchorElement={policy.desktop ? host : null}
+          maxStretch={policy.desktop ? "hero" : 100}
+          paused={policy.hidden || !appeared}
+          onReady={onReady}
+          onFailure={onFailure}
+        />
+      </EffectBoundary>
+    </div>
+  ) : null;
   return (
     <figure
       ref={host}
@@ -55,35 +85,7 @@ export default function PortraitLanyard({ src, name, policy, entered = true }) {
           </div>
         </div>
       )}
-      {enabled &&
-        primed &&
-        createPortal(
-          <div ref={onMount} className="pf-lanyard-overlay" data-ready={active}>
-            <EffectBoundary>
-              <Lanyard
-                frontImage={src}
-                backText="Backend Engineer at EUNX"
-                imageFit="cover"
-                orientation="portrait"
-                size={0.68}
-                strapLength={0.3}
-                finish="matte"
-                strapColor={theme === "dark" ? "#8fafff" : "#2454d6"}
-                cardColor={theme === "dark" ? "#18243b" : "#ffffff"}
-                damping={0.6}
-                elasticity={0.45}
-                breeze={0}
-                intro={active}
-                anchorElement={host}
-                maxStretch="hero"
-                paused={policy.hidden || !active}
-                onReady={onReady}
-                onFailure={onFailure}
-              />
-            </EffectBoundary>
-          </div>,
-          document.body,
-        )}
+      {effect && (policy.desktop ? createPortal(effect, document.body) : effect)}
     </figure>
   );
 }

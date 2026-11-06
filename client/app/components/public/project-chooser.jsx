@@ -69,7 +69,7 @@ export default function ProjectChooser({ projects, selected, onSelect }) {
             ))}
           </span>
         </span>
-        <span aria-hidden="true" className="pf-chooser-chevron">
+        <span aria-hidden="true" className="pf-chooser-chevron pf-link-arrow">
           ⌄
         </span>
       </summary>
@@ -104,7 +104,7 @@ export default function ProjectChooser({ projects, selected, onSelect }) {
               {project.name}
               <small>{project.role}</small>
             </span>
-            <span aria-hidden="true">
+            <span aria-hidden="true" className={project.id === selected.id ? undefined : "pf-link-arrow"}>
               {project.id === selected.id ? "✓" : "↗"}
             </span>
           </button>

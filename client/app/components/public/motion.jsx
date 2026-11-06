@@ -126,7 +126,7 @@ export function ContactCrystal({ policy }) {
   const { theme } = useAppearance();
   const { host, primed, visible, ready, failed, onReady, onFailure, onMount } =
     useEffectStage();
-  const rendered = ready && !failed && policy.supported && policy.desktop;
+  const rendered = ready && !failed && policy.supported;
   return (
     <div
       ref={host}
@@ -136,7 +136,7 @@ export function ContactCrystal({ policy }) {
       aria-hidden="true"
     >
       <div className="pf-crystal-static" />
-      {policy.desktop && policy.supported && primed && !failed && (
+      {policy.supported && primed && !failed && (
         <div ref={onMount} className="pf-effect-canvas">
           <EffectBoundary>
             <CrystalizedBall
@@ -149,7 +149,7 @@ export function ContactCrystal({ policy }) {
               flares={0.45}
               glow={1.15}
               sparks={0.35}
-              particleCount={4000}
+              particleCount={policy.desktop ? 4000 : 1200}
               fill={0.6}
               motion="drift"
               particleShape="round"
@@ -177,7 +177,7 @@ export function ExperienceThreads({ policy }) {
   const { theme } = useAppearance();
   const { host, primed, visible, ready, failed, onReady, onFailure, onMount } =
     useEffectStage();
-  const rendered = ready && !failed && policy.supported && policy.desktop;
+  const rendered = ready && !failed && policy.supported;
   return (
     <div
       ref={host}
@@ -197,7 +197,7 @@ export function ExperienceThreads({ policy }) {
             />
           ))}
         </svg>
-        {policy.desktop && policy.supported && primed && !failed && (
+        {policy.supported && primed && !failed && (
           <div ref={onMount} className="pf-effect-canvas">
             <EffectBoundary>
               <Threads
@@ -205,7 +205,7 @@ export function ExperienceThreads({ policy }) {
                 accentColor={theme === "dark" ? "#C2A1FF" : "#8A6ADF"}
                 amplitude={1.35}
                 distance={0.35}
-                lineCount={64}
+                lineCount={policy.desktop ? 64 : 32}
                 thickness={0.85}
                 softness={1.2}
                 speed={0.4}
