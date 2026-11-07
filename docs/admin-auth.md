@@ -2,7 +2,7 @@
 
 Express authenticates real dashboard requests. Convex stores administrator records, challenge proofs, reset grants, session hashes and counters. Password hashing (salted scrypt), JWT signing and SMTP stay in Express. There is no public registration endpoint and no local authentication bypass.
 
-Configure the ignored `server/api/.env.local` using its example. The owning Convex account can use a different email. `CONVEX_SERVICE_SECRET` must match the deployment; `AUTH_JWT_SECRET` and the frontend/backend `API_PROXY_SECRET` must be at least 32 random bytes. `ADMIN_ORIGIN` must be the exact HTTPS frontend origin in production.
+Configure the ignored `server/api/.env.local` using its example. The owning Convex account can use a different email. `CONVEX_SERVICE_SECRET` must match the deployment; `AUTH_JWT_SECRET` and the frontend/backend `API_PROXY_SECRET` must be at least 32 random bytes. `ADMIN_ORIGIN` must be the exact HTTPS frontend origin in production. To allow multiple frontends, set the comma-separated `ADMIN_ORIGINS` allowlist instead; it overrides `ADMIN_ORIGIN`. Production permits HTTP only for explicitly listed loopback hosts, such as `http://localhost:3000`.
 
 ## Provision an administrator
 

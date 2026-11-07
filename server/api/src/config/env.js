@@ -25,6 +25,7 @@ function loadConfig(env = process.env) {
     auth: {
       secret: env.AUTH_JWT_SECRET,
       origin: env.ADMIN_ORIGIN || 'http://localhost:3000',
+      origins: (env.ADMIN_ORIGINS || env.ADMIN_ORIGIN || 'http://localhost:3000').split(',').map(value => value.trim()),
     },
     port: integer('PORT', 4000),
     // Set an exact hop count only behind a trusted, fixed reverse proxy.
