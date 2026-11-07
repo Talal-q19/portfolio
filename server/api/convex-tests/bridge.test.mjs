@@ -108,6 +108,33 @@ test('legacy hero fields resolve from matching snapshots and remain editable aft
   expect(hero(await content('read')).designation).toBe('');
   await expect(content('admin/content/hero', 'PATCH', { operation: 'update', data: { designation: 'x'.repeat(501) } })).rejects.toThrow();
 });
+test('Hero inherits the matching legacy CV and can replace or remove it without leaking drafts', async () => {
+  const { t, call } = setup();
+  const content = (path, method = 'GET', body = null, query = {}) => call('content', { path, method, body, query });
+  for (const templateKey of ['hero', 'site-settings']) {
+    await content('admin/categories', 'POST', { slug: templateKey, name: templateKey, templateKey, cardinality: 'singleton' });
+  }
+  for (const id of [1, 2]) {
+    const storageId = await t.run(ctx => ctx.storage.store(new Blob(['pdf'], { type: 'application/pdf' })));
+    await t.run(ctx => ctx.db.insert('media', { id, storageId, name: `cv-${id}.pdf`, alternativeText: '', mime: 'application/pdf', size: 1 }));
+  }
+  await t.run(async ctx => {
+    await ctx.db.insert('content', { documentId: 'settings', category: 'site-settings', draft: { data: { cv: 2 }, displayOrder: 0 }, published: { data: { cv: 1 }, displayOrder: 0, publishedAt: '2026-11-01' } });
+    await ctx.db.insert('content', { documentId: 'hero', category: 'hero', draft: { data: { heading: 'Hello', paragraph: 'Welcome' }, displayOrder: 0 }, published: { data: { heading: 'Hello', paragraph: 'Welcome' }, displayOrder: 0, publishedAt: '2026-11-01' } });
+  });
+  const publicHero = async () => (await content('read', 'GET', null, { category: 'hero' })).categories[0].items[0].data;
+  expect((await publicHero()).cv.id).toBe(1);
+  expect((await content('admin/content/hero')).item.data.cv.id).toBe(2);
+  await content('admin/content/hero', 'PATCH', { operation: 'update', data: { cv: 2 } });
+  expect((await publicHero()).cv.id).toBe(1);
+  await content('admin/content/hero', 'PATCH', { operation: 'publish' });
+  expect((await publicHero()).cv.id).toBe(2);
+  await expect(content('admin/media/2', 'DELETE')).rejects.toThrow();
+  await content('admin/content/hero', 'PATCH', { operation: 'update', data: { cv: null } });
+  await content('admin/content/hero', 'PATCH', { operation: 'publish' });
+  expect((await publicHero()).cv).toBeNull();
+});
+
 test('direct upload verifies bytes, preserves the 8 MiB limit and protects referenced assets', async () => {
   const { t, call } = setup();
   const content = (path, method = 'GET', body = null) => call('content', { path, method, query: {}, body });

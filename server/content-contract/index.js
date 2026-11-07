@@ -19,7 +19,7 @@ const components = {
 const templates = {
   hero: { name: 'Hero', cardinality: 'singleton', fields: {
     heading: text(true, 200), paragraph: text(true, 5000), greeting: text(), role: text(),
-    designation: text(), availability: text(), eyebrow: text(), location: text(), buttons: list('link'), panels: list('panel'),
+    cv: media(false, 'file'), designation: text(), availability: text(), eyebrow: text(), location: text(), buttons: list('link'), panels: list('panel'),
   } },
   experience: { name: 'Experience', cardinality: 'multiple', fields: {
     title: text(true, 200), company: text(true, 200), image: media(), description: text(true, 10000),
