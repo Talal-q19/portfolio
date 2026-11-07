@@ -18,5 +18,5 @@ export default function AdminSession({ preview }) {
     return () => { active = false; };
   }, [preview]);
   if (preview || state === 'ready') return <AdminDashboard preview={preview} onLogout={() => setState('login')} />;
-  return <main className="admin-root admin-auth-page">{state === 'loading' ? <p role="status">Checking your session…</p> : <div>{error && <p role="alert">{error}</p>}<AdminLogin onSuccess={() => { setError(''); setState('ready'); }} /></div>}</main>;
+  return <main className="admin-root admin-auth-page">{state === 'loading' ? <p role="status">Checking your session…</p> : <div className="admin-auth-shell">{error && <p className="admin-session-error" role="alert">{error}</p>}<AdminLogin onSuccess={() => { setError(''); setState('ready'); }} /></div>}</main>;
 }
