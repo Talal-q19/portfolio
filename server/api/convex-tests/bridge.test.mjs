@@ -75,6 +75,39 @@ test('bridge requires server authentication and migration enablement', async () 
   request.body = JSON.stringify({ operation: 'migrationRead', args: { table: 'admins' } });
   expect((await t.fetch('/bridge', request)).status).toBe(403);
 });
+
+test('legacy hero fields resolve from matching snapshots and remain editable after settings saves', async () => {
+  const { t, call } = setup();
+  const content = (path, method = 'GET', body = null, query = {}) => call('content', { path, method, body, query });
+  for (const key of ['hero', 'site-settings', 'experience']) {
+    await content('admin/categories', 'POST', { slug: key, name: key, templateKey: key, cardinality: key === 'experience' ? 'multiple' : 'singleton' });
+  }
+  const seed = async (documentId, category, data, draftData = data) => {
+    await t.run(ctx => ctx.db.insert('content', { documentId, category, draft: { data: draftData, displayOrder: 0 }, published: { data, displayOrder: 0, publishedAt: '2026-11-01T00:00:00.000Z' } }));
+  };
+  await seed('settings', 'site-settings', { displayName: 'Talal', contactEmail: 'test@example.com', seoTitle: 'Portfolio', seoDescription: 'Work', location: 'Dubai', designation: 'Software Engineer', aboutHeading: 'About', aboutText: 'Legacy biography' });
+  await seed('job', 'experience', { title: 'Backend Engineer', company: 'EUNX', current: true, startDate: '2025-01' }, { title: 'Private title', company: 'Private company', current: true, startDate: '2025-01' });
+  await seed('hero', 'hero', { heading: 'Hello', paragraph: 'Welcome' });
+  const hero = result => result.categories.find(c => c.slug === 'hero').items[0].data;
+  expect(hero(await content('read', 'GET', null, { category: 'hero' }))).toMatchObject({ designation: 'Backend Engineer at EUNX', location: 'Dubai' });
+  expect((await content('admin/content/hero')).item.data.designation).toBe('Private title at Private company');
+  const settings = (await content('admin/content/settings')).item.data;
+  for (const key of ['designation', 'location', 'aboutHeading', 'aboutText']) expect(settings).not.toHaveProperty(key);
+  // A real image is needed to validate saving the existing legacy settings.
+  const storageId = await t.run(ctx => ctx.storage.store(new Blob(['image'], { type: 'image/png' })));
+  await t.run(ctx => ctx.db.insert('media', { id: 1, storageId, name: 'portrait.png', alternativeText: '', mime: 'image/png', size: 1 }));
+  await content('admin/content/settings', 'PATCH', { operation: 'update', data: { profileImage: 1 } });
+  await content('admin/content/settings', 'PATCH', { operation: 'publish' });
+  expect(hero(await content('read')).location).toBe('Dubai');
+  await content('admin/content/hero', 'PATCH', { operation: 'update', data: { designation: 'New designation', location: 'Abu Dhabi' } });
+  expect(hero(await content('read')).designation).toBe('Backend Engineer at EUNX');
+  await content('admin/content/hero', 'PATCH', { operation: 'publish' });
+  expect(hero(await content('read'))).toMatchObject({ designation: 'New designation', location: 'Abu Dhabi' });
+  await content('admin/content/hero', 'PATCH', { operation: 'update', data: { designation: '' } });
+  await content('admin/content/hero', 'PATCH', { operation: 'publish' });
+  expect(hero(await content('read')).designation).toBe('');
+  await expect(content('admin/content/hero', 'PATCH', { operation: 'update', data: { designation: 'x'.repeat(501) } })).rejects.toThrow();
+});
 test('direct upload verifies bytes, preserves the 8 MiB limit and protects referenced assets', async () => {
   const { t, call } = setup();
   const content = (path, method = 'GET', body = null) => call('content', { path, method, query: {}, body });

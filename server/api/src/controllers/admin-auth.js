@@ -8,7 +8,8 @@ function guardAdminRequest(config, req) {
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return;
   // A custom header forces cross-origin browsers to preflight; this API allows no CORS.
   if (req.get('x-admin-request') !== '1') throw new HttpError(403, 'Invalid admin request.');
-  if (req.headers.origin && req.headers.origin !== config.auth.origin) throw new HttpError(403, 'Invalid request origin.');
+  const allowedOrigins = config.auth.origins || [config.auth.origin];
+  if (req.headers.origin && !allowedOrigins.includes(req.headers.origin)) throw new HttpError(403, 'Invalid request origin.');
 }
 function authRoutes(config, auth) {
   const router = express.Router();

@@ -29,9 +29,28 @@ async function payloadView(ctx, fields, data) {
   }
   return out;
 }
-async function entryView(ctx, row, category, published = false) {
+// Resolve legacy values within the same snapshot; draft edits must never leak publicly.
+function entryData(row, category, all, categories, published = false) {
+  const snapshot = entry => published ? entry?.published : entry?.draft;
+  const data = { ...snapshot(row)?.data };
+  const templateKey = category.templateKey;
+  if (templateKey === 'site-settings') {
+    for (const key of ['location', 'designation', 'aboutHeading', 'aboutText']) delete data[key];
+  }
+  if (templateKey === 'hero') {
+    const byTemplate = key => all.filter(entry => categories.find(c => c.slug === entry.category)?.templateKey === key).sort(order).map(entry => snapshot(entry)?.data).filter(Boolean);
+    const settings = byTemplate('site-settings')[0];
+    const current = byTemplate('experience').filter(entry => entry.current).sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''))[0];
+    // Explicit empty strings clear a field; only absent fields receive legacy defaults.
+    if (data.location == null && settings?.location != null) data.location = settings.location;
+    const designation = current ? `${current.title} at ${current.company}` : settings?.designation;
+    if (data.designation == null && designation != null) data.designation = designation;
+  }
+  return data;
+}
+async function entryView(ctx, row, category, published = false, all = [], categories = []) {
   const value = published ? row.published : row.draft;
-  return { documentId: row.documentId, category: row.category, displayOrder: value.displayOrder, slug: value.data.slug || null, publishedAt: row.published?.publishedAt || null, data: await payloadView(ctx, templates[category.templateKey].fields, value.data) };
+  return { documentId: row.documentId, category: row.category, displayOrder: value.displayOrder, slug: value.data.slug || null, publishedAt: row.published?.publishedAt || null, data: await payloadView(ctx, templates[category.templateKey].fields, entryData(row, category, all, categories, published)) };
 }
 function references(fields, data, kind, value) {
   return Object.entries(fields).some(([key, spec]) => spec.type === kind && (data?.[key]?.id || data?.[key]) === value || spec.type === 'list' && (data?.[key] || []).some(row => references(components[spec.component], row, kind, value)));
@@ -41,7 +60,7 @@ async function validateEntry(ctx, row, category, all, categories, publishing = f
   if (!Number.isInteger(row.draft.displayOrder) || row.draft.displayOrder < 0) fail('displayOrder', 'Use a nonnegative integer.');
   if (category.cardinality === 'singleton' && all.some(r => r.category === category.slug && r.documentId !== row.documentId)) fail('category', 'This singleton category already has an entry.');
   if (category.templateKey === 'projects' && all.some(r => r.documentId !== row.documentId && [r.draft?.data.slug, r.published?.data.slug].includes(row.draft.data.slug))) fail('data.slug', 'Project slug already exists.');
-  await validatePayload(category.templateKey, row.draft.data, {
+  await validatePayload(category.templateKey, entryData(row, category, all, categories), {
     media: async value => mediaView(ctx, await find(ctx, 'media', 'id', value?.id || value)),
     skillGroup: async value => {
       const group = all.find(r => r.documentId === value);
@@ -70,7 +89,7 @@ async function executeContent(ctx, { path, method = 'GET', query = {}, body, ver
       rows.sort((a, b) => order({ ...a, displayOrder: (published ? a.published : a.draft).displayOrder }, { ...b, displayOrder: (published ? b.published : b.draft).displayOrder }));
       const total = rows.length;
       if (q.paged) rows = rows.slice((q.page - 1) * q.pageSize, q.page * q.pageSize);
-      groups.push({ ...plain(c), items: await Promise.all(rows.map(r => entryView(ctx, r, c, published))), pagination: { page: q.paged ? q.page : 1, pageSize: q.paged ? q.pageSize : total, total, pageCount: q.paged ? Math.ceil(total / q.pageSize) : total ? 1 : 0 } });
+      groups.push({ ...plain(c), items: await Promise.all(rows.map(r => entryView(ctx, r, c, published, all, categories))), pagination: { page: q.paged ? q.page : 1, pageSize: q.paged ? q.pageSize : total, total, pageCount: q.paged ? Math.ceil(total / q.pageSize) : total ? 1 : 0 } });
     }
     return { categories: groups };
   }
@@ -96,7 +115,7 @@ async function executeContent(ctx, { path, method = 'GET', query = {}, body, ver
   }
   if (resource === 'content') {
     const row = all.find(r => r.documentId === id);
-    if (method === 'GET') return { item: row ? await entryView(ctx, row, categoryFor(row.category)) : fail('content', 'Content not found.', 404) };
+    if (method === 'GET') return { item: row ? await entryView(ctx, row, categoryFor(row.category), false, all, categories) : fail('content', 'Content not found.', 404) };
     if (id && !row) fail('content', 'Content not found.', 404);
     const isGroup = row && categoryFor(row.category)?.templateKey === 'skill-groups';
     const referring = publishedOnly => all.some(r => r.documentId !== id && categoryFor(r.category)?.templateKey === 'skills' && (publishedOnly ? r.published?.data.skillGroup === id : r.draft.data.skillGroup === id || r.published?.data.skillGroup === id));
@@ -114,14 +133,20 @@ async function executeContent(ctx, { path, method = 'GET', query = {}, body, ver
     } else {
       candidate = row ? plain(row) : { documentId: `e${await nextId(ctx, 'content')}`, published: null };
       candidate.category = body.category || row?.category;
-      candidate.draft = { data: { ...row?.draft.data, ...body.data }, displayOrder: body.displayOrder ?? row?.draft.displayOrder ?? 0 };
+      candidate.draft = { data: { ...(row ? entryData(row, categoryFor(row.category), all, categories) : {}), ...body.data }, displayOrder: body.displayOrder ?? row?.draft.displayOrder ?? 0 };
+      // Retain hidden legacy source values for heroes not yet saved in the new editor.
+      if (categoryFor(candidate.category)?.templateKey === 'site-settings') {
+        for (const key of ['location', 'designation', 'aboutHeading', 'aboutText']) {
+          if (row?.draft.data[key] !== undefined) candidate.draft.data[key] = row.draft.data[key];
+        }
+      }
       if (row?.published && candidate.category !== row.category) fail('category', 'Unpublish before changing category.');
       if (isGroup && candidate.category !== row.category && referring(false)) fail('category', 'This group is referenced by skills.');
       await validateEntry(ctx, candidate, categoryFor(candidate.category), all, categories, body.operation === 'publish');
       if (body.operation === 'publish') candidate.published = { ...candidate.draft, publishedAt: new Date().toISOString() };
     }
     if (row) await ctx.db.replace(row._id, candidate); else await ctx.db.insert('content', candidate);
-    return { item: await entryView(ctx, candidate, categoryFor(candidate.category)) };
+    return { item: await entryView(ctx, candidate, categoryFor(candidate.category), false, all, categories) };
   }
   if (resource === 'media') {
     if (id === 'upload-ticket' && method === 'POST') {

@@ -34,6 +34,8 @@ For releases, deploy compatible Convex schema/functions and Express from BE-PROD
 
 ## Content baseline and migration
 
+Hero owns location and the current designation shown on the portrait card's reverse. About headings and introductions are edited in Section Settings; Site Settings contains shared profile, contact, navigation and SEO fields. Existing Hero entries resolve missing designation from the matching draft or published current experience, then the legacy Site Settings designation. Legacy settings values remain stored for compatibility, and saving Hero makes its values explicit. An empty designation clears the card text.
+
 The original database/media and SMTP configuration are on another computer. The initial production content is reconstructed from the committed source, not represented as a migration of that computer's current database. Administrator accounts are deliberately empty at the owner's request.
 
 Generate the baseline with `node server/api/scripts/build-seed.js`: 48 entries and 51 assets, with an empty administrators array. Its private snapshot is ignored under `server/api/.backups/committed-baseline/`.
