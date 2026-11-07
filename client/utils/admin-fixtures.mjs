@@ -7,9 +7,11 @@ export function createFixtureApi() {
   let sequence = 50;
   let categories = Object.entries(requirements.templates).map(([slug, t], displayOrder) => ({ documentId: `category${displayOrder}`, name: t.name, slug, templateKey: slug, cardinality: t.cardinality, displayOrder, visible: true }));
   const image = { id: 1, name: 'Portfolio image', mime: 'image/jpeg', alternativeText: 'Portfolio portrait', url: '/profilePic.jpeg' };
-  let media = [image];
+  const cv = { id: 2, name: 'talal-qasim-cv-2026.pdf', mime: 'application/pdf', url: '/talal-qasim-cv-2026.pdf' };
+  let media = [image, cv];
   let items = [
-    { documentId: 'hero1', category: 'hero', displayOrder: 0, data: { heading: 'Building thoughtful software.', paragraph: 'A local preview of your portfolio editor. Changes here are temporary.' } },
+    { documentId: 'hero1', category: 'hero', displayOrder: 0, data: { heading: 'Building thoughtful software.', paragraph: 'A local preview of your portfolio editor. Changes here are temporary.', cv } },
+    { documentId: 'settings1', category: 'site-settings', displayOrder: 0, data: { displayName: 'Talal Qasim', profileImage: image, contactEmail: 'hello@example.com', seoTitle: 'Talal Qasim | Portfolio', seoDescription: 'Selected work and experience.' } },
     { documentId: 'experience1', category: 'experience', displayOrder: 0, data: { title: 'Software Engineer', company: 'Example Studio', image, description: 'Designing and building web applications.', startDate: '2024-01', current: true, highlights: [{ text: 'Built a shared content platform.' }] } },
     { documentId: 'group1', category: 'skill-groups', displayOrder: 0, data: { name: 'Backend', eyebrow: 'Reliable foundations', description: 'APIs and services.' } },
   ].map(item => ({ ...item, publishedAt: null }));

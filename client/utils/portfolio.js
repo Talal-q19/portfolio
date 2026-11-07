@@ -30,7 +30,7 @@ export function portfolioData(envelope, mediaOrigin) {
         email: settings.contactEmail,
         phone: settings.phone,
         address: hero?.location || settings.location,
-        resume: media(settings.cv) || "#contact",
+        resume: media(hero && Object.hasOwn(hero, "cv") ? hero.cv : settings.cv),
         ...social,
       }
     : null;

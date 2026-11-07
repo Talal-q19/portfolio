@@ -174,3 +174,24 @@
 .admin-root button:hover:not(:disabled) { border-color:var(--admin-accent); }
 .admin-root button.admin-primary:hover:not(:disabled) { background:#b2c6ff; }
 .admin-topbar a:hover { background:var(--admin-alt); }
+
+/* Task-focused editing: daily controls first, technical options on demand. */
+.admin-editor-group { border-top:1px solid var(--admin-border); padding:28px 0 8px; margin-top:24px; }
+.admin-editor-group h3,.admin-editor-group summary { font-family:var(--font-display),sans-serif; font-size:20px; font-weight:500; color:var(--admin-text); }
+.admin-editor-group summary { cursor:pointer; min-height:44px; }
+.admin-editor-group>p { max-width:680px; margin-top:8px; }
+.admin-editor-group .admin-fields { margin:20px 0; }
+.admin-editor-category-fixed { display:none; }
+.admin-order-options { grid-column:1/-1; }
+.admin-order-options summary,.admin-advanced-nav summary { min-height:44px; cursor:pointer; color:var(--admin-muted); padding:10px 0; font-size:12px; }
+.admin-order-options .admin-field { max-width:260px; padding-top:12px; }
+.admin-advanced-nav { border-top:1px solid var(--admin-border); margin:26px 8px 0; padding-top:12px; }
+.admin-advanced-nav button { width:100%; font-size:12px; text-align:left; }
+.admin-selected-file { padding:14px; background:var(--admin-alt); border:1px solid var(--admin-border); border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:16px; overflow-wrap:anywhere; }
+.admin-selected-file strong { min-width:0; }
+.admin-selected-file a { color:var(--admin-accent); flex-shrink:0; min-height:44px; display:flex; align-items:center; }
+@media(max-width:760px) { .admin-editor-group { padding-top:22px; } .admin-advanced-nav { margin-top:16px; } }
+
+.admin-cv-upload { margin-top:16px; }
+.admin-cv-upload button { min-width:140px; }
+.admin-cv-upload p { font-size:12px; margin:10px 0 0; }

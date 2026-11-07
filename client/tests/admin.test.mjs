@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import contract from '../utils/admin-contract.cjs';
+import { editorGroups } from '../utils/admin-presentation.mjs';
 import { AdminApiError, createAdminApi, emptyFields, payloadForWrite, moveItem, fetchAdminMedia } from '../utils/admin-api.mjs';
 import { createFixtureApi } from '../utils/admin-fixtures.mjs';
 
@@ -13,7 +14,7 @@ test('all registered templates have usable empty field values', () => {
     const values = emptyFields(t.fields);
     for (const [key, spec] of Object.entries(t.fields)) assert.deepEqual(values[key], spec.type === 'list' ? [] : spec.type === 'boolean' ? false : '');
   }
-  assert.ok(!Object.values(contract.templates.hero.fields).some(f => f.type === 'media'));
+  assert.deepEqual(Object.entries(contract.templates.hero.fields).filter(([, f]) => f.type === 'media').map(([key]) => key), ['cv']);
 });
 
 test('Hero owns the card designation and location; Site Settings contains global fields', () => {
@@ -25,6 +26,15 @@ test('Hero owns the card designation and location; Site Settings contains global
   assert.ok(contract.components.section.heading);
   assert.ok(contract.components.section.introduction);
 });
+test('CV upload appears only in Hero while stored settings remain backward compatible', () => {
+  assert.equal(contract.templates.hero.fields.cv.type, 'media');
+  const hero = editorGroups('hero', contract.templates.hero.fields).flatMap(group => Object.keys(group.fields));
+  const settings = editorGroups('site-settings', contract.templates['site-settings'].fields).flatMap(group => Object.keys(group.fields));
+  assert.ok(hero.includes('cv'));
+  assert.ok(!settings.includes('cv'));
+  assert.equal(hero.filter(key => key === 'cv').length, 1);
+});
+
 test('admin requests use same-origin credentials, no cache, and structured validation/session errors', async () => {
   let options;
   const api = createAdminApi(async (url, init) => { assert.equal(url, '/api/admin/content'); options = init; return { ok: false, status: 422, json: async () => ({ message: 'Incomplete', fields: { 'data.heading': 'Required' } }) }; });

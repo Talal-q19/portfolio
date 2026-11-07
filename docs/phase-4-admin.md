@@ -63,3 +63,6 @@ The parity test fails if the copies drift. This avoids importing server files ou
 - Desktop (1440px) and mobile (375px) screenshots were inspected. Mobile has no document overflow; keyboard focus and reduced-motion checks pass. Automated axe checks, including contrast, pass on the mobile overview. Other screens received label/keyboard interaction checks; this is not a full accessibility audit.
 
 Both fixture and real local browser workflows were checked. Real browser authentication and session redirects remain phase 5. The local CMS/API/client were restarted to activate this dashboard; existing portfolio content was preserved and test resources were removed. No production deployment was performed.
+
+
+Admin editors follow the public page: Hero & CV owns CV upload, replacement, and removal. Profile & contact contains shared identity, contact details, social links, and search appearance. Existing CV references in Site Settings remain a legacy fallback until a Hero CV value is saved; an explicit empty Hero CV removes the public download. Public and draft fallbacks use their matching snapshots. Single-section shortcuts open their editor directly. Category structure, ordering, and less frequently used fields are expandable advanced controls.

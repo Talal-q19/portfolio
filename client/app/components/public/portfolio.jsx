@@ -219,7 +219,7 @@ function Hero({ data, policy, entered, typingReady }) {
         <h3>{hero.role}</h3>
         <p className="pf-hero-copy">{personal.description}</p>
         <div className="pf-actions">
-          {hero.buttons?.map((b, i) => (
+          {hero.buttons?.map((b, i) => i === 2 && !personal.resume ? null : (
             <a
               key={b.label}
               className={i === 0 ? "pf-primary" : i === 1 ? "pf-secondary" : ""}
