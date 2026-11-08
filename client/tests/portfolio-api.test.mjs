@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { portfolioData } from '../utils/portfolio.js';
 import { fetchPortfolio } from '../utils/portfolio-api.mjs';
 
 test('browser loads published content from the same-origin Express route', async () => {
@@ -34,4 +35,17 @@ test('unmount cancellation aborts the request and an aborted request does not st
   controller.abort();
   assert.equal(requestSignal.aborted, true);
   await assert.rejects(fetchPortfolio({ signal: controller.signal, fetchImpl: () => { throw new Error('Must not fetch'); } }), error => error.name === 'AbortError');
+});
+
+
+test('the public CV uses Hero, falls back for unmigrated content, and respects explicit removal', () => {
+  const envelope = { categories: [
+    { templateKey: 'hero', items: [{ data: {} }] },
+    { templateKey: 'site-settings', items: [{ data: { cv: { url: '/legacy.pdf' } } }] },
+  ] };
+  assert.equal(portfolioData(envelope).personalData.resume, '/legacy.pdf');
+  envelope.categories[0].items[0].data.cv = { url: '/new.pdf' };
+  assert.equal(portfolioData(envelope).personalData.resume, '/new.pdf');
+  envelope.categories[0].items[0].data.cv = null;
+  assert.equal(portfolioData(envelope).personalData.resume, '');
 });

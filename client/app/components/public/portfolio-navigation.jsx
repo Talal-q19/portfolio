@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PillNav from "./effects/PillNav";
 import { useAppearance } from "./appearance";
 
-export default function PortfolioNavigation({ items, onNavigate }) {
+export default function PortfolioNavigation({ items, onNavigate, docked = false }) {
   const { theme } = useAppearance();
   const [active, setActive] = useState("#about");
 
@@ -21,6 +21,32 @@ export default function PortfolioNavigation({ items, onNavigate }) {
   }, [items]);
 
   if (!items.length) return <nav aria-label="Main navigation" />;
+  if (docked) {
+    const index = Math.max(0, items.findIndex((item) => item.href === active));
+    return (
+      <nav className="pf-dock-nav" aria-label="Main navigation">
+        <span
+          className="pf-dock-highlight"
+          aria-hidden="true"
+          style={{ transform: `translateY(${index * 44}px)` }}
+        />
+        {items.map((item, i) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="pf-dock-item"
+            aria-current={i === index ? "page" : undefined}
+            onClick={(event) => {
+              onNavigate(event);
+              if (event.defaultPrevented) setActive(item.href);
+            }}
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    );
+  }
   return (
     <PillNav
       items={items}
@@ -41,8 +67,9 @@ export default function PortfolioNavigation({ items, onNavigate }) {
       highlightTextColor={theme === "dark" ? "#15213b" : "#ffffff"}
       barColor="var(--pf-panel)"
       textColor="var(--pf-muted)"
-      bounce={0.12}
+      bounce={0.08}
       stretch={0.18}
+      glideDuration={0.44}
       intro={false}
     />
   );

@@ -37,6 +37,14 @@ const build = (s, canvas, img, dpr) => {
   canvas.height = H;
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
+  // A srcset density descriptor can make naturalWidth smaller than the decoded
+  // bitmap. Normalize the full image before cropping so canvas and CSS agree.
+  const source = document.createElement("canvas");
+  source.width = iw;
+  source.height = ih;
+  const sourceContext = source.getContext("2d");
+  if (!sourceContext) return;
+  sourceContext.drawImage(img, 0, 0, iw, ih);
   const cover = Math.max(W / iw, H / ih);
   const sw = W / cover;
   const sh = H / cover;
@@ -69,7 +77,7 @@ const build = (s, canvas, img, dpr) => {
     if (b === 1) {
       fc.imageSmoothingEnabled = true;
       fc.imageSmoothingQuality = "high";
-      fc.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+      fc.drawImage(source, sx, sy, sw, sh, 0, 0, W, H);
       return full;
     }
     const small = document.createElement("canvas");
@@ -79,7 +87,7 @@ const build = (s, canvas, img, dpr) => {
     if (sc) {
       sc.imageSmoothingEnabled = true;
       sc.imageSmoothingQuality = "high";
-      sc.drawImage(img, sx, sy, sw, sh, 0, 0, small.width, small.height);
+      sc.drawImage(source, sx, sy, sw, sh, 0, 0, small.width, small.height);
     }
     fc.imageSmoothingEnabled = false;
     fc.drawImage(small, 0, 0, W, H);
@@ -246,7 +254,11 @@ export default function RefineFrame({
 
   useEffect(() => {
     const s = sim.current;
-    return () => cancelAnimationFrame(s.raf);
+    return () => {
+      cancelAnimationFrame(s.raf);
+      s.raf = 0;
+      s.last = 0;
+    };
   }, []);
 
   return (

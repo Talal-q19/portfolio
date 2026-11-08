@@ -41,7 +41,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   const mediaOrigin = new URL(
-    process.env.CMS_MEDIA_PUBLIC_URL || "http://localhost:1337",
+    process.env.CONVEX_CLOUD_URL || "https://rugged-reindeer-131.eu-west-1.convex.cloud",
   ).origin;
   return (
     <html lang="en" data-portfolio-theme="dark" suppressHydrationWarning>

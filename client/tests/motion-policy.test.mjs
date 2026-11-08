@@ -33,11 +33,16 @@ test("decorative GPU effects stop for every motion, visibility and performance f
     );
   }
 });
-test("touch cannot enable a cursor, while mobile and reduced motion use static presentation", () => {
+test("mobile supports effects without enabling a mouse cursor", () => {
   assert.equal(motionPolicy({ ...capable, fine: false }).fine, false);
-  assert.equal(motionPolicy({ ...capable, desktop: false }).desktop, false);
+  const mobile = motionPolicy({ ...capable, desktop: false, fine: false });
+  assert.equal(mobile.desktop, false);
+  assert.equal(mobile.motion, true);
+  assert.equal(mobile.supported, true);
+  assert.equal(mobile.gpu, true);
   for (const change of [{ reduced: true }, { simple: true }]) {
     const result = motionPolicy({ ...capable, ...change });
+    assert.equal(result.motion, false);
     assert.equal(result.desktop, false);
     assert.equal(result.fine, false);
   }

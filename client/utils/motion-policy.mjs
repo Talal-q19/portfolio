@@ -14,6 +14,7 @@ export function motionPolicy({
   const limited = simple || slow || cores < 4 || memory < 4 || saveData;
   const supported = !!webgl && !limited && !reduced;
   return {
+    motion: !reduced && !simple,
     desktop: !!desktop && !reduced && !simple,
     fine: !!fine && !reduced && !simple,
     hidden: !!hidden,

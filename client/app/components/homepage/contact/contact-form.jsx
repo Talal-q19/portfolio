@@ -143,8 +143,9 @@ export default function ContactForm() {
         {status === "sending"
           ? "Sending…"
           : status === "error"
-            ? "Try sending again ↗"
-            : "Send message ↗"}
+            ? "Try sending again"
+            : "Send message"}
+        {status !== "sending" && <span className="pf-link-arrow" aria-hidden="true"> ↗</span>}
       </button>
     </form>
   );

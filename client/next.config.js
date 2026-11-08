@@ -1,30 +1,21 @@
 const path = require('path')
-const cmsMediaOrigin = new URL(process.env.CMS_MEDIA_PUBLIC_URL || 'http://localhost:1337')
+const convexMediaOrigin = new URL(process.env.CONVEX_CLOUD_URL || 'https://rugged-reindeer-131.eu-west-1.convex.cloud')
  
 module.exports = {
   output: 'standalone',
   outputFileTracingRoot: __dirname,
   turbopack: { root: __dirname },
-  async rewrites() {
-    const apiUrl = (process.env.API_INTERNAL_URL || 'http://127.0.0.1:4000').replace(/\/$/, '');
-    const cmsUrl = (process.env.CMS_INTERNAL_URL || 'http://127.0.0.1:1337').replace(/\/$/, '');
-    // Explicit routes leave future Next cache callbacks under Next's control.
-    return [
-      { source: '/cms-media/:path*', destination: `${cmsUrl}/uploads/:path*` },
-      { source: '/api/contact', destination: `${apiUrl}/api/contact` },
-      { source: '/api/content', destination: `${apiUrl}/api/content` },
-      { source: '/api/admin/:path*', destination: `${apiUrl}/api/admin/:path*` },
-      { source: '/api/health', destination: `${apiUrl}/api/health` },
-    ];
-  },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
   images: {
-    // Browsers load local CMS images directly; Next blocks loopback optimizer fetches.
-    unoptimized: ['localhost', '127.0.0.1', '[::1]'].includes(cmsMediaOrigin.hostname),
+    // The committed baseline contains SVG logos stored under extensionless
+    // Convex URLs. Keep optimized responses sandboxed and non-executable.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
-      ...[cmsMediaOrigin].map(url => ({ protocol: url.protocol.slice(0, -1), hostname: url.hostname, port: url.port, pathname: '/uploads/**' })),
+      { protocol: convexMediaOrigin.protocol.slice(0, -1), hostname: convexMediaOrigin.hostname, port: convexMediaOrigin.port, pathname: '/api/storage/**' },
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',

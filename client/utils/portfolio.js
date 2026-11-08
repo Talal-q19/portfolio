@@ -29,8 +29,8 @@ export function portfolioData(envelope, mediaOrigin) {
         description: hero?.paragraph || settings.aboutText,
         email: settings.contactEmail,
         phone: settings.phone,
-        address: settings.location,
-        resume: media(settings.cv) || "#contact",
+        address: hero?.location || settings.location,
+        resume: media(hero && Object.hasOwn(hero, "cv") ? hero.cv : settings.cv),
         ...social,
       }
     : null;

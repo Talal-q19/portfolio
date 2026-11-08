@@ -19,7 +19,7 @@ const components = {
 const templates = {
   hero: { name: 'Hero', cardinality: 'singleton', fields: {
     heading: text(true, 200), paragraph: text(true, 5000), greeting: text(), role: text(),
-    availability: text(), eyebrow: text(), location: text(), buttons: list('link'), panels: list('panel'),
+    cv: media(false, 'file'), designation: text(), availability: text(), eyebrow: text(), location: text(), buttons: list('link'), panels: list('panel'),
   } },
   experience: { name: 'Experience', cardinality: 'multiple', fields: {
     title: text(true, 200), company: text(true, 200), image: media(), description: text(true, 10000),
@@ -47,8 +47,7 @@ const templates = {
   }, rules: [{ type: 'date-range-or-year', startField: 'startDate', endField: 'endDate', yearField: 'completionYear' }] },
   'site-settings': { name: 'Site Settings', cardinality: 'singleton', fields: {
     displayName: text(true, 200), profileImage: media(), contactEmail: { type: 'email', required: true },
-    seoTitle: text(true, 300), seoDescription: text(true, 2000), phone: text(), location: text(),
-    designation: text(), aboutHeading: text(), aboutText: text(false, 10000),
+    seoTitle: text(true, 300), seoDescription: text(true, 2000), phone: text(),
     cv: media(false, 'file'), socialLinks: list('link'), navigation: list('link'), footerText: text(false, 2000),
     devUsername: text(), contactIntroduction: text(false, 2000),
   } },

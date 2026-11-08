@@ -4,9 +4,14 @@ import { createAdminApi } from '@/utils/admin-api.mjs';
 import AdminDashboard from './dashboard';
 import { AdminLogin } from './login';
 import './admin.css';
+import { AdminThemeProvider } from './theme';
 
 const api = createAdminApi();
 export default function AdminSession({ preview }) {
+  return <AdminThemeProvider><AdminSessionContent preview={preview} /></AdminThemeProvider>;
+}
+
+function AdminSessionContent({ preview }) {
   const [state, setState] = useState('loading');
   const [error, setError] = useState('');
   useEffect(() => {
@@ -18,5 +23,5 @@ export default function AdminSession({ preview }) {
     return () => { active = false; };
   }, [preview]);
   if (preview || state === 'ready') return <AdminDashboard preview={preview} onLogout={() => setState('login')} />;
-  return <main className="admin-root admin-auth-page">{state === 'loading' ? <p role="status">Checking your session…</p> : <div>{error && <p role="alert">{error}</p>}<AdminLogin onSuccess={() => { setError(''); setState('ready'); }} /></div>}</main>;
+  return <main className="admin-root admin-auth-page">{state === 'loading' ? <p role="status">Checking your session…</p> : <div className="admin-auth-shell">{error && <p className="admin-session-error" role="alert">{error}</p>}<AdminLogin onSuccess={() => { setError(''); setState('ready'); }} /></div>}</main>;
 }
