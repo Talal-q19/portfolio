@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { createAdminApi } from '@/utils/admin-api.mjs';
+import { AdminThemeToggle } from './theme';
 const Threads = dynamic(() => import('../../components/public/effects/Threads'), { ssr: false });
 const api = createAdminApi();
 export function AdminLogin({ onSuccess }) {
@@ -53,7 +54,7 @@ export function AdminLogin({ onSuccess }) {
   }
   return <section className="admin-auth-layout" aria-label="Administrator authentication">
     <div className="admin-auth-left">
-      <Link href="/" className="admin-auth-brand"><span className="admin-auth-monogram">tq.</span><span>Talal Qasim<small>PORTFOLIO STUDIO</small></span></Link>
+      <div className="admin-auth-topbar"><Link href="/" className="admin-auth-brand"><span className="admin-auth-monogram">tq.</span><span>Talal Qasim<small>PORTFOLIO STUDIO</small></span></Link><AdminThemeToggle /></div>
       <div className="admin-auth">
         <p className="admin-auth-step">{otp ? '02 / VERIFY YOUR IDENTITY' : step === 'login' ? '01 / YOUR WORKSPACE' : 'ACCOUNT RECOVERY'}</p>
         <h1>{otp ? 'Check your email' : step === 'forgot' ? 'Forgot your password?' : step === 'password' ? 'A fresh start' : 'Welcome back.'}</h1>

@@ -4,9 +4,14 @@ import { createAdminApi } from '@/utils/admin-api.mjs';
 import AdminDashboard from './dashboard';
 import { AdminLogin } from './login';
 import './admin.css';
+import { AdminThemeProvider } from './theme';
 
 const api = createAdminApi();
 export default function AdminSession({ preview }) {
+  return <AdminThemeProvider><AdminSessionContent preview={preview} /></AdminThemeProvider>;
+}
+
+function AdminSessionContent({ preview }) {
   const [state, setState] = useState('loading');
   const [error, setError] = useState('');
   useEffect(() => {
