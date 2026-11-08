@@ -3,10 +3,11 @@
 import { emptyFields, moveItem } from '@/utils/admin-api.mjs';
 import { mediaUrl } from '@/utils/media-url.mjs';
 import { useRef, useState } from 'react';
+import SkillGroupPicker from './skill-group-picker';
 
 export const labelFor = key => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase());
 
-export default function Fields({ fields, value, onChange, components, errors, media, groups, upload, pending, prefix = 'data', templateKey }) {
+export default function Fields({ fields, value, onChange, components, errors, media, groups, upload, pending, prefix = 'data', templateKey, onCreateGroup, onDirty }) {
   const cvInput = useRef(null);
   const [datePrecision, setDatePrecision] = useState({});
   return <div className="admin-fields">{Object.entries(fields).filter(([key]) => templateKey !== 'hero-cv-button' || key !== 'url').map(([key, spec]) => {
@@ -55,8 +56,10 @@ export default function Fields({ fields, value, onChange, components, errors, me
           if (file) { const result = await upload(file, path, key === 'cv' ? 'application/pdf' : null); if (result) set(result.id); }
         }} />
       </>;
-    } else if (spec.type === 'enum' || spec.type === 'skillGroup') {
-      const options = spec.type === 'enum' ? spec.values.map(v => ({ id: v, name: v })) : groups;
+    } else if (spec.type === 'skillGroup') {
+      control = <><label htmlFor={id}>Skill group{required && ' *'}</label><SkillGroupPicker groups={groups} value={value[key]} onChange={set} onCreate={onCreateGroup} onDirty={onDirty} inputProps={props} /></>;
+    } else if (spec.type === 'enum') {
+      const options = spec.values.map(v => ({ id: v, name: v }));
       control = <><label htmlFor={id}>{title}{required && ' *'}</label><select {...props} value={value[key] || ''} onChange={e => set(e.target.value)}><option value="">Select {title.toLowerCase()}</option>{options.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}</select></>;
     } else {
       const long = spec.type === 'text' && spec.max > 500 && !prefix.includes('technologies');
@@ -72,5 +75,5 @@ export default function Fields({ fields, value, onChange, components, errors, me
       </>;
     }
     return <div className={`admin-field ${spec.type === 'list' ? 'admin-full' : ''}`} key={key}>{control}{error && <p id={`${id}-error`} className="admin-field-error">{error}</p>}</div>;
-  })}{prefix === 'data' && <datalist id="admin-technologies">{['React', 'Next.js', 'Node.js', 'Express', 'Strapi', 'PostgreSQL', 'Docker', 'TypeScript', 'JavaScript', 'Python'].map(t => <option key={t} value={t} />)}</datalist>}</div>;
+  })}{prefix === 'data' && fields.technologies && <datalist id="admin-technologies">{['React', 'Next.js', 'Node.js', 'Express', 'Strapi', 'PostgreSQL', 'Docker', 'TypeScript', 'JavaScript', 'Python'].map(t => <option key={t} value={t} />)}</datalist>}</div>;
 }

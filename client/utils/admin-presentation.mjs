@@ -1,6 +1,15 @@
 // Presentation only: persisted content keys and API validation stay stable.
 export const sectionName = category => ({ hero: 'Hero & CV', 'site-settings': 'Profile & contact', 'section-settings': 'Section headings & visibility', 'skill-groups': 'Skill groups' })[category?.templateKey] || category?.name || 'Content';
+export const entryName = category => ({ skills: 'skill', 'skill-groups': 'skill group', projects: 'project', experience: 'experience', education: 'qualification' })[category?.templateKey] || sectionName(category);
 const layouts = {
+  skills: [
+    ['Skill details', 'Give the skill a recognizable name and upload its icon.', ['name', 'icon']],
+    ['Where it belongs', 'Choose a group or create one without leaving this editor.', ['skillGroup']],
+  ],
+  'skill-groups': [
+    ['Group details', 'A group brings related skills together, such as Backend, Frontend, or Design.', ['name', 'eyebrow', 'description']],
+    ['Appearance', 'Choose the accent used for this group on your portfolio.', ['accent']],
+  ],
   hero: [
     ['Introduction', 'The text visitors see at the top of your portfolio.', ['heading', 'role', 'paragraph', 'eyebrow', 'location']],
     ['Portrait card', 'Your job title on the reverse of the profile card. Your name and photo live in Profile & contact.', ['designation']],

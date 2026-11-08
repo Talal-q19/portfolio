@@ -113,3 +113,19 @@ test('fixture category and referenced-media safeguards match editor expectations
   await api('categories', { method: 'POST', body: { name: 'Writing', slug: 'writing', templateKey: 'projects', cardinality: 'multiple' } });
   assert.ok((await api('categories')).categories.some(c => c.slug === 'writing'));
 });
+
+test('skills can be created in a group and moved without changing their published version until republished', async () => {
+  const api = createFixtureApi();
+  const group = (await api('content', { method: 'POST', body: { category: 'skill-groups', data: { name: 'Frontend', eyebrow: 'Interfaces', description: 'Tools for the web.' } } })).item;
+  const skill = (await api('content', { method: 'POST', body: { category: 'skills', data: { name: 'TypeScript', icon: 1, skillGroup: group.documentId } } })).item;
+  await api(`content/${skill.documentId}`, { method: 'PATCH', body: { operation: 'publish' } });
+  await api(`content/${skill.documentId}`, { method: 'PATCH', body: { operation: 'update', data: { skillGroup: 'group1' } } });
+  const drafts = (await api('content?status=draft')).categories.flatMap(c => c.items);
+  const published = (await api('content?status=published')).categories.flatMap(c => c.items);
+  assert.equal(drafts.find(i => i.documentId === skill.documentId).data.skillGroup, 'group1');
+  assert.equal(published.find(i => i.documentId === skill.documentId).data.skillGroup, group.documentId);
+  await api(`content/${skill.documentId}`, { method: 'PATCH', body: { operation: 'publish' } });
+  const updated = (await api('content?status=published')).categories.flatMap(c => c.items);
+  assert.equal(updated.find(i => i.documentId === skill.documentId).data.skillGroup, 'group1');
+  await assert.rejects(api(`content/${skill.documentId}`, { method: 'PATCH', body: { operation: 'update', data: { skillGroup: 'missing-group' } } }), e => Boolean(e.fields['data.skillGroup']));
+});
