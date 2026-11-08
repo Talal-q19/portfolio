@@ -87,6 +87,11 @@ function useEffectStage(warmup = false) {
       if (queued) return;
       queued = true;
       const start = () => setState((s) => ({ ...s, primed: true }));
+      // Warmup effects need time to load their module and render before entry.
+      if (warmup) {
+        start();
+        return;
+      }
       idle = window.requestIdleCallback
         ? window.requestIdleCallback(start, { timeout: 2000 })
         : window.setTimeout(start, 180);
@@ -96,7 +101,7 @@ function useEffectStage(warmup = false) {
       ([entry]) => {
         if (entry.isIntersecting) prepare();
       },
-      { rootMargin: "480px" },
+      { rootMargin: warmup ? "1200px" : "480px" },
     );
     const visible = new IntersectionObserver(([entry]) =>
       setState((s) => ({ ...s, visible: entry.isIntersecting })),
@@ -125,7 +130,7 @@ function useEffectStage(warmup = false) {
 export function ContactCrystal({ policy }) {
   const { theme } = useAppearance();
   const { host, primed, visible, ready, failed, onReady, onFailure, onMount } =
-    useEffectStage();
+    useEffectStage(true);
   const rendered = ready && !failed && policy.supported;
   return (
     <div
