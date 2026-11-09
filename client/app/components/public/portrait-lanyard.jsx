@@ -41,7 +41,7 @@ export default function PortraitLanyard({ src, name, designation, policy, entere
   const effect = enabled && primed ? (
     <div
       ref={onMount}
-      className={policy.desktop ? "pf-lanyard-overlay" : "pf-mobile-lanyard"}
+      className="pf-lanyard-overlay"
       data-ready={active}
     >
       <EffectBoundary>
@@ -58,9 +58,9 @@ export default function PortraitLanyard({ src, name, designation, policy, entere
           damping={0.6}
           elasticity={0.45}
           breeze={0}
-          intro={policy.desktop && active}
-          anchorElement={policy.desktop ? host : null}
-          maxStretch={policy.desktop ? "hero" : 100}
+          intro={active}
+          anchorElement={host}
+          maxStretch="hero"
           paused={policy.hidden || !appeared}
           onReady={onReady}
           onFailure={onFailure}
@@ -85,7 +85,7 @@ export default function PortraitLanyard({ src, name, designation, policy, entere
           </div>
         </div>
       )}
-      {effect && (policy.desktop ? createPortal(effect, document.body) : effect)}
+      {effect && createPortal(effect, document.body)}
     </figure>
   );
 }
