@@ -1,15 +1,20 @@
 const express = require('express');
 const { rateLimit } = require('express-rate-limit');
-const { createEmailService } = require('./services/email');
-const { createCaptchaService } = require('./services/captcha');
-const { contactController } = require('./controllers/contact');
+const { createServices } = require('./config/application-context');
+const { ContactController } = require('./controllers/ContactController');
+const { ContentController } = require('./controllers/ContentController');
+const { AdminAuthController } = require('./controllers/AdminAuthController');
+const { HealthController } = require('./controllers/HealthController');
+const { guardAdminRequest, cookies } = require('./middleware/admin-request');
 const { HttpError, errorHandler } = require('./middleware/errors');
 
 function createApp(config, dependencies = {}) {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy || false);
-  app.get('/api/health', (req, res) => res.json({ success: true, status: 'ok' }));
+  const services = createServices(config, dependencies);
+  const contactController = new ContactController(services.contact);
+  app.get('/api/health', new HealthController().read);
   app.use(require('./middleware/proxy').verifiedProxy(config));
   const contactLimit = dependencies.store ? async (req, res, next) => {
     try {
@@ -27,19 +32,15 @@ function createApp(config, dependencies = {}) {
   app.post('/api/contact', contactLimit, (req, res, next) => {
     if (!req.is('application/json')) return next(new HttpError(415, 'Use application/json.'));
     next();
-  }, express.json({ limit: '16kb' }), contactController({
-    sendEmail: dependencies.sendEmail || createEmailService(config),
-    verifyCaptcha: dependencies.verifyCaptcha || createCaptchaService(config),
-  }));
+  }, express.json({ limit: '16kb' }), contactController.send.bind(contactController));
   if (dependencies.auth) {
-    const { authRoutes, cookies, guardAdminRequest } = require('./controllers/admin-auth');
-    app.use('/api/admin/auth', authRoutes(config, dependencies.auth));
+    app.use('/api/admin/auth', new AdminAuthController(config, dependencies.auth).routes());
     dependencies = { ...dependencies, verifyAdmin: async req => {
       guardAdminRequest(config, req);
       return dependencies.auth.verifyAccess(cookies(req).portfolio_access);
     } };
   }
-  app.use('/api', require('./controllers/content').contentRoutes(config, dependencies));
+  app.use('/api', new ContentController(services.content, dependencies.verifyAdmin).routes());
   app.use((req, res) => res.status(404).json({ success: false, message: 'Not found.' }));
   app.use(errorHandler);
   return app;

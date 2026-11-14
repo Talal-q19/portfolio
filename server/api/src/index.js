@@ -5,8 +5,8 @@ let initializing;
 async function application() {
   if (!initializing) initializing = (async () => {
     const config = readConfig();
-    const runtime = await require('./services/auth-runtime').authRuntime(config);
-    return createApp(config, { auth: runtime.auth, store: runtime.store });
+    const runtime = await require('./config/application-context').authRuntime(config);
+    return createApp(config, { auth: runtime.auth, store: runtime.store, call: runtime.call });
   })().catch(error => { initializing = undefined; throw error; });
   return initializing;
 }

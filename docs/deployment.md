@@ -13,7 +13,7 @@ Production branch tracking is explicitly configured on each Vercel project: `be-
 
 ## Environment
 
-Private local configuration lives in `server/api/.env.local` and `client/.env.local`; both are ignored. Vercel production variables must be configured separately.
+Private local configuration lives in `server/api/env/.env.local` and `client/.env.local`; both are ignored. Vercel production variables must be configured separately. The [backend architecture](../server/api/README.md) describes the MVC layers, environment loading and migration directory.
 
 - Backend: `CONVEX_HTTP_URL`, `CONVEX_SERVICE_SECRET`, `AUTH_JWT_SECRET`, `API_PROXY_SECRET`, `ADMIN_ORIGIN`.
 - Backend build only: `CONVEX_DEPLOY_KEY` for that environment.
@@ -38,21 +38,21 @@ Hero owns its introduction, location and the current designation shown on the po
 
 The original database/media and SMTP configuration are on another computer. The initial production content is reconstructed from the committed source, not represented as a migration of that computer's current database. Administrator accounts are deliberately empty at the owner's request.
 
-Generate the baseline with `node server/api/scripts/build-seed.js`: 48 entries and 51 assets, with an empty administrators array. Its private snapshot is ignored under `server/api/.backups/committed-baseline/`.
+Generate the baseline with `npm run migration:seed --prefix server/api`: 48 entries and 51 assets, with an empty administrators array. Its private snapshot is ignored under `server/api/.backups/committed-baseline/`.
 
 For the actual legacy state, run `npm run migration:export --prefix server/api` on the source machine while Strapi is stopped, after installing its legacy dependencies. Override `LEGACY_CMS_ROOT` and `LEGACY_API_ENV` for another checkout. The exporter backs up SQLite and uploads before initializing an isolated backup copy, and exports SQL admin records separately. For a PostgreSQL CMS, restore the retained pg_dump into an isolated database before exporting; do not initialize the live source as an export shortcut. Keep all exported password hashes private. Do not import users for this launch.
 
 From `server/api`, validate a snapshot with:
 
 ```powershell
-node scripts/import-convex.js <snapshot.json> --validate-only
+npm run migration:import -- <snapshot.json> --validate-only
 ```
 
 During a controlled import window, enable `CONVEX_MIGRATION_ENABLED` on the target and run:
 
 ```powershell
-node scripts/import-convex.js <snapshot.json>
-node scripts/import-convex.js <snapshot.json> --verify-only
+npm run migration:import -- <snapshot.json>
+npm run migration:import -- <snapshot.json> --verify-only
 ```
 
 The importer preserves source IDs and drafts/published snapshots, checks every media checksum and reference, and reconciles every record and count. Reruns skip identical data and refuse conflicting edits. A baseline import and an original Strapi export have different IDs: do not merge those datasets automatically. Back up the target and explicitly reconcile that replacement first. Sessions, OTPs and reset grants are never imported. Disable the migration flag immediately after verification.

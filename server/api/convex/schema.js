@@ -1,11 +1,14 @@
 import { defineSchema, defineTable } from 'convex/server';
-import { v } from 'convex/values';
-export default defineSchema({
-  admins: defineTable({ id: v.string(), username: v.string(), email: v.string(), password_hash: v.string(), blocked: v.boolean(), token_version: v.number(), created_at: v.string(), updated_at: v.string() }).index('id', ['id']).index('username', ['username']).index('email', ['email']),
-  authState: defineTable({ key: v.string(), value: v.any(), expiresAt: v.number() }).index('key', ['key']).index('expiry', ['expiresAt']),
-  categories: defineTable({ documentId: v.string(), name: v.string(), slug: v.string(), templateKey: v.string(), cardinality: v.string(), displayOrder: v.number(), visible: v.boolean() }).index('documentId', ['documentId']).index('slug', ['slug']),
-  content: defineTable({ documentId: v.string(), category: v.string(), draft: v.any(), published: v.union(v.any(), v.null()) }).index('documentId', ['documentId']).index('category', ['category']),
-  media: defineTable({ id: v.number(), storageId: v.id('_storage'), name: v.string(), alternativeText: v.string(), mime: v.string(), size: v.number(), width: v.optional(v.number()), height: v.optional(v.number()), checksum: v.optional(v.string()) }).index('id', ['id']).index('storageId', ['storageId']),
-  counters: defineTable({ key: v.string(), value: v.number() }).index('key', ['key']),
-  uploadTickets: defineTable({ token: v.string(), expiresAt: v.number(), name: v.string(), mime: v.string(), size: v.number(), storageId: v.optional(v.id('_storage')), mediaId: v.optional(v.number()) }).index('token', ['token']).index('expiry', ['expiresAt']),
-});
+import AdminEntity from '../src/entity/Admin.js';
+import AuthStateEntity from '../src/entity/AuthState.js';
+import CategoryEntity from '../src/entity/Category.js';
+import ContentEntity from '../src/entity/Content.js';
+import MediaEntity from '../src/entity/Media.js';
+import CounterEntity from '../src/entity/Counter.js';
+import UploadTicketEntity from '../src/entity/UploadTicket.js';
+const entities = [AdminEntity.Admin, AuthStateEntity.AuthState, CategoryEntity.Category, ContentEntity.Content, MediaEntity.Media, CounterEntity.Counter, UploadTicketEntity.UploadTicket];
+export default defineSchema(Object.fromEntries(entities.map(entity => {
+  let table = defineTable(entity.fields);
+  for (const [name, fields] of entity.indexes) table = table.index(name, fields);
+  return [entity.tableName, table];
+})));

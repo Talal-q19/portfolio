@@ -3,11 +3,12 @@ const assert = require('node:assert/strict');
 const { createHmac } = require('node:crypto');
 const request = require('supertest');
 const { createApp } = require('../src/create-app');
-const { createConvexService, ConvexAuthStore } = require('../src/services/convex');
+const { createConvexClient } = require('../src/repository/ConvexClient');
+const { AuthStateRepository } = require('../src/repository/AuthStateRepository');
 test('Convex adapter does not leak server credentials or infrastructure failures', async () => {
-  const call = createConvexService({ convexUrl: 'https://private.example', convexSecret: 'secret' }, async () => { throw Error('secret'); });
+  const call = createConvexClient({ convexUrl: 'https://private.example', convexSecret: 'secret' }, async () => { throw Error('secret'); });
   await assert.rejects(call('get'), e => e.status === 503 && !e.message.includes('secret'));
-  await assert.rejects(createConvexService({})('health'), e => e.status === 503);
+  await assert.rejects(createConvexClient({})('health'), e => e.status === 503);
 });
 test('signed proxy IP is used for shared limiting and spoofed requests are rejected', async () => {
   const secret = 's'.repeat(32); let key;
@@ -20,7 +21,7 @@ test('signed proxy IP is used for shared limiting and spoofed requests are rejec
 });
 test('adapter hashes state identifiers and uses one atomic refresh operation', async () => {
   let args;
-  const store = new ConvexAuthStore(async (operation, body) => { args = { operation, ...body }; return true; });
+  const store = new AuthStateRepository(async (operation, body) => { args = { operation, ...body }; return true; });
   await store.rotate('private-session-id', 'old', { proof: 'new' }, 600);
   assert.equal(args.operation, 'rotate'); assert.ok(!args.key.includes('private-session-id'));
 });

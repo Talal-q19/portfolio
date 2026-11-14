@@ -8,17 +8,18 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
-    "test": "node --test tests/*.test.js",
-    "lint": "node --check src/create-app.js && node --check src/index.js",
+    "test": "node scripts/run-tests.js",
+    "lint": "node scripts/check-syntax.js",
     "admin:create": "node scripts/admin.js create",
     "admin:block": "node scripts/admin.js block",
     "admin:unblock": "node scripts/admin.js unblock",
     "test:convex": "vitest run",
     "build:vercel": "node scripts/vercel-build.js",
-    "convex:dev": "convex dev",
-    "convex:deploy": "convex deploy",
-    "migration:export": "node scripts/export-legacy.js",
-    "migration:import": "node scripts/import-convex.js"
+    "convex:dev": "node scripts/convex.js dev",
+    "convex:deploy": "node scripts/convex.js deploy",
+    "migration:export": "node data-migration/scripts/export-legacy.js",
+    "migration:import": "node data-migration/scripts/import-convex.js",
+    "migration:seed": "node data-migration/scripts/build-seed.js"
   },
   "dependencies": {
     "@portfolio/content-contract": "file:../content-contract",

@@ -45,9 +45,15 @@ function loadConfig(env = process.env) {
   };
 }
 
+function loadEnvironment(directory = path.resolve(__dirname, '../../env'), legacyDirectory = path.resolve(__dirname, '../..'), environment = process.env) {
+  dotenv.config({ path: path.join(directory, '.env.local'), processEnv: environment, quiet: true });
+  dotenv.config({ path: path.join(directory, '.env'), processEnv: environment, quiet: true });
+  // Compatibility for existing checkouts and tools that still generate root files.
+  dotenv.config({ path: path.join(legacyDirectory, '.env.local'), processEnv: environment, quiet: true });
+  dotenv.config({ path: path.join(legacyDirectory, '.env'), processEnv: environment, quiet: true });
+}
 function readConfig() {
-  dotenv.config({ path: path.resolve(__dirname, '../../.env.local'), quiet: true });
-  dotenv.config({ path: path.resolve(__dirname, '../../.env'), quiet: true });
+  loadEnvironment();
   return loadConfig();
 }
-module.exports = { loadConfig, readConfig };
+module.exports = { loadConfig, readConfig, loadEnvironment };

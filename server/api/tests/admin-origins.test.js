@@ -1,8 +1,8 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { loadConfig } = require('../src/config/env');
-const { guardAdminRequest } = require('../src/controllers/admin-auth');
-const { validateAdminOrigins } = require('../src/services/auth-runtime');
+const { guardAdminRequest } = require('../src/middleware/admin-request');
+const { validateAdminOrigins } = require('../src/config/application-context');
 
 test('production and localhost are accepted only when explicitly allowed', () => {
   const config = loadConfig({ NODE_ENV: 'production', ADMIN_ORIGINS: 'https://portfolio.example, http://localhost:3000' });

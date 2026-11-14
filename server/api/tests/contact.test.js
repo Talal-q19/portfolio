@@ -4,8 +4,8 @@ const request = require('supertest');
 const nodemailer = require('nodemailer');
 const { SMTPServer } = require('smtp-server');
 const { createApp } = require('../src/create-app');
-const { createEmailService } = require('../src/services/email');
-const { createCaptchaService } = require('../src/services/captcha');
+const { createEmailService } = require('../src/service/impl/EmailServiceImpl');
+const { createCaptchaService } = require('../src/service/impl/CaptchaServiceImpl');
 const { createEmailTemplate } = require('../src/templates/contact');
 const { loadConfig } = require('../src/config/env');
 

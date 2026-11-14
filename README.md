@@ -2,7 +2,9 @@
 
 Next.js in `client/`, Express in `server/api/`, and Convex for content, file storage and authentication persistence. Browser requests use the same-origin Next API proxy; Express owns password hashing, email OTP, JWT cookies and admin APIs.
 
-Use Node 24. Install with `npm run install:all`; copy the client/API `.env.example` files into ignored `.env.local` files and configure your development Convex deployment. Start with `npm run dev:api` and `npm run dev`. Run `npm test`, `npm run lint` and `npm run build` before release.
+Use Node 24. Install with `npm run install:all`; copy `client/.env.example` to `client/.env.local` and `server/api/env/.env.example` to `server/api/env/.env.local`, then configure your development Convex deployment. Start with `npm run dev:api` and `npm run dev`. Run `npm test`, `npm run lint` and `npm run build` before release.
+
+The backend uses controllers, service contracts and implementations, repositories, entities, request/response DTOs, and separate environment and migration directories. See the [backend architecture and commands](server/api/README.md).
 
 Production targets are Vercel `be-prod` from `BE-PROD` and `fe-prod` from `FE-PROD`. Convex production is `rugged-reindeer-131`; `acrobatic-rooster-902` is development. See [deployment, migration and recovery](docs/deployment.md) and [admin authentication](docs/admin-auth.md).
 

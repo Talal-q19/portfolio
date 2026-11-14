@@ -3,10 +3,10 @@ const assert = require('node:assert/strict');
 const { randomUUID } = require('node:crypto');
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
-const { createAdminAuth } = require('../src/services/admin-auth');
-const { hashPassword, verifyPassword } = require('../src/services/password');
+const { createAdminAuth } = require('../src/service/impl/AdminAuthServiceImpl');
+const { hashPassword, verifyPassword } = require('../src/service/impl/PasswordServiceImpl');
 const { createApp } = require('../src/create-app');
-const { createOtpEmailService } = require('../src/services/email');
+const { createOtpEmailService } = require('../src/service/impl/EmailServiceImpl');
 const config = { environment: 'development', rateLimit: 100, auth: { secret: 'test-secret-'.repeat(5), cmsToken: 'server-only', origin: 'http://localhost:3000' } };
 class MemoryStore {
   values = new Map(); counts = new Map(); now = Date.now();

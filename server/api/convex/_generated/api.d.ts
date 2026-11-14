@@ -10,11 +10,8 @@
 
 import type * as bridge from "../bridge.js";
 import type * as cleanup from "../cleanup.js";
-import type * as content from "../content.js";
 import type * as crons from "../crons.js";
 import type * as http from "../http.js";
-import type * as migration from "../migration.js";
-import type * as state from "../state.js";
 import type * as uploads from "../uploads.js";
 
 import type {
@@ -26,11 +23,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   bridge: typeof bridge;
   cleanup: typeof cleanup;
-  content: typeof content;
   crons: typeof crons;
   http: typeof http;
-  migration: typeof migration;
-  state: typeof state;
   uploads: typeof uploads;
 }>;
 
