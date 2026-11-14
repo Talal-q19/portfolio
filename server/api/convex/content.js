@@ -40,6 +40,8 @@ function entryData(row, category, all, categories, published = false) {
   if (templateKey === 'hero') {
     const byTemplate = key => all.filter(entry => categories.find(c => c.slug === entry.category)?.templateKey === key).sort(order).map(entry => snapshot(entry)?.data).filter(Boolean);
     const settings = byTemplate('site-settings')[0];
+    // An explicit null removes the CV; only missing fields inherit the old settings file.
+    if (!Object.hasOwn(data, 'cv') && settings?.cv != null) data.cv = settings.cv;
     const current = byTemplate('experience').filter(entry => entry.current).sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''))[0];
     // Explicit empty strings clear a field; only absent fields receive legacy defaults.
     if (data.location == null && settings?.location != null) data.location = settings.location;

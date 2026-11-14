@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const { createOtpEmailTemplate } = require('../templates/otp');
 const { createEmailTemplate } = require('../templates/contact');
 const { HttpError } = require('../middleware/errors');
 function emailConfigured(config) {
@@ -27,6 +28,7 @@ function createOtpEmailService(config, injectedTransport) {
       from: { name: config.fromName, address: config.smtp.auth.user }, to: email,
       subject: purpose === 'login' ? 'Portfolio Studio login code' : 'Portfolio Studio password reset code',
       text: `Your verification code is ${code}. It expires in 5 minutes. If you did not request this code, ignore this email.`,
+      html: createOtpEmailTemplate({ code, purpose }),
     });
   };
 }

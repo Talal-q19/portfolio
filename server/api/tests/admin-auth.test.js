@@ -73,7 +73,11 @@ test('OTP mail reuses the configured sender and delivers to the admin email', as
   await send({ email: 'admin@example.com', code: '012345', purpose: 'login' });
   assert.equal(sent.from.address, 'sender@example.com'); assert.equal(sent.to, 'admin@example.com');
   assert.match(sent.subject, /login/); assert.match(sent.text, /012345/); assert.match(sent.text, /5 minutes/);
+  assert.match(sent.html, /012345/); assert.match(sent.html, /sign in to Portfolio Studio/);
+  assert.match(sent.html, /5 minutes/); assert.match(sent.html, /only be used once/);
   await send({ email: 'admin@example.com', code: '123456', purpose: 'reset' }); assert.match(sent.subject, /reset/);
+  assert.match(sent.html, /reset your Portfolio Studio password/);
+  await assert.rejects(send({ email: 'admin@example.com', code: '<img>', purpose: 'login' }), /six-digit/);
 });
 test('password plus one-use login OTP issues scoped JWTs; refresh rotates and replay revokes session', async () => {
   const f = await fixture(); const challenge = await f.challenge();
