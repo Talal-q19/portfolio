@@ -18,8 +18,8 @@ const components = {
 };
 const templates = {
   hero: { name: 'Hero', cardinality: 'singleton', fields: {
-    heading: text(true, 200), paragraph: text(true, 5000), greeting: text(), role: text(),
-    cv: media(false, 'file'), designation: text(), availability: text(), eyebrow: text(), location: text(), buttons: list('link'), panels: list('panel'),
+    heading: text(true, 200), paragraph: text(true, 5000), role: text(),
+    cv: media(false, 'file'), designation: text(), eyebrow: text(), location: text(), buttons: list('link'), panels: list('panel'),
   } },
   experience: { name: 'Experience', cardinality: 'multiple', fields: {
     title: text(true, 200), company: text(true, 200), image: media(), description: text(true, 10000),
@@ -38,7 +38,6 @@ const templates = {
   } },
   'skill-groups': { name: 'Skill Groups', cardinality: 'multiple', fields: {
     name: text(true, 100), eyebrow: text(true, 200), description: text(true, 2000),
-    accent: { type: 'enum', values: ['emerald', 'amber', 'sky'] },
   } },
   education: { name: 'Education', cardinality: 'multiple', fields: {
     qualification: text(true, 300), institution: text(true, 300), credential: text(true, 100), image: media(),
@@ -49,10 +48,28 @@ const templates = {
     displayName: text(true, 200), profileImage: media(), contactEmail: { type: 'email', required: true },
     seoTitle: text(true, 300), seoDescription: text(true, 2000), phone: text(),
     cv: media(false, 'file'), socialLinks: list('link'), navigation: list('link'), footerText: text(false, 2000),
-    devUsername: text(), contactIntroduction: text(false, 2000),
+    contactIntroduction: text(false, 2000),
   } },
   'section-settings': { name: 'Section Settings', cardinality: 'singleton', fields: { sections: list('section', 1) } },
 };
+
+// Older snapshots and clients may still contain these fields. Omit only known
+// retired fields; unknown keys must still fail validation.
+const retiredFields = { hero: ['greeting', 'availability'], 'skill-groups': ['accent'], 'site-settings': ['devUsername'] };
+function sectionUsesField(sectionKey, field) {
+  if (sectionKey === 'about' && ['heading', 'eyebrow', 'introduction', 'order'].includes(field)) return false;
+  return sectionKey !== 'contact' || field !== 'order';
+}
+function pruneUnusedFields(templateKey, payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return payload;
+  const data = { ...payload };
+  for (const key of retiredFields[templateKey] || []) delete data[key];
+  if (templateKey === 'section-settings' && Array.isArray(data.sections)) {
+    data.sections = data.sections.map(section => !section || typeof section !== 'object' || Array.isArray(section) ? section
+      : Object.fromEntries(Object.entries(section).filter(([key]) => sectionUsesField(section.key, key))));
+  }
+  return data;
+}
 
 class ContentValidationError extends Error {
   constructor(fields) {
@@ -75,6 +92,7 @@ const validUrl = value => {
 };
 
 async function validatePayload(templateKey, payload, resolvers = {}) {
+  payload = pruneUnusedFields(templateKey, payload);
   const template = templates[templateKey];
   const errors = {};
   if (!template) throw new ContentValidationError({ category: 'Unsupported category template.' });
@@ -105,7 +123,10 @@ async function validatePayload(templateKey, payload, resolvers = {}) {
         case 'date': if (!validDate(v)) errors[path] = 'Use a valid YYYY-MM or YYYY-MM-DD date.'; break;
         case 'list':
           if (!Array.isArray(v) || v.length < spec.min || v.length > 200) { errors[path] = `Expected ${spec.min} to 200 items.`; break; }
-          for (const [index, item] of v.entries()) await object(components[spec.component], item, `${path}.${index}`);
+          for (const [index, item] of v.entries()) {
+            const fields = spec.component === 'section' ? Object.fromEntries(Object.entries(components.section).filter(([key]) => sectionUsesField(item?.key, key))) : components[spec.component];
+            await object(fields, item, `${path}.${index}`);
+          }
           break;
         case 'media': {
           const file = resolvers.media && await resolvers.media(v);
@@ -148,5 +169,5 @@ function validateCategory(data) {
   if (Object.keys(fields).length) throw new ContentValidationError(fields);
   return data;
 }
-function getFormMetadata() { return JSON.parse(JSON.stringify({ version: 1, templates, components })); }
-module.exports = { templates, components, validatePayload, validateCategory, getFormMetadata, ContentValidationError };
+function getFormMetadata() { return JSON.parse(JSON.stringify({ version: 2, templates, components })); }
+module.exports = { templates, components, retiredFields, sectionUsesField, pruneUnusedFields, validatePayload, validateCategory, getFormMetadata, ContentValidationError };

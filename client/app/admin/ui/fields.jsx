@@ -6,13 +6,14 @@ import { useRef, useState } from 'react';
 import SkillGroupPicker from './skill-group-picker';
 import TextListEditor from './text-list-editor';
 import { editorError } from '@/utils/admin-text-editors.mjs';
+import contract from '@/utils/admin-contract.cjs';
 
 export const labelFor = key => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase());
 
 export default function Fields({ fields, value, onChange, components, errors, media, groups, upload, pending, prefix = 'data', templateKey, onCreateGroup, onDirty }) {
   const cvInput = useRef(null);
   const [datePrecision, setDatePrecision] = useState({});
-  return <div className="admin-fields">{Object.entries(fields).filter(([key]) => templateKey !== 'hero-cv-button' || key !== 'url').map(([key, spec]) => {
+  return <div className="admin-fields">{templateKey === 'section' && value.key === 'about' && <p className="admin-note admin-full">The hero appears first. Edit its text and code in Hero & CV.</p>}{templateKey === 'section' && value.key === 'contact' && <p className="admin-note admin-full">Contact always appears last.</p>}{Object.entries(fields).filter(([key]) => (templateKey !== 'hero-cv-button' || key !== 'url') && (templateKey !== 'section' || contract.sectionUsesField(value.key, key))).map(([key, spec]) => {
     const path = `${prefix}.${key}`;
     const id = `field-${path}`;
     const singleEditor = spec.type === 'list' && ['bullet', 'line'].includes(spec.component);
@@ -37,12 +38,12 @@ export default function Fields({ fields, value, onChange, components, errors, me
         {rows.length === 0 && <p className="admin-muted">No items yet.{spec.min > 0 && ` Add at least ${spec.min}.`}</p>}
         {rows.map((row, index) => <div className="admin-repeat-row" key={index}>
           <div className="admin-row-head"><strong>{itemName} {index + 1}</strong><div className="admin-actions">
-            <button type="button" disabled={pending || index === 0} aria-label={`Move ${title} item ${index + 1} up`} onClick={() => set(moveItem(rows, index, -1))}>↑</button>
-            <button type="button" disabled={pending || index === rows.length - 1} aria-label={`Move ${title} item ${index + 1} down`} onClick={() => set(moveItem(rows, index, 1))}>↓</button>
+            {spec.component !== 'section' && <><button type="button" disabled={pending || index === 0} aria-label={`Move ${title} item ${index + 1} up`} onClick={() => set(moveItem(rows, index, -1))}>↑</button>
+            <button type="button" disabled={pending || index === rows.length - 1} aria-label={`Move ${title} item ${index + 1} down`} onClick={() => set(moveItem(rows, index, 1))}>↓</button></>}
             <button type="button" disabled={pending} onClick={() => set(rows.filter((_, i) => i !== index))}>Remove<span className="sr-only"> {title} item {index + 1}</span></button>
           </div></div>
           {templateKey === 'hero' && key === 'buttons' && index === 2 && <p className="admin-muted">This button downloads the CV uploaded above. Its link is managed automatically.</p>}
-          <Fields templateKey={templateKey === 'hero' && key === 'buttons' && index === 2 ? 'hero-cv-button' : undefined} fields={components[spec.component]} value={row} onChange={next => set(rows.map((r, i) => i === index ? next : r))} {...{ components, errors, media, groups, upload, pending }} prefix={`${path}.${index}`} />
+          <Fields templateKey={templateKey === 'hero' && key === 'buttons' && index === 2 ? 'hero-cv-button' : spec.component} fields={components[spec.component]} value={row} onChange={next => set(rows.map((r, i) => i === index ? next : r))} {...{ components, errors, media, groups, upload, pending }} prefix={`${path}.${index}`} />
         </div>)}
         <button type="button" disabled={pending || rows.length >= 200} onClick={() => set([...rows, { ...emptyFields(components[spec.component]), ...(templateKey === 'hero' && key === 'buttons' && rows.length === 2 ? { label: 'Get CV', url: '#contact' } : {}) }])}>+ Add {itemName}</button>
       </fieldset>;

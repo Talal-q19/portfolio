@@ -1,3 +1,5 @@
+import contract from './admin-contract.cjs';
+
 export class AdminApiError extends Error {
   constructor(message, status = 0, fields = {}, attempts) { super(message); this.status = status; this.fields = fields; this.attempts = attempts; }
 }
@@ -47,6 +49,18 @@ export function payloadForWrite(fields, data, components) {
       ? (value || []).map(row => payloadForWrite(components[spec.component], row, components))
         : value === '' && ['enum', 'integer', 'date', 'skillGroup'].includes(spec.type) ? null : value];
   }));
+}
+
+export function payloadForServer(templateKey, data, version = 1) {
+  const payload = contract.pruneUnusedFields(templateKey, data);
+  // Older APIs require these fields even though the public layout ignores them.
+  // Keep saves working while frontend and backend releases roll out separately.
+  if (version < 2 && templateKey === 'section-settings' && Array.isArray(payload.sections)) {
+    return { ...payload, sections: payload.sections.map(section => section.key === 'about'
+      ? { ...section, heading: 'About', order: 0 }
+      : section.key === 'contact' ? { ...section, order: 1000 } : section) };
+  }
+  return payload;
 }
 
 export async function fetchAdminMedia(api, { signal } = {}) {

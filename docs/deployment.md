@@ -34,7 +34,7 @@ For releases, deploy compatible Convex schema/functions and Express from BE-PROD
 
 ## Content baseline and migration
 
-Hero owns location and the current designation shown on the portrait card's reverse. About headings and introductions are edited in Section Settings; Site Settings contains shared profile, contact, navigation and SEO fields. Existing Hero entries resolve missing designation from the matching draft or published current experience, then the legacy Site Settings designation. Legacy settings values remain stored for compatibility, and saving Hero makes its values explicit. An empty designation clears the card text.
+Hero owns its introduction, location and the current designation shown on the portrait card's reverse. Section Settings owns visibility and the headings, introductions and order of the other sections; the hero is always first and contact last. Site Settings contains shared profile, contact, navigation and SEO fields. Existing Hero entries resolve missing designation from the matching draft or published current experience, then the legacy Site Settings designation. Legacy settings values remain stored for compatibility, and saving Hero makes its values explicit. An empty designation clears the card text. See [content-fields.md](content-fields.md) for unused fields removed from the active contract and how historical snapshots are handled.
 
 The original database/media and SMTP configuration are on another computer. The initial production content is reconstructed from the committed source, not represented as a migration of that computer's current database. Administrator accounts are deliberately empty at the owner's request.
 

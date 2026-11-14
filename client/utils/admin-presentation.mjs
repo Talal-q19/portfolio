@@ -1,4 +1,6 @@
-// Presentation only: persisted content keys and API validation stay stable.
+import contract from './admin-contract.cjs';
+
+// Group only fields used by the public portfolio or its content operations.
 export const sectionName = category => ({ hero: 'Hero & CV', 'site-settings': 'Profile & contact', 'section-settings': 'Section headings & visibility', 'skill-groups': 'Skill groups' })[category?.templateKey] || category?.name || 'Content';
 export const entryName = category => ({ skills: 'skill', 'skill-groups': 'skill group', projects: 'project', experience: 'experience', education: 'qualification' })[category?.templateKey] || sectionName(category);
 const layouts = {
@@ -8,21 +10,22 @@ const layouts = {
   ],
   'skill-groups': [
     ['Group details', 'A group brings related skills together, such as Backend, Frontend, or Design.', ['name', 'eyebrow', 'description']],
-    ['Appearance', 'Choose the accent used for this group on your portfolio.', ['accent']],
   ],
   hero: [
     ['Introduction', 'The text visitors see at the top of your portfolio.', ['heading', 'role', 'paragraph', 'eyebrow', 'location']],
     ['Portrait card', 'Your job title on the reverse of the profile card. Your name and photo live in Profile & contact.', ['designation']],
     ['CV & buttons', 'Upload your CV here and manage the links shown below your introduction.', ['cv', 'buttons']],
     ['Code display', 'Give each tab a title and write its code in one editor.', ['panels'], true],
-    ['Other options', 'Additional values retained for compatibility with other layouts.', ['greeting', 'availability'], true],
   ],
   'site-settings': [
     ['Profile', 'Your shared name and portrait, used across the portfolio.', ['displayName', 'profileImage']],
     ['Contact & social links', 'How visitors can reach you. Upload your CV in Hero & CV.', ['contactEmail', 'phone', 'contactIntroduction', 'socialLinks']],
     ['Search appearance', 'The title and description shown in search results and shared links.', ['seoTitle', 'seoDescription']],
     ['Footer', 'The text at the bottom of your portfolio.', ['footerText']],
-    ['Other options', 'Navigation links and developer profile details.', ['navigation', 'devUsername'], true],
+    ['Navigation', 'The links shown in the portfolio navigation. Links to hidden sections are automatically hidden.', ['navigation'], true],
+  ],
+  'section-settings': [
+    ['Sections', 'Choose which sections appear. Edit hero text in Hero & CV. The hero always appears first and contact last; you can order the sections between them.', ['sections']],
   ],
   experience: [
     ['Position', 'Your role, employer, and company image.', ['title', 'company', 'image', 'location']],
@@ -44,7 +47,7 @@ const layouts = {
   ],
 };
 export function editorGroups(templateKey, fields) {
-  const hidden = templateKey === 'site-settings' ? ['cv'] : [];
+  const hidden = [...(contract.retiredFields[templateKey] || []), ...(templateKey === 'site-settings' ? ['cv'] : [])];
   const groups = (layouts[templateKey] || [['Content', '', Object.keys(fields)]]).map(([title, description, keys, advanced]) => ({ title, description, advanced: Boolean(advanced), fields: Object.fromEntries(keys.filter(key => fields[key] && !hidden.includes(key)).map(key => [key, fields[key]])) })).filter(group => Object.keys(group.fields).length);
   const assigned = new Set([...hidden, ...groups.flatMap(group => Object.keys(group.fields))]);
   const remaining = Object.fromEntries(Object.entries(fields).filter(([key]) => !assigned.has(key)));

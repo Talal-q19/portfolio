@@ -76,6 +76,41 @@ test('bridge requires server authentication and migration enablement', async () 
   expect((await t.fetch('/bridge', request)).status).toBe(403);
 });
 
+test('retired fields disappear from reads and saves without changing published content before publication', async () => {
+  const { t, call } = setup();
+  const content = (path, method = 'GET', body = null) => call('content', { path, method, body, query: {} });
+  const storageId = await t.run(ctx => ctx.storage.store(new Blob(['image'], { type: 'image/png' })));
+  await t.run(ctx => ctx.db.insert('media', { id: 1, storageId, name: 'profile.png', alternativeText: '', mime: 'image/png', size: 1 }));
+  const cases = [
+    ['hero', { heading: 'Hello', paragraph: 'Welcome', role: 'Engineer', greeting: 'Hi', availability: 'Available' }, ['greeting', 'availability'], 'role', 'New role'],
+    ['skill-groups', { name: 'Backend', eyebrow: 'Focus', description: 'Systems', accent: 'emerald' }, ['accent'], 'description', 'New description'],
+    ['site-settings', { displayName: 'Talal', profileImage: 1, contactEmail: 'hello@example.com', seoTitle: 'Work', seoDescription: 'Portfolio', devUsername: 'old', footerText: 'Original footer' }, ['devUsername'], 'footerText', 'New footer'],
+    ['section-settings', { sections: [{ key: 'about', visible: true, heading: 'Unused', order: 5 }, { key: 'contact', heading: 'Contact', visible: true, order: 0 }] }, [], 'sections', [{ key: 'about', visible: false }, { key: 'contact', heading: 'Contact', visible: true }]],
+  ];
+  for (const [key, data, retired, field, next] of cases) {
+    await content('admin/categories', 'POST', { slug: key, name: key, templateKey: key, cardinality: key === 'skill-groups' ? 'multiple' : 'singleton' });
+    const documentId = `old-${key}`;
+    await t.run(ctx => ctx.db.insert('content', { documentId, category: key, draft: { data, displayOrder: 0 }, published: { data, displayOrder: 0, publishedAt: '2026-11-01' } }));
+    const getPublic = async () => (await content('read')).categories.find(c => c.slug === key).items[0].data;
+    const before = await getPublic();
+    for (const removed of retired) {
+      expect(before).not.toHaveProperty(removed);
+      expect((await content(`admin/content/${documentId}`)).item.data).not.toHaveProperty(removed);
+    }
+    await content(`admin/content/${documentId}`, 'PATCH', { operation: 'update', data: { [field]: next, ...Object.fromEntries(retired.map(key => [key, data[key]])) } });
+    expect(await getPublic()).toEqual(before);
+    const stored = await t.run(ctx => ctx.db.query('content').withIndex('documentId', q => q.eq('documentId', documentId)).unique());
+    for (const removed of retired) expect(stored.draft.data).not.toHaveProperty(removed);
+    if (key === 'section-settings') {
+      expect(before.sections).toEqual([{ key: 'about', visible: true }, { key: 'contact', heading: 'Contact', visible: true }]);
+      expect(stored.draft.data.sections).toEqual(next);
+    }
+    await content(`admin/content/${documentId}`, 'PATCH', { operation: 'publish' });
+    expect((await getPublic())[field]).toEqual(next);
+    for (const removed of retired) expect(await getPublic()).not.toHaveProperty(removed);
+  }
+});
+
 test('legacy hero fields resolve from matching snapshots and remain editable after settings saves', async () => {
   const { t, call } = setup();
   const content = (path, method = 'GET', body = null, query = {}) => call('content', { path, method, body, query });

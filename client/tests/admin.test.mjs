@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import contract from '../utils/admin-contract.cjs';
 import { editorGroups } from '../utils/admin-presentation.mjs';
-import { AdminApiError, createAdminApi, emptyFields, payloadForWrite, moveItem, fetchAdminMedia } from '../utils/admin-api.mjs';
+import { AdminApiError, createAdminApi, emptyFields, payloadForWrite, payloadForServer, moveItem, fetchAdminMedia } from '../utils/admin-api.mjs';
 import { createFixtureApi } from '../utils/admin-fixtures.mjs';
 
 test('browser form contract stays identical to the CMS/API source', async () => {
@@ -33,6 +33,52 @@ test('CV upload appears only in Hero while stored settings remain backward compa
   assert.ok(hero.includes('cv'));
   assert.ok(!settings.includes('cv'));
   assert.equal(hero.filter(key => key === 'cv').length, 1);
+});
+
+test('unused public fields stay out of metadata and editors, including older server metadata', () => {
+  for (const [templateKey, keys] of Object.entries(contract.retiredFields)) {
+    const fields = contract.getFormMetadata().templates[templateKey].fields;
+    for (const key of keys) assert.equal(fields[key], undefined);
+    const oldFields = { ...fields, ...Object.fromEntries(keys.map(key => [key, { type: 'text' }])) };
+    const visible = editorGroups(templateKey, oldFields).flatMap(group => Object.keys(group.fields));
+    for (const key of keys) assert.ok(!visible.includes(key));
+  }
+  const settingsFields = editorGroups('site-settings', contract.templates['site-settings'].fields).flatMap(group => Object.keys(group.fields));
+  for (const key of ['navigation', 'phone', 'contactIntroduction', 'footerText', 'seoTitle', 'seoDescription']) assert.ok(settingsFields.includes(key));
+});
+
+test('section settings require only the controls used by each public section', async () => {
+  const payload = { sections: [
+    { key: 'about', visible: true, heading: 'Unused', eyebrow: 'Unused', introduction: 'Unused', order: 9 },
+    { key: 'experience', visible: true, heading: 'My work', order: 1 },
+    { key: 'contact', visible: true, heading: 'Contact', introduction: 'Get in touch', order: 0 },
+  ] };
+  const clean = contract.pruneUnusedFields('section-settings', payload);
+  assert.deepEqual(clean.sections[0], { key: 'about', visible: true });
+  assert.deepEqual(clean.sections[1], payload.sections[1]);
+  assert.deepEqual(clean.sections[2], { key: 'contact', visible: true, heading: 'Contact', introduction: 'Get in touch' });
+  assert.equal(payload.sections[0].heading, 'Unused');
+  await contract.validatePayload('section-settings', clean);
+  await assert.rejects(contract.validatePayload('section-settings', { sections: [{ key: 'experience', visible: true }] }), error => Boolean(error.fields['data.sections.0.heading'] && error.fields['data.sections.0.order']));
+  await assert.rejects(contract.validatePayload('section-settings', { sections: [{ key: 'contact', visible: true }] }), error => Boolean(error.fields['data.sections.0.heading']));
+});
+
+test('known retired fields normalize away while unknown fields still fail validation', async () => {
+  const payload = { heading: 'Hello', paragraph: 'Welcome', greeting: 'Hi', availability: 'Available' };
+  assert.deepEqual(await contract.validatePayload('hero', payload), { heading: 'Hello', paragraph: 'Welcome' });
+  assert.equal(payload.greeting, 'Hi');
+  await assert.rejects(contract.validatePayload('hero', { ...payload, unknown: 'No' }), error => Boolean(error.fields['data.unknown']));
+  await assert.rejects(contract.validatePayload('section-settings', { sections: [{ key: 'about', visible: true, unknown: 'No' }] }), error => Boolean(error.fields['data.sections.0.unknown']));
+});
+
+test('cleaned section settings can still save to a version-one backend during rollout', async () => {
+  const data = { sections: [{ key: 'about', visible: true }, { key: 'experience', visible: true, heading: 'Career', order: 1 }, { key: 'contact', visible: true, heading: 'Contact' }] };
+  const oldWrite = payloadForServer('section-settings', data, 1);
+  assert.deepEqual(oldWrite.sections[0], { key: 'about', visible: true, heading: 'About', order: 0 });
+  assert.deepEqual(oldWrite.sections[1], data.sections[1]);
+  assert.deepEqual(oldWrite.sections[2], { key: 'contact', visible: true, heading: 'Contact', order: 1000 });
+  assert.deepEqual(payloadForServer('section-settings', data, 2), data);
+  assert.deepEqual(await contract.validatePayload('section-settings', oldWrite), data);
 });
 
 test('admin requests use same-origin credentials, no cache, and structured validation/session errors', async () => {

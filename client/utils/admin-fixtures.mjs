@@ -72,7 +72,7 @@ export function createFixtureApi() {
       const c = categories.find(c => c.slug === (body.category || item?.category));
       if (!c) invalid({ category: 'Select an existing category.' });
       if (c.cardinality === 'singleton' && items.some(i => i.category === c.slug && i.documentId !== id)) invalid({ category: 'This singleton already has an entry. Edit it instead.' });
-      const data = { ...item?.data, ...body.data };
+      const data = contract.pruneUnusedFields(c.templateKey, { ...item?.data, ...body.data });
       await validate(c, data);
       const next = { ...item, documentId: id || `entry${++sequence}`, category: c.slug, data, displayOrder: body.displayOrder ?? item?.displayOrder ?? 0, publishedAt: null };
       if (item) items = items.map(i => i.documentId === id ? next : i); else items.push(next);

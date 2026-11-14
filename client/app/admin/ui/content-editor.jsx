@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import contract from '@/utils/admin-contract.cjs';
-import { emptyFields, payloadForWrite } from '@/utils/admin-api.mjs';
+import { emptyFields, payloadForWrite, payloadForServer } from '@/utils/admin-api.mjs';
 import Fields from './fields';
 import { editorGroups, sectionName, entryName } from '@/utils/admin-presentation.mjs';
 import { uploadMedia } from '@/utils/upload-media.mjs';
@@ -12,7 +12,10 @@ import { FiArrowLeft, FiCheck, FiPlus } from 'react-icons/fi';
 
 export default function ContentEditor({ item, initialCategory, initialData, initialOrder, categories, items, publishedIds, requirements, media, api, onMedia, onSaved, onCancel, onDirty, onBusy, onExpired, onRelatedEdit, onGroupCreated }) {
   const [categorySlug, setCategorySlug] = useState(item?.category || initialCategory || '');
-  const [data, setData] = useState(() => item?.data || { ...emptyFields(requirements.templates[categories.find(c => c.slug === initialCategory)?.templateKey]?.fields || {}), ...initialData });
+  const [data, setData] = useState(() => {
+    const templateKey = categories.find(c => c.slug === (item?.category || initialCategory))?.templateKey;
+    return contract.pruneUnusedFields(templateKey, item?.data || { ...emptyFields(requirements.templates[templateKey]?.fields || {}), ...initialData });
+  });
   const [order, setOrder] = useState(item?.displayOrder ?? initialOrder ?? 0);
   const [validation, setValidation] = useState({ checking: true, fields: {} });
   const [showErrors, setShowErrors] = useState(false);
@@ -83,7 +86,7 @@ export default function ContentEditor({ item, initialCategory, initialData, init
     let stage = 'saving the section';
     let published = false;
     try {
-      const body = { category: categorySlug, displayOrder: order, data: payloadForWrite(template.fields, data, requirements.components) };
+      const body = { category: categorySlug, displayOrder: order, data: payloadForServer(category.templateKey, payloadForWrite(template.fields, data, requirements.components), requirements.version) };
       saved = (await api(item ? `content/${item.documentId}` : 'content', { method: item ? 'PATCH' : 'POST', body: item ? { operation: 'update', ...body } : body })).item;
       if (publish) {
         stage = 'publishing the section';
@@ -115,7 +118,7 @@ export default function ContentEditor({ item, initialCategory, initialData, init
           changed();
           const slug = name => (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
           if (!item && category.templateKey === 'projects' && value.name !== data.name && (!data.slug || data.slug === slug(data.name))) value = { ...value, slug: slug(value.name) };
-          setData(value);
+          setData(contract.pruneUnusedFields(category.templateKey, value));
         }} components={requirements.components} {...{ errors, media, groups, upload, pending }} templateKey={category.templateKey} onCreateGroup={createGroup} onDirty={() => setDirty(true)} /></>;
         const hasError = Object.keys(errors).some(path => Object.keys(group.fields).some(key => path === `data.${key}` || path.startsWith(`data.${key}.`)));
         return group.advanced ? <details className="admin-editor-group" key={`${group.title}-${hasError}`} open={hasError || undefined}><summary>{group.title}</summary>{body}</details> : <section className="admin-editor-group" key={group.title}><h3>{group.title}</h3>{body}</section>;

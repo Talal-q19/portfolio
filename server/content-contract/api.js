@@ -1,4 +1,4 @@
-const { templates, components, ContentValidationError } = require('./index');
+const { templates, components, pruneUnusedFields, ContentValidationError } = require('./index');
 const invalid = (field, message) => { throw new ContentValidationError({ [field]: message }); };
 function shape(value, allowed) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) invalid('body', 'Expected an object.');
@@ -44,7 +44,7 @@ function payloadView(templateKey, value, base = '') {
     }
     return result;
   }
-  return project(templates[templateKey].fields, value);
+  return project(templates[templateKey].fields, pruneUnusedFields(templateKey, value));
 }
 function categoryView(c) { return Object.fromEntries(['documentId', 'name', 'slug', 'templateKey', 'cardinality', 'displayOrder', 'visible'].map(key => [key, c[key]])); }
 function entryView(entry, base = '') {

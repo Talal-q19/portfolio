@@ -2,7 +2,7 @@ import { ConvexError } from 'convex/values';
 import contract from '../../content-contract/index.js';
 import apiContract from '../../content-contract/api.js';
 import { find, plain } from './state';
-const { validatePayload, validateCategory, getFormMetadata, templates, components } = contract;
+const { validatePayload, validateCategory, getFormMetadata, templates, components, pruneUnusedFields } = contract;
 const { queryOptions, contentBody, categoryBody } = apiContract;
 const fail = (field, message, status = 422) => { throw new ConvexError({ status, message, fields: { [field]: message } }); };
 const order = (a, b) => a.displayOrder - b.displayOrder || a.documentId.localeCompare(b.documentId);
@@ -48,7 +48,7 @@ function entryData(row, category, all, categories, published = false) {
     const designation = current ? `${current.title} at ${current.company}` : settings?.designation;
     if (data.designation == null && designation != null) data.designation = designation;
   }
-  return data;
+  return pruneUnusedFields(templateKey, data);
 }
 async function entryView(ctx, row, category, published = false, all = [], categories = []) {
   const value = published ? row.published : row.draft;
@@ -135,7 +135,7 @@ async function executeContent(ctx, { path, method = 'GET', query = {}, body, ver
     } else {
       candidate = row ? plain(row) : { documentId: `e${await nextId(ctx, 'content')}`, published: null };
       candidate.category = body.category || row?.category;
-      candidate.draft = { data: { ...(row ? entryData(row, categoryFor(row.category), all, categories) : {}), ...body.data }, displayOrder: body.displayOrder ?? row?.draft.displayOrder ?? 0 };
+      candidate.draft = { data: pruneUnusedFields(categoryFor(candidate.category)?.templateKey, { ...(row ? entryData(row, categoryFor(row.category), all, categories) : {}), ...body.data }), displayOrder: body.displayOrder ?? row?.draft.displayOrder ?? 0 };
       // Retain hidden legacy source values for heroes not yet saved in the new editor.
       if (categoryFor(candidate.category)?.templateKey === 'site-settings') {
         for (const key of ['location', 'designation', 'aboutHeading', 'aboutText']) {
