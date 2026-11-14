@@ -1065,9 +1065,10 @@ const Lanyard = ({
       const element = settingsRef.current.anchorElement?.current;
       if (!element) return;
       const rect = element.getBoundingClientRect();
+      const surface = canvas.getBoundingClientRect();
       anchorPosition.set(
-        (rect.left + rect.width / 2 - view.width / 2) * unitsPerPixel,
-        (view.height / 2 - rect.top - 3) * unitsPerPixel,
+        (rect.left - surface.left + rect.width / 2 - view.width / 2) * unitsPerPixel,
+        (view.height / 2 - (rect.top - surface.top) - 3) * unitsPerPixel,
         0,
       );
       anchorShift.subVectors(anchorPosition, sim.anchor);
@@ -1135,6 +1136,7 @@ const Lanyard = ({
       const s = settingsRef.current;
       const aspect = view.width / view.height;
       const slot = s.anchorElement?.current?.getBoundingClientRect();
+      const surface = canvas.getBoundingClientRect();
       let viewHeight = slot
         ? (layout.height * view.height) /
           Math.max(74, Math.min(128, slot.height - 30))
@@ -1166,10 +1168,10 @@ const Lanyard = ({
         .transformDirection(camera.matrixWorldInverse);
       unitsPerPixel = viewHeight / view.height;
       const anchorX = slot
-        ? (slot.left + slot.width / 2 - view.width / 2) * unitsPerPixel
+        ? (slot.left - surface.left + slot.width / 2 - view.width / 2) * unitsPerPixel
         : ((ANCHORS[s.anchor] ?? 0.5) - 0.5) * viewWidth;
       const anchorY = slot
-        ? (view.height / 2 - slot.top - 3) * unitsPerPixel
+        ? (view.height / 2 - (slot.top - surface.top) - 3) * unitsPerPixel
         : viewHeight / 2 + 0.2;
       const cardTop =
         viewHeight / 2 -
@@ -1209,7 +1211,8 @@ const Lanyard = ({
         ring.position.set(0, layout.ringY, 0);
         applied.framingKey = "";
       }
-      const framingKey = `${layoutKey}|${s.size}|${s.anchor}|${s.strapLength}|${view.width}|${view.height}`;
+      const slot = s.anchorElement?.current;
+      const framingKey = `${layoutKey}|${s.size}|${s.anchor}|${s.strapLength}|${view.width}|${view.height}|${slot?.clientWidth}|${slot?.clientHeight}`;
       if (framingKey !== applied.framingKey) {
         frameView();
         if (!placed) {
@@ -1414,15 +1417,17 @@ const Lanyard = ({
             include(projected.set(x, y, 0).applyMatrix4(cardGroup.matrixWorld));
         for (const node of sim.nodes) include(node);
         const hero = settingsRef.current.anchorElement?.current?.closest("section")?.getBoundingClientRect();
+        const surface = canvas.getBoundingClientRect();
         if (hero) {
-          left = Math.max(left, hero.left + 12);
-          right = Math.min(right, hero.right - 12);
-          top = Math.max(top, hero.top);
-          bottom = Math.min(bottom, hero.bottom);
+          left = Math.max(left, hero.left - surface.left + 12);
+          right = Math.min(right, hero.right - surface.left - 12);
+          top = Math.max(top, hero.top - surface.top);
+          bottom = Math.min(bottom, hero.bottom - surface.top);
         }
         inView =
           right > left && bottom > top &&
-          right > 0 && left < view.width && bottom > 0 && top < view.height;
+          right + surface.left > 0 && left + surface.left < window.innerWidth &&
+          bottom + surface.top > 0 && top + surface.top < window.innerHeight;
         canvas.tabIndex = inView ? 0 : -1;
         canvas.setAttribute("aria-hidden", inView ? "false" : "true");
         canvas.style.clipPath = inView
@@ -1479,7 +1484,8 @@ const Lanyard = ({
       if (!settingsRef.current.paused && presented) time += dt;
       const current = physics();
       syncAnchor();
-      if (!settingsRef.current.paused && presented)
+      const resting = sim.calm > 1.2 && !sim.grab && current.breeze === 0;
+      if (!settingsRef.current.paused && presented && !resting)
         stepSimulation(sim, dt, current, time);
       if (settingsRef.current.anchorElement) {
         const max = stretchLimit();
@@ -1503,8 +1509,8 @@ const Lanyard = ({
         placeHanging(sim, layout, false);
       }
       render();
-      const resting = sim.calm > 1.2 && !sim.grab && current.breeze === 0;
-      if (visible && inView && !resting && !settingsRef.current.paused)
+      const settled = sim.calm > 1.2 && !sim.grab && current.breeze === 0;
+      if (visible && inView && !settled && !settingsRef.current.paused)
         raf = requestAnimationFrame(tick);
     };
 
@@ -1585,16 +1591,17 @@ const Lanyard = ({
     const limitTarget = (target) => {
       if (!settingsRef.current.anchorElement) return;
       const hero = settingsRef.current.anchorElement.current?.closest("section")?.getBoundingClientRect();
+      const surface = canvas.getBoundingClientRect();
       const margin = layout.height * 0.6;
       target.x = clamp(
         target.x,
-        ((hero?.left ?? 0) - view.width / 2) * unitsPerPixel + margin,
-        ((hero?.right ?? view.width) - view.width / 2) * unitsPerPixel - margin,
+        ((hero ? hero.left - surface.left : 0) - view.width / 2) * unitsPerPixel + margin,
+        ((hero ? hero.right - surface.left : view.width) - view.width / 2) * unitsPerPixel - margin,
       );
       target.y = clamp(
         target.y,
-        (view.height / 2 - (hero?.bottom ?? view.height)) * unitsPerPixel + margin,
-        (view.height / 2 - (hero?.top ?? 0)) * unitsPerPixel - margin,
+        (view.height / 2 - (hero ? hero.bottom - surface.top : view.height)) * unitsPerPixel + margin,
+        (view.height / 2 - (hero ? hero.top - surface.top : 0)) * unitsPerPixel - margin,
       );
       dragOffset.subVectors(target, sim.anchor);
       const max = stretchLimit();
@@ -1710,6 +1717,8 @@ const Lanyard = ({
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+    if (settingsRef.current.anchorElement?.current)
+      resizeObserver.observe(settingsRef.current.anchorElement.current);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       if (visible) start();
@@ -1718,8 +1727,12 @@ const Lanyard = ({
     const onVisibility = () => {
       if (!document.hidden) start();
     };
+    // The canvas scrolls with the hero. Update clipping without waking physics.
+    const onScroll = () => {
+      if (!raf && visible && !document.hidden) render();
+    };
     document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("scroll", start, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     applyRef.current = apply;
     resize();
@@ -1731,7 +1744,7 @@ const Lanyard = ({
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("scroll", start);
+      window.removeEventListener("scroll", onScroll);
       canvas.removeEventListener("keydown", onKeyDown);
       canvas.removeEventListener("blur", onBlur);
       canvas.removeEventListener("pointerdown", onPointerDown);

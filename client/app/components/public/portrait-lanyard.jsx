@@ -12,6 +12,11 @@ const Lanyard = dynamic(() => import("./effects/Lanyard"), { ssr: false });
 export default function PortraitLanyard({ src, name, designation, policy, entered = true }) {
   const { theme } = useAppearance();
   const host = useRef(null);
+  const [portalHost, setPortalHost] = useState(null);
+  const attachHost = useCallback((element) => {
+    host.current = element;
+    setPortalHost(element?.closest("section") ?? null);
+  }, []);
   const [primed, setPrimed] = useState(false);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -70,7 +75,7 @@ export default function PortraitLanyard({ src, name, designation, policy, entere
   ) : null;
   return (
     <figure
-      ref={host}
+      ref={attachHost}
       className="pf-portrait-lanyard"
       data-ready={!!(enabled && active)}
       aria-label={`${name}, ${enabled ? "interactive " : ""}portrait badge`}
@@ -85,7 +90,7 @@ export default function PortraitLanyard({ src, name, designation, policy, entere
           </div>
         </div>
       )}
-      {effect && createPortal(effect, document.body)}
+      {effect && portalHost && createPortal(effect, portalHost)}
     </figure>
   );
 }
