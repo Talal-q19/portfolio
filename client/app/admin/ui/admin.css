@@ -75,6 +75,9 @@
 .admin-root label { display:block; font-weight:500; margin-bottom:8px; color:var(--admin-text); }
 .admin-root :is(input:not([type=checkbox]),select,textarea) { width:100%; min-height:44px; border:1px solid var(--admin-border); border-radius:7px; background:var(--admin-bg); padding:10px 12px; color:var(--admin-text); color-scheme:dark; }
 .admin-root textarea { resize:vertical; }
+.admin-root textarea.admin-text-editor { min-height:180px; line-height:1.8; padding:16px; tab-size:2; }
+.admin-root textarea.admin-text-editor-code { min-height:300px; font-family:var(--font-mono),monospace; font-size:13px; line-height:1.65; white-space:pre; overflow-wrap:normal; }
+.admin-editor-help { font-size:12px; line-height:1.6; margin:8px 0 12px; }
 .admin-root input::placeholder { color:var(--admin-muted); }
 .admin-root input[type=checkbox] { width:20px; height:20px; accent-color:var(--admin-accent); }
 .admin-root input[type=file] { font-size:12px; }

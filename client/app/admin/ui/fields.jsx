@@ -4,6 +4,8 @@ import { emptyFields, moveItem } from '@/utils/admin-api.mjs';
 import { mediaUrl } from '@/utils/media-url.mjs';
 import { useRef, useState } from 'react';
 import SkillGroupPicker from './skill-group-picker';
+import TextListEditor from './text-list-editor';
+import { editorError } from '@/utils/admin-text-editors.mjs';
 
 export const labelFor = key => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase());
 
@@ -13,13 +15,21 @@ export default function Fields({ fields, value, onChange, components, errors, me
   return <div className="admin-fields">{Object.entries(fields).filter(([key]) => templateKey !== 'hero-cv-button' || key !== 'url').map(([key, spec]) => {
     const path = `${prefix}.${key}`;
     const id = `field-${path}`;
-    const error = errors[path];
+    const singleEditor = spec.type === 'list' && ['bullet', 'line'].includes(spec.component);
+    const error = singleEditor ? editorError(errors, path) : errors[path];
     const set = next => onChange({ ...value, [key]: next, ...(templateKey === 'experience' && key === 'current' && next ? { endDate: '' } : {}) });
     const required = spec.required || spec.type === 'list' && spec.min > 0 || templateKey === 'experience' && key === 'endDate' && value.current === false;
     const title = key === 'seoTitle' ? 'Search result title' : key === 'seoDescription' ? 'Search result description' : key === 'demoUrl' ? 'Live project link' : key === 'sourceUrl' ? 'Source code link' : key === 'slug' ? 'Project URL name' : key === 'eyebrow' ? 'Small heading label' : key === 'cv' ? 'CV / resume' : templateKey === 'hero' && key === 'heading' ? 'Main headline' : templateKey === 'hero' && key === 'paragraph' ? 'Introduction text' : templateKey === 'hero' && key === 'role' ? 'Subtitle below your headline' : templateKey === 'hero' && key === 'designation' ? 'Job title on the back of your portrait' : key === 'current' ? 'Present position' : key === 'alt' ? 'Alt text' : prefix.includes('technologies') && key === 'text' ? 'Technology' : labelFor(key);
     const props = { id, 'aria-invalid': Boolean(error), 'aria-describedby': error ? `${id}-error` : undefined, required, disabled: pending };
     let control;
-    if (spec.type === 'list') {
+    if (singleEditor) {
+      const code = spec.component === 'line';
+      const helpId = `${id}-help`;
+      control = <><label htmlFor={id}>{code ? 'Code' : title}{required && ' *'}</label>
+        <p id={helpId} className="admin-muted admin-editor-help">{code ? 'Write or paste the whole snippet. Line breaks and indentation appear on your portfolio. Tab inserts two spaces.' : 'Write or paste one item per line. Press Enter for the next bullet. You can paste a whole list at once.'}</p>
+        <TextListEditor {...props} aria-describedby={[helpId, error && `${id}-error`].filter(Boolean).join(' ')} value={value[key]} onChange={set} mode={code ? 'code' : 'bullets'} placeholder={code ? 'const developer = {\n  name: "Your name",\n};' : '• Your first point\n• Your next point'} />
+      </>;
+    } else if (spec.type === 'list') {
       const rows = value[key] || [];
       const itemName = ({ technologies: 'Technology', details: 'Detail', highlights: 'Highlight', gallery: 'Image', buttons: 'Button', socialLinks: 'Social link' })[key] || labelFor(spec.component);
       control = <fieldset className="admin-repeat" aria-describedby={error ? `${id}-error` : undefined}>

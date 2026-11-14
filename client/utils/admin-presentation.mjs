@@ -14,7 +14,7 @@ const layouts = {
     ['Introduction', 'The text visitors see at the top of your portfolio.', ['heading', 'role', 'paragraph', 'eyebrow', 'location']],
     ['Portrait card', 'Your job title on the reverse of the profile card. Your name and photo live in Profile & contact.', ['designation']],
     ['CV & buttons', 'Upload your CV here and manage the links shown below your introduction.', ['cv', 'buttons']],
-    ['Code display', 'The code-style panels beside your introduction.', ['panels'], true],
+    ['Code display', 'Give each tab a title and write its code in one editor.', ['panels'], true],
     ['Other options', 'Additional values retained for compatibility with other layouts.', ['greeting', 'availability'], true],
   ],
   'site-settings': [
@@ -27,7 +27,7 @@ const layouts = {
   experience: [
     ['Position', 'Your role, employer, and company image.', ['title', 'company', 'image', 'location']],
     ['Dates', 'Choose Present position for your current role.', ['current', 'startDate', 'endDate']],
-    ['Work & achievements', 'Describe the role and highlight what you accomplished.', ['description', 'highlights']],
+    ['Work & achievements', 'Describe the role, then write your achievements as a bullet list.', ['description', 'highlights']],
     ['Date label override', 'Optional custom date text. Leave blank to use the dates above.', ['durationLabel'], true],
   ],
   education: [
