@@ -2821,19 +2821,6 @@ html[data-portfolio-theme="dark"] .portfolio .pf-experience-visual {
 .portfolio .pf-mobile-control-label {
   display: none;
 }
-.portfolio .pf-mobile-lanyard {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  overflow: hidden;
-  border-radius: 16px;
-}
-.portfolio .pf-mobile-lanyard[data-ready="true"] {
-  opacity: 1;
-}
-.portfolio .pf-mobile-lanyard canvas {
-  touch-action: pan-y;
-}
 
 @media (max-width: 767px) {
   .portfolio .pf-link-arrow {
