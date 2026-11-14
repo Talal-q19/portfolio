@@ -5,11 +5,14 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
   useState,
 } from "react";
+import { gsap } from "gsap";
+import { Flip } from "gsap/Flip";
 import { fetchPortfolio } from "@/utils/portfolio-api.mjs";
 import { portfolioData } from "@/utils/portfolio";
 import { AppearanceControls } from "./public/appearance";
@@ -17,6 +20,7 @@ import { scrollToPortfolioSection } from "@/utils/section-navigation.mjs";
 import PortfolioNavigation from "./public/portfolio-navigation";
 
 const PortfolioContext = createContext(null);
+gsap.registerPlugin(Flip);
 export function usePortfolio() {
   const value = useContext(PortfolioContext);
   if (!value) throw new Error("Portfolio components require PortfolioLayout.");
@@ -25,6 +29,8 @@ export function usePortfolio() {
 
 export default function PortfolioLayout({ children, mediaOrigin }) {
   const navbar = useRef(null);
+  const navFrame = useRef(null);
+  const dockedRef = useRef(false);
   const [docked, setDocked] = useState(false);
   const [state, setState] = useState({ status: "loading", data: null });
   const [requestId, reload] = useReducer((value) => value + 1, 0);
@@ -32,6 +38,40 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
     setState({ status: "loading", data: null });
     reload();
   }, []);
+
+  useLayoutEffect(() => {
+    const element = navbar.current;
+    const media = gsap.matchMedia();
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      const slot = element.querySelector(".pf-nav-slot");
+      const parts = element.querySelectorAll(".pf-brand, .pf-nav-slot, .pf-appearance");
+      if (navFrame.current && matchMedia("(min-width: 1100px)").matches) {
+        // Hold the final link width during the morph so PillNav doesn't briefly
+        // collapse to a hamburger as the surrounding header changes shape.
+        gsap.set(slot, { flex: "none", width: slot.getBoundingClientRect().width });
+        Flip.from(navFrame.current, {
+          duration: 0.78,
+          ease: "power3.inOut",
+          onComplete: () => gsap.set(slot, { clearProps: "width,flex" }),
+        });
+        gsap.fromTo(parts,
+          { opacity: 0, y: docked ? 10 : -6 },
+          { opacity: 1, y: 0, delay: 0.26, duration: 0.45, stagger: 0.055,
+            ease: "power2.out", clearProps: "opacity,transform" },
+        );
+        if (docked) gsap.from(".pf-dock-item", {
+          x: -8, opacity: 0, delay: 0.35, duration: 0.4, stagger: 0.035,
+          ease: "power2.out", clearProps: "opacity,transform",
+        });
+      } else if (!navFrame.current) {
+        gsap.fromTo(parts, { opacity: 0, y: -8 }, {
+          opacity: 1, y: 0, duration: 0.65, stagger: 0.07,
+          ease: "power3.out", clearProps: "opacity,transform",
+        });
+      }
+    }, element);
+    return () => media.revert();
+  }, [docked]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -60,7 +100,13 @@ export default function PortfolioLayout({ children, mediaOrigin }) {
       frame = requestAnimationFrame(() => {
         frame = 0;
         const hero = document.querySelector(".pf-hero");
-        setDocked(desktop.matches && !!hero && hero.getBoundingClientRect().bottom <= 104);
+        const bottom = hero?.getBoundingClientRect().bottom ?? Infinity;
+        // Separate entry/exit thresholds avoid flickering at the docking edge.
+        const next = desktop.matches && bottom <= (dockedRef.current ? 140 : 96);
+        if (next === dockedRef.current) return;
+        navFrame.current = Flip.getState(navbar.current, { props: "borderRadius,padding" });
+        dockedRef.current = next;
+        setDocked(next);
       });
     };
     window.addEventListener("scroll", update, { passive: true });

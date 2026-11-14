@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
 import './PillNav.css';
 
 const THEMES = {
@@ -175,6 +176,7 @@ const PillNav = ({
   const markRef = useRef(null);
   const toggleRef = useRef(null);
   const panelRef = useRef(null);
+  const animatedPanelRef = useRef(null);
   const measureRef = useRef(null);
   const measureListRef = useRef(null);
   const slotRefs = useRef([]);
@@ -612,50 +614,30 @@ const PillNav = ({
     const root = rootRef.current;
     if (!panel || !root) return undefined;
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-    const width = panel.offsetWidth;
-    const height = panel.offsetHeight;
-    const header = joined ? root.offsetHeight : (toggleRef.current?.offsetHeight ?? 44);
-    const start = joined
-      ? `inset(0px 0px ${Math.max(0, height - header)}px 0px round ${header / 2}px)`
-      : `inset(0px 0px ${Math.max(0, height - header)}px ${Math.max(0, width - header)}px round ${header / 2}px)`;
-    const end = 'inset(0px 0px 0px 0px round 24px)';
     const rows = panel.querySelectorAll('li');
-    const running = [];
+    if (reduce) {
+      if (!open) setPanelShown(false);
+      return undefined;
+    }
+    // Keep the panel mounted while closing and animate from its current values
+    // so rapid taps reverse smoothly instead of snapping to an endpoint.
+    const timeline = gsap.timeline();
+    if (animatedPanelRef.current !== panel) {
+      animatedPanelRef.current = panel;
+      gsap.set(panel, { opacity: 0, y: -8, scale: 0.97, transformOrigin: 'top right' });
+      gsap.set(rows, { opacity: 0, y: -6 });
+    }
     if (open) {
-      if (reduce) return undefined;
-      running.push(panel.animate([{ clipPath: start }, { clipPath: end }], { duration: 560, easing: EASE_OUT }));
-      rows.forEach((row, index) => {
-        running.push(
-          row.animate(
-            [
-              { opacity: 0, transform: 'translateY(-8px)' },
-              { opacity: 1, transform: 'translateY(0)' }
-            ],
-            { duration: 420, delay: 90 + index * 40, easing: EASE_OUT, fill: 'backwards' }
-          )
-        );
-      });
+      timeline.to(panel, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power3.out' })
+        .to(rows, { opacity: 1, y: 0, duration: 0.3, stagger: 0.035, ease: 'power2.out' }, 0.08);
     } else {
-      if (reduce) {
-        setPanelShown(false);
-        return undefined;
-      }
-      const morph = panel.animate([{ clipPath: end }, { clipPath: start }], {
-        duration: 380,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        fill: 'forwards'
-      });
-      morph.onfinish = () => setPanelShown(false);
-      running.push(morph);
-      rows.forEach(row => {
-        running.push(row.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: 'forwards' }));
+      timeline.to(panel, {
+        opacity: 0, y: -6, scale: 0.98, duration: 0.22, ease: 'power2.in',
+        onComplete: () => setPanelShown(false),
       });
     }
     return () => {
-      running.forEach(animation => {
-        animation.onfinish = null;
-        animation.cancel();
-      });
+      timeline.kill();
     };
   }, [open, panelShown, joined]);
 
